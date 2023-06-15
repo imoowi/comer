@@ -2,56 +2,51 @@ package comer
 
 import (
 	"fmt"
-	"runtime"
 
 	"github.com/spf13/cobra"
 )
 
 type Comer struct {
-	cfgPath     string
-	debugMode   bool
-	version     string
-	showVersion bool
-	cmd         *cobra.Command
-	args        []string
+	debugMode bool
+	version   string
+	cmd       *cobra.Command
+	args      []string
+	Framework *Framework
+	tplData   map[string]any
+}
+
+type Framework struct {
+	dirs  []string
+	files map[string]string
 }
 
 func (c *Comer) Start(cmd *cobra.Command, args []string) {
 	c.init(cmd, args)
 	fmt.Printf(`
-	_________                                   
-	\_   ___ \   ____    _____    ____  _______ 
-	/    \  \/  /  _ \  /     \ _/ __ \ \_  __ \
-	\     \____(  <_> )|  Y Y  \\  ___/  |  | \/
-	 \______  / \____/ |__|_|  / \___  > |__|   
-			\/               \/      \/ %s, built with %s
-
+_________                                   
+\_   ___ \   ____    _____    ____  _______ 
+/    \  \/  /  _ \  /     \ _/ __ \ \_  __ \
+\     \____(  <_> )|  Y Y  \\  ___/  |  | \/
+ \______  / \____/ |__|_|  / \___  > |__|   
+		\/               \/      \/ %s, built with %s
 `, c.Version(), c.goVersion())
+	c.generateFrameworkDir()
+	c.generateFrameworkFiles()
+}
 
-	if c.showVersion {
-		return
+func (c *Comer) generateFrameworkDir() {
+
+	if len(c.Framework.dirs) > 0 {
+		for _, dir := range c.Framework.dirs {
+			c.generateFrameworkDirByName(dir)
+		}
 	}
+}
 
-	if c.debugMode {
-		fmt.Println("[debug] mode")
+func (c *Comer) generateFrameworkFiles() {
+	if len(c.Framework.files) > 0 {
+		for file, tpl := range c.Framework.files {
+			c.generateFrameworkFileByMap(file, tpl, c.tplData)
+		}
 	}
-}
-
-func (c *Comer) init(cmd *cobra.Command, args []string) {
-	c.debugMode = true
-	c.cmd = cmd
-	c.args = args
-	c.version = `v0.1.0`
-}
-
-func (c *Comer) Version() string {
-	c.init(nil, nil)
-	fmt.Println(`comer version `, c.version)
-	return c.version
-}
-func (c *Comer) goVersion() string {
-	return runtime.Version()
-}
-func NewComer() *Comer {
-	return &Comer{}
 }
