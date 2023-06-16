@@ -4,7 +4,7 @@ import (
 	"github.com/imoowi/commer/util/response"
 	"{{.moduleName}}/global"
 	token "{{.moduleName}}/middleware/token"
-	"{{.moduleName}}/services"
+	"{{.moduleName}}/service"
 	"net/http"
 	"strings"
 	"time"
@@ -19,7 +19,7 @@ func JWTAuthMiddleware() func(c *gin.Context) {
 		wxAuthHeader := c.Request.Header.Get("Authorization-wx")
 		if wxAuthHeader != `` {
 			//判断用户是否主动注销过
-			isWxLogouted := services.IsUserLogouted(wxAuthHeader)
+			isWxLogouted := service.IsUserLogouted(wxAuthHeader)
 			if isWxLogouted {
 				response.Error("token 失效", http.StatusUnauthorized, c)
 				c.Abort()
@@ -45,12 +45,12 @@ func JWTAuthMiddleware() func(c *gin.Context) {
 					c.Set("wx_user_id", wxMc.WxUserId)
 
 					if wxMc.WxUserId != "" {
-						wxUser := services.WechatMiniProgramUserInfo(wxMc.WxUserId)
-						adminUser, _ := services.GetAdmin(wxUser.SystemUserId)
+						wxUser := service.WechatMiniProgramUserInfo(wxMc.WxUserId)
+						adminUser, _ := service.GetAdmin(wxUser.SystemUserId)
 						if adminUser.ID != "" {
 							c.Set("username", adminUser.Username)
 							c.Set("admin_id", adminUser.ID)
-							c.Set("role_id", services.AuthRoleId(adminUser.ID))
+							c.Set("role_id", service.AuthRoleId(adminUser.ID))
 						}
 					}
 
@@ -71,7 +71,7 @@ func JWTAuthMiddleware() func(c *gin.Context) {
 			return
 		}
 		//判断用户是否主动注销过
-		isLogouted := services.IsUserLogouted(authHeader)
+		isLogouted := service.IsUserLogouted(authHeader)
 		if isLogouted {
 			response.Error("token 失效", http.StatusUnauthorized, c)
 			c.Abort()
@@ -94,7 +94,7 @@ func JWTAuthMiddleware() func(c *gin.Context) {
 			return
 		}
 		//根据admin_id查询用户是否存在
-		_, err = services.GetAdmin(mc.AdminId)
+		_, err = service.GetAdmin(mc.AdminId)
 		if err != nil {
 			response.Error(err.Error(), http.StatusUnauthorized, c)
 			c.Abort()
@@ -120,7 +120,7 @@ func JWTAuthMiddleware() func(c *gin.Context) {
 		if mc.RoleId != `` {
 			roles := strings.Split(mc.RoleId, `,`)
 			for _, v := range roles {
-				roleMap := services.GetOneRole(v)
+				roleMap := service.GetOneRole(v)
 				// if roleMap.Name == `超级管理员` {
 				if roleMap.Name == global.Viper.GetString(`system.superAdminRole`) {
 					isSuperAdmin = true

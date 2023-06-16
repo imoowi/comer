@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"strings"
 	"{{.moduleName}}/global"
-	"{{.moduleName}}/services"
+	"{{.moduleName}}/service"
 
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
@@ -25,7 +25,7 @@ func CasbinMiddleware() gin.HandlerFunc {
 
 		// roleId := c.GetString("role_id")
 		adminId := c.GetString(`admin_id`)
-		roleId := services.AuthRoleId(adminId)
+		roleId := service.AuthRoleId(adminId)
 		if roleId == `` {
 			response.Error(`need login ...`, http.StatusUnauthorized, c)
 			c.Abort()
