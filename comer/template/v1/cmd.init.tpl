@@ -6,8 +6,8 @@ package cmd
 import (
 	"fmt"
 	"log"
-	"{{.moduleName}}/apps/user/models"
-	"{{.moduleName}}/apps/user/services"
+	"{{.moduleName}}/app/user/models"
+	"{{.moduleName}}/app/user/services"
 	"{{.moduleName}}/frame"
 	"{{.moduleName}}/global"
 	"{{.moduleName}}/middleware"

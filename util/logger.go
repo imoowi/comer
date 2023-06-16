@@ -16,7 +16,7 @@ var (
 
 func init() {
 	// 写入日志文件
-	logPath := "logs/log" // 日志存放路径
+	logPath := "runtime/log" // 日志存放路径
 	// linkName := "logs/latest.log" // 最新日志的软连接路径
 	/*
 		src, err := os.OpenFile(logPath, os.O_RDWR|os.O_CREATE, 0755) // 初始化日志文件对象

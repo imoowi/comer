@@ -12,8 +12,7 @@ import (
 	"os/signal"
 	"time"
 
-	_ "{{.moduleName}}/apps"
-	"{{.moduleName}}/frame"
+	_ "{{.moduleName}}/app"
 	"{{.moduleName}}/global"
 
 	"github.com/gin-gonic/gin"
