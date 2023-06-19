@@ -1,8 +1,11 @@
-package middleware
+/*
+Copyright © 2023 yuanjun<simpleyuan@gmail.com>
+*/
+package middlewares
 
 import (
 	"fmt"
-	"github.com/imoowi/commer/utils"
+	"{{.moduleName}}/utils"
 	"math"
 	"os"
 	"time"
@@ -30,7 +33,7 @@ func LoggerMiddleware() gin.HandlerFunc {
 		}
 		method := c.Request.Method
 		url := c.Request.RequestURI
-		Log := util.Logger.WithFields(logrus.Fields{
+		Log := utils.Logger.WithFields(logrus.Fields{
 			"HostName":  hostName,
 			"SpendTime": spendTime,
 			"path":      url,

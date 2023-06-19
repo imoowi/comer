@@ -5,7 +5,6 @@ package cmd
 
 import (
 	"log"
-	"{{.moduleName}}/global"
 
 	"github.com/spf13/cobra"
 )
@@ -14,7 +13,7 @@ import (
 var migrateCmd = &cobra.Command{
 	Use:          "migrate",
 	Short:        "数据迁移",
-	Example:      "{{.moduleName}} migrate",
+	Example:      "github.com/imoowi/newProject migrate",
 	SilenceUsage: true,
 	PreRun: func(cmd *cobra.Command, args []string) {
 	},
@@ -39,7 +38,7 @@ func init() {
 
 func migrate() error {
 	log.Println(`migrate start.`)
-	global.BootMigrate()
+	// global.BootMigrate()
 	log.Println(`migrate end.`)
 	return nil
 }

@@ -12,8 +12,8 @@ import (
 	"os/signal"
 	"time"
 
-	_ "{{.moduleName}}/apps"
 	"{{.moduleName}}/global"
+	"{{.moduleName}}/router"
 
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cobra"
@@ -42,7 +42,7 @@ func setUp() {
 }
 func initServerConfig() {
 	global.Config.SetDefault("server.host", "0.0.0.0")
-	global.Config.SetDefault("server.port", 8001)
+	global.Config.SetDefault("server.port", 8000)
 }
 
 func run() error {
@@ -61,10 +61,7 @@ func startServer() {
 		gin.SetMode(gin.TestMode)
 	}
 
-	// 初始化全局资源
-	global.Boot()
-
-	// 初始化路由
+	global.Bootstrap()
 	r := router.InitRouter()
 
 	port := global.Config.GetUint16("server.port")
@@ -82,12 +79,6 @@ func startServer() {
 		}
 	}()
 	log.Println(`server port: `, port)
-
-	go func() {
-		// 延迟100ms后初始化定时任务
-		time.Sleep(100 * time.Millisecond)
-		global.App.InitEngineCrontab()
-	}()
 
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, os.Interrupt)

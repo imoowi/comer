@@ -1,3 +1,6 @@
+/*
+Copyright © 2023 yuanjun<simpleyuan@gmail.com>
+*/
 package global
 
 import (
@@ -5,7 +8,7 @@ import (
 	"strings"
 	"time"
 
-	format "github.com/imoowi/comer/utils/format"
+	"{{.moduleName}}/utils/format"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cast"
 )

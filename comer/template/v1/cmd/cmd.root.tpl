@@ -6,8 +6,9 @@ package cmd
 import (
 	"os"
 	"path/filepath"
-	"{{.moduleName}}/global"
 
+	_ "{{.moduleName}}/apps"
+	"{{.moduleName}}/global"
 	"github.com/spf13/cobra"
 )
 

@@ -6,10 +6,11 @@ package cmd
 import (
 	"fmt"
 	"log"
-//	"{{.moduleName}}/app/user/models"
-//	"{{.moduleName}}/app/user/services"
+
+	"github.com/gin-gonic/gin"
+	"{{.moduleName}}/apps/user/models"
+	"{{.moduleName}}/apps/user/services"
 	"{{.moduleName}}/global"
-	"{{.moduleName}}/middlewares"
 
 	"github.com/spf13/cobra"
 )
@@ -46,9 +47,9 @@ func init() {
 
 func initDb() {
 	log.Println(`init start.`)
-	global.BootInit()
-	c := frame.NewContext()
-	c.Auth = &middleware.Auth{}
+	global.Bootstrap()
+
+	var c *gin.Context
 	// 添加超管角色
 	superRoleName := `超级管理员`
 	var superRoleId uint
@@ -68,7 +69,7 @@ func initDb() {
 
 	// 添加超管
 	if superRoleId > 0 {
-		userAdd := &models.UserAdd{Username: `lynkros`, Passwd: `lynkros`, RoleId: superRoleId}
+		userAdd := &models.UserAdd{Username: `root`, Passwd: `root`, RoleId: superRoleId}
 		_, err := services.User.Add(c, userAdd)
 		if err != nil {
 			log.Println(err.Error())

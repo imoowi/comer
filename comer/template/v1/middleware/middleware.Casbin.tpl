@@ -1,12 +1,14 @@
-package middleware
+/*
+Copyright © 2023 yuanjun<simpleyuan@gmail.com>
+*/
+package middlewares
 
 import (
 	"fmt"
-	"github.com/imoowi/commer/utils/response"
 	"net/http"
-	"strings"
+
 	"{{.moduleName}}/global"
-	"{{.moduleName}}/services"
+	"{{.moduleName}}/utils/response"
 
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
@@ -23,11 +25,11 @@ func CasbinMiddleware() gin.HandlerFunc {
 			return
 		}
 
-		// roleId := c.GetString("role_id")
-		adminId := c.GetString(`admin_id`)
-		roleId := services.AuthRoleId(adminId)
-		if roleId == `` {
-			response.Error(`need login ...`, http.StatusUnauthorized, c)
+		// userId := c.GetUint(`uid`)
+		// roleIds := services.User.UserRoleIds(c, userId)
+		var roleIds []uint
+		if len(roleIds) <= 0 {
+			response.Error(`need give role ...`, http.StatusUnauthorized, c)
 			c.Abort()
 			return
 		}
@@ -36,8 +38,7 @@ func CasbinMiddleware() gin.HandlerFunc {
 		// fmt.Println(`admin.roleId=`, roleId, `v1=`, c.Request.URL.Path, `v2=`, c.Request.Method)
 		canAccess := false
 		// _roleId := cast.ToString(roleId)
-		roleSlice := strings.Split(roleId, ",")
-		for _, _roleId := range roleSlice {
+		for _, _roleId := range roleIds {
 			// Check the permission.
 			ok, err := e.Enforce(_roleId, c.Request.URL.Path, c.Request.Method)
 			if err != nil {

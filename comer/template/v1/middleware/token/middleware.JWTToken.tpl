@@ -1,3 +1,6 @@
+/*
+Copyright © 2023 yuanjun<simpleyuan@gmail.com>
+*/
 package token
 
 import (
@@ -6,16 +9,16 @@ import (
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
+	"github.com/imoowi/newProject/global"
 )
 
 type TokenClaims struct {
 	Username string `json:"username"`
 	UserId   uint   `json:"user_id"`
-	RoleIds  string `json:"role_id"`
 	jwt.StandardClaims
 }
 
-func GenToken(username string, userId uint, roleIds string) (string, error) {
+func GenToken(username string, userId uint) (string, error) {
 	settingSecret := global.Config.GetString("jwt.secret")
 	var MySecret = []byte(settingSecret)
 	TokenExpireDuration := global.Config.GetDuration("jwt.timeout")
@@ -25,10 +28,9 @@ func GenToken(username string, userId uint, roleIds string) (string, error) {
 	c := TokenClaims{
 		username,
 		userId,
-		roleId,
 		jwt.StandardClaims{
 			ExpiresAt: time.Now().Add(TokenExpireDuration).Unix(), // 过期时间
-			Issuer:    "lynkros-admin",                            // 签发人
+			Issuer:    "imoowi",                                   // 签发人
 		},
 	}
 	// 使用指定的签名方法创建签名对象
