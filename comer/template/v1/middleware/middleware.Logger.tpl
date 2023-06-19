@@ -2,7 +2,7 @@ package middleware
 
 import (
 	"fmt"
-	"github.com/imoowi/commer/util"
+	"github.com/imoowi/commer/utils"
 	"math"
 	"os"
 	"time"

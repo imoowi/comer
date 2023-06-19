@@ -2,11 +2,11 @@ package middleware
 
 import (
 	"fmt"
-	"github.com/imoowi/commer/util/response"
+	"github.com/imoowi/commer/utils/response"
 	"net/http"
 	"strings"
 	"{{.moduleName}}/global"
-	"{{.moduleName}}/service"
+	"{{.moduleName}}/services"
 
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
@@ -25,7 +25,7 @@ func CasbinMiddleware() gin.HandlerFunc {
 
 		// roleId := c.GetString("role_id")
 		adminId := c.GetString(`admin_id`)
-		roleId := service.AuthRoleId(adminId)
+		roleId := services.AuthRoleId(adminId)
 		if roleId == `` {
 			response.Error(`need login ...`, http.StatusUnauthorized, c)
 			c.Abort()

@@ -1,8 +1,8 @@
 package router
 
 import (
-	"{{.moduleName}}/common/util/response"
-	"{{.moduleName}}/middleware"
+	"{{.moduleName}}/common/utils/response"
+	"{{.moduleName}}/middlewares"
 
 	"github.com/gin-gonic/gin"
 )

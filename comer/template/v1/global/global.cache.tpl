@@ -5,7 +5,7 @@ import (
 	"strings"
 	"time"
 
-	format "github.com/imoowi/comer/util/format"
+	format "github.com/imoowi/comer/utils/format"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cast"
 )

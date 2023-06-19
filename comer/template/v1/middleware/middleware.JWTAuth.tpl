@@ -1,10 +1,10 @@
 package middleware
 
 import (
-	"github.com/imoowi/commer/util/response"
+	"github.com/imoowi/commer/utils/response"
 	"{{.moduleName}}/global"
-	token "{{.moduleName}}/middleware/token"
-	"{{.moduleName}}/service"
+	token "{{.moduleName}}/middlewares/token"
+	"{{.moduleName}}/services"
 	"net/http"
 	"strings"
 	"time"

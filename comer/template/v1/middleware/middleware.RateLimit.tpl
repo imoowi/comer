@@ -1,10 +1,10 @@
 package middleware
 
 import (
-	"github.com/imoowi/commer/util/response"
-	"{{.moduleName}}/global"
+	"github.com/imoowi/commer/utils/response"
 	"net/http"
 	"time"
+	"{{.moduleName}}/global"
 
 	"github.com/gin-gonic/gin"
 	"github.com/juju/ratelimit"

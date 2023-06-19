@@ -6,11 +6,10 @@ package cmd
 import (
 	"fmt"
 	"log"
-	"{{.moduleName}}/app/user/models"
-	"{{.moduleName}}/app/user/services"
-	"{{.moduleName}}/frame"
+//	"{{.moduleName}}/app/user/models"
+//	"{{.moduleName}}/app/user/services"
 	"{{.moduleName}}/global"
-	"{{.moduleName}}/middleware"
+	"{{.moduleName}}/middlewares"
 
 	"github.com/spf13/cobra"
 )

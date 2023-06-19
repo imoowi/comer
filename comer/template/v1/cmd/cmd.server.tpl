@@ -12,7 +12,7 @@ import (
 	"os/signal"
 	"time"
 
-	_ "{{.moduleName}}/app"
+	_ "{{.moduleName}}/apps"
 	"{{.moduleName}}/global"
 
 	"github.com/gin-gonic/gin"
