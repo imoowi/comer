@@ -3,7 +3,7 @@ application: # dev开发环境 test测试环境 prod线上环境
   name: {{.moduleName}} # 服务名称
 server:
   host: 0.0.0.0 # 服务器ip，默认使用 0.0.0.0
-  port: 8009 # 服务端口号
+  port: 8000 # 服务端口号
   readtimeout: 1 # 读超时时间
   writertimeout: 2 # 写超时时间
 logger:
@@ -22,13 +22,13 @@ jwt:
   timeout: 2000h0m0s # token 过期时间 格式：0h0m0s
   refresh_token_timeout: 0h5m0s # token 过期时间减去的时间，用于刷新token
 mysql:
-  dsn: root:123456@tcp(127.0.0.1:3306)/com_imoowi_comer_newproject?charset=utf8&parseTime=True&loc=Local&timeout=1000ms
-  casbin: root:123456@tcp(127.0.0.1:3306)/com_imoowi_comer_newproject
+  dsn: root:123456@tcp(127.0.0.1:3306)/{{.dbName}}?charset=utf8&parseTime=True&loc=Local&timeout=1000ms
+  casbin: root:123456@tcp(127.0.0.1:3306)/{{.dbName}}
 # influxdb:
 #   addr: http://127.0.0.1:8086
-#   token: RHQubS8hfXsmiRq2eFLOK6QgFXbDlHJz9_Y_TuWsvZrzFj5gkYleHHA-EOQlB8sB7bKWmtyjwqlfjvTKH9iJ_Q==
-#   org: imoowi
-#   bucket: com.imoowi.xxx
+#   token: [token string]
+#   org: [orgnization name]
+#   bucket: [bucket name]
 #   testSwitchOn: false
 redis:
   addr: 127.0.0.1:6379
@@ -36,4 +36,4 @@ redis:
   db: 0
 cache:
   driver: redis
-  prefix: "com_imoowi_comer_newproject:cache"
+  prefix: "{{.dbName}}:cache"

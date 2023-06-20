@@ -8,7 +8,7 @@ import (
 )
 
 func (c *Comer) Version() string {
-	c.init(nil, nil)
+	c.version = `v1.0`
 	fmt.Println(`Comer version `, c.version)
 	return c.version
 }

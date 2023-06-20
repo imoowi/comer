@@ -7,12 +7,13 @@ import (
 )
 
 type Comer struct {
-	debugMode bool
-	version   string
-	cmd       *cobra.Command
-	args      []string
-	Framework *Framework
-	tplData   map[string]any
+	debugMode  bool
+	version    string
+	cmd        *cobra.Command
+	args       []string
+	Framework  *Framework
+	tplData    map[string]any
+	moduleName string
 }
 
 type Framework struct {
@@ -21,7 +22,11 @@ type Framework struct {
 }
 
 func (c *Comer) Start(cmd *cobra.Command, args []string) {
-	c.init(cmd, args)
+	if !c.init(cmd, args) {
+		fmt.Println(`init failed`)
+		return
+	}
+
 	fmt.Printf(`
 _________                                   
 \_   ___ \   ____    _____    ____  _______ 
@@ -30,6 +35,7 @@ _________
  \______  / \____/ |__|_|  / \___  > |__|   
 		\/               \/      \/ %s, built with %s
 `, c.Version(), c.goVersion())
+
 	c.generateFrameworkDir()
 	c.generateFrameworkFiles()
 }
