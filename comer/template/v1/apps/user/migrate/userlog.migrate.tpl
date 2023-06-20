@@ -2,11 +2,12 @@ package migrate
 
 import (
 	"{{.moduleName}}/apps/user/models"
+	"{{.moduleName}}/components"
 	"{{.moduleName}}/global"
 )
 
 type UserLogMigrate struct {
-	db *global.MysqlODM
+	db *components.MysqlODM
 }
 
 func newUserLogMigrate() *UserLogMigrate {

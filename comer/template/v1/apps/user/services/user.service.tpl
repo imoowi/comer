@@ -122,16 +122,15 @@ func (s *UserService) Delete(c *gin.Context, id uint) (deleted bool, err error) 
 func (s *UserService) Login(c *gin.Context, login *models.UserLogin) (user *models.User, err error) {
 	user, err = s.UserRepo.Login(c, login)
 	if user != nil && user.ID > 0 {
-		go func(c *gin.Context) {
-			admin, _ := s.UserRepo.One(c, c.GetUint(`uid`))
+		go func(c *gin.Context,user *models.User) {
 			userlog := &models.UserLog{
-				UserID:     admin.ID,
+				UserID:     user.ID,
 				LogType:    models.USER_LOG_TYPE_USER_LOGIN,
-				LogContent: `用户【` + admin.Username + `】登录了系统`,
+				LogContent: `用户【` + user.Username + `】登录了系统`,
 				IP:         c.ClientIP(),
 			}
 			UserLog.Add(c, userlog)
-		}(c)
+		}(c,user)
 	}
 
 	return

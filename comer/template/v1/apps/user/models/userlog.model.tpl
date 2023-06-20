@@ -1,6 +1,6 @@
 package models
 
-import "{{.moduleName}}/global"
+import "{{.moduleName}}/components"
 
 type USER_LOG_TYPE int
 
@@ -23,7 +23,7 @@ const (
 // 用户行为记录表
 // `gorm:"comment:用户行为记录表"`
 type UserLog struct {
-	global.GormModel
+	components.GormModel
 	UserID     uint          `json:"user_id" form:"user_id" gorm:"column:user_id;not null;comment:用户id;index" binding:"required"`                  //用户id
 	LogType    USER_LOG_TYPE `json:"log_type" form:"log_type" gorm:"column:log_type;type:tinyint(3);not null;comment:类型;index" binding:"required"` //log类型
 	LogContent string        `json:"log_content" form:"log_content" gorm:"column:log_content;comment:记录内容" binding:"required"`                     //log内容

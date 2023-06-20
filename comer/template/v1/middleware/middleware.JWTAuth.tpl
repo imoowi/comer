@@ -75,12 +75,13 @@ func JWTAuthMiddleware() func(c *gin.Context) {
 		}
 		//
 		// 将当前请求的username信息保存到请求的上下文c上
-		c.Set("username", mc.Username)
+		c.Set("username", mc.Username) // 后续的处理函数可以用过c.Get("username")来获取当前请求的用户信息
 		c.Set("uid", mc.UserId)
 
 		isSuperAdmin := services.User.IsSuper(c, mc.UserId)
-		c.Set("is_super_admin", isSuperAdmin)
+		c.Set("isSuperAdmin", isSuperAdmin)
+		c.Set(`isInit`, false)
 
-		c.Next() // 后续的处理函数可以用过c.Get("username")来获取当前请求的用户信息
+		c.Next() 
 	}
 }

@@ -49,7 +49,9 @@ func initDb() {
 	log.Println(`init start.`)
 	global.Bootstrap()
 
-	var c *gin.Context
+	// var c *gin.Context
+	c := gin.CreateTestContextOnly(nil, gin.New())
+	c.Set(`isInit`, true)
 	// 添加超管角色
 	superRoleName := `超级管理员`
 	var superRoleId uint

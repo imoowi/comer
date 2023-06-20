@@ -5,6 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"{{.moduleName}}/apps/user/models"
+	"{{.moduleName}}/components"
 	"{{.moduleName}}/global"
 	"{{.moduleName}}/utils/maker"
 	"{{.moduleName}}/utils/password"
@@ -13,7 +14,7 @@ import (
 )
 
 type UserRepo struct {
-	Db *global.MysqlODM
+	Db *components.MysqlODM
 }
 
 func newUserRepo() *UserRepo {

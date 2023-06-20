@@ -10,10 +10,14 @@ func (c *Comer) init(cmd *cobra.Command, args []string) {
 	c.args = args
 	c.version = `v1.0`
 	tmpProjectDir := `/../projects`
+	// tmpProjectDir = ``
 	c.Framework = &Framework{
 		dirs: []string{
-			`.` + tmpProjectDir + `/cmd`,
 			`.` + tmpProjectDir + `/apps`,
+			`.` + tmpProjectDir + `/cmd`,
+			`.` + tmpProjectDir + `/components`,
+			`.` + tmpProjectDir + `/apps/common`,
+			`.` + tmpProjectDir + `/apps/common/handlers`,
 			`.` + tmpProjectDir + `/apps/swagger`,
 			`.` + tmpProjectDir + `/apps/user/handlers`,
 			`.` + tmpProjectDir + `/apps/user/migrate`,
@@ -53,6 +57,10 @@ func (c *Comer) init(cmd *cobra.Command, args []string) {
 			`.` + tmpProjectDir + `/cmd/init.go`:    `./comer/template/v1/cmd/cmd.init.tpl`,
 			`.` + tmpProjectDir + `/cmd/migrate.go`: `./comer/template/v1/cmd/cmd.migrate.tpl`,
 
+			`.` + tmpProjectDir + `/components/mysql.go`:   `./comer/template/v1/components/components.mysql.tpl`,
+			`.` + tmpProjectDir + `/components/redis.go`:   `./comer/template/v1/components/components.redis.tpl`,
+			`.` + tmpProjectDir + `/components/captcha.go`: `./comer/template/v1/components/components.captcha.tpl`,
+
 			`.` + tmpProjectDir + `/configs/settings-local.yml`: `./comer/template/v1/config/config.settings-local.tpl`,
 			`.` + tmpProjectDir + `/configs/casbin.conf`:        `./comer/template/v1/config/config.casbin.tpl`,
 
@@ -70,6 +78,7 @@ func (c *Comer) init(cmd *cobra.Command, args []string) {
 			`.` + tmpProjectDir + `/middlewares/token/jwttoken.go`:      `./comer/template/v1/middleware/token/middleware.JWTToken.tpl`,
 			`.` + tmpProjectDir + `/middlewares/LoggerMiddleware.go`:    `./comer/template/v1/middleware/middleware.Logger.tpl`,
 			`.` + tmpProjectDir + `/middlewares/RateLimitMiddleware.go`: `./comer/template/v1/middleware/middleware.RateLimit.tpl`,
+			`.` + tmpProjectDir + `/middlewares/VcodeMiddleware.go`:     `./comer/template/v1/middleware/middleware.Vcode.tpl`,
 			`.` + tmpProjectDir + `/middlewares/middleware.go`:          `./comer/template/v1/middleware/middleware.tpl`,
 
 			`.` + tmpProjectDir + `/router/router.go`: `./comer/template/v1/router/router.tpl`,
@@ -91,8 +100,12 @@ func (c *Comer) init(cmd *cobra.Command, args []string) {
 			`.` + tmpProjectDir + `/utils/logger.go`:            `./comer/template/v1/utils/logger.tpl`,
 			`.` + tmpProjectDir + `/utils/utils.go`:             `./comer/template/v1/utils/utils.tpl`,
 
-			`.` + tmpProjectDir + `/apps/apps.go`:                          `./comer/template/v1/apps/apps.tpl`,
-			`.` + tmpProjectDir + `/apps/swagger/router.go`:                `./comer/template/v1/apps/swagger/router.tpl`,
+			`.` + tmpProjectDir + `/apps/apps.go`:           `./comer/template/v1/apps/apps.tpl`,
+			`.` + tmpProjectDir + `/apps/swagger/router.go`: `./comer/template/v1/apps/swagger/router.tpl`,
+
+			`.` + tmpProjectDir + `/apps/common/router.go`:                   `./comer/template/v1/apps/common/router.tpl`,
+			`.` + tmpProjectDir + `/apps/common/handlers/captcha.handler.go`: `./comer/template/v1/apps/common/handlers/captcha.handler.tpl`,
+
 			`.` + tmpProjectDir + `/apps/user/router.go`:                   `./comer/template/v1/apps/user/router.tpl`,
 			`.` + tmpProjectDir + `/apps/user/handlers/auth.handler.go`:    `./comer/template/v1/apps/user/handlers/auth.handler.tpl`,
 			`.` + tmpProjectDir + `/apps/user/migrate/role.migrate.go`:     `./comer/template/v1/apps/user/migrate/role.migrate.tpl`,

@@ -1,7 +1,7 @@
 package models
 
 import (
-	"{{.moduleName}}/global"
+	"{{.moduleName}}/components"
 )
 
 type ROLE_LEVEL int
@@ -14,7 +14,7 @@ const (
 
 // 角色表
 type Role struct {
-	global.GormModel
+	components.GormModel
 	Name  string     `json:"name" form:"name" gorm:"column:name;type:varchar(30);not null;comment:角色名" binding:"required"`
 	Level ROLE_LEVEL `json:"level" form:"level" gorm:"column:level;type:tinyint(3);comment:角色等级"`
 }

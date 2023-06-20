@@ -1,11 +1,11 @@
 root = "."
 testdata_dir = "testdata"
-tmp_dir = "tmp"
+tmp_dir = "runtime"
 
 [build]
   args_bin = ["server", "-c", "configs/settings-local.yml"]
-  bin = "tmp\\main.exe"
-  cmd = "swag init && go mod tidy && go build -o tmp/main.exe  ."
+  bin = "runtime\\main.air.exe"
+  cmd = "swag init && go mod tidy && go build -o runtime/main.air.exe  ."
   delay = 1000
   exclude_dir = ["assets", "tmp", "vendor", "testdata"]
   exclude_file = []

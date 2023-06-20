@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin/binding"
 	"{{.moduleName}}/apps/user/models"
 	"{{.moduleName}}/apps/user/services"
 	"{{.moduleName}}/middlewares/token"
@@ -22,7 +23,7 @@ import (
 // @Router		/api/auth/login [post]
 func AuthLogin(c *gin.Context) {
 	var userLogin *models.UserLogin
-	err := c.ShouldBindJSON(&userLogin)
+	err := c.ShouldBindBodyWith(&userLogin, binding.JSON)
 	if err != nil {
 		response.Error(err.Error(), http.StatusBadRequest, c)
 		return
@@ -77,7 +78,7 @@ func AuthLogout(c *gin.Context) {
 // @Router		/api/auth/chgpwd [post]
 func AuthChgPwd(c *gin.Context) {
 	var userChgPwd *models.UserChgPwd
-	err := c.ShouldBindJSON(&userChgPwd)
+	err := c.ShouldBindBodyWith(&userChgPwd, binding.JSON)
 	if err != nil {
 		response.Error(err.Error(), http.StatusBadRequest, c)
 		return

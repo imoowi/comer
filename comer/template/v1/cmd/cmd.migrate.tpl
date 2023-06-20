@@ -7,6 +7,7 @@ import (
 	"log"
 
 	"github.com/spf13/cobra"
+	"{{.moduleName}}/global"
 )
 
 // migrateCmd represents the migrate command
@@ -38,7 +39,7 @@ func init() {
 
 func migrate() error {
 	log.Println(`migrate start.`)
-	// global.BootMigrate()
+	global.BootMigrate()
 	log.Println(`migrate end.`)
 	return nil
 }

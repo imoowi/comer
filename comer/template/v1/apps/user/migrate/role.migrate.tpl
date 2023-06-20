@@ -2,11 +2,12 @@ package migrate
 
 import (
 	"{{.moduleName}}/apps/user/models"
+	"{{.moduleName}}/components"
 	"{{.moduleName}}/global"
 )
 
 type RoleMigrate struct {
-	db *global.MysqlODM
+	db *components.MysqlODM
 }
 
 func newRoleMigrate() *RoleMigrate {

@@ -5,13 +5,14 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"{{.moduleName}}/apps/user/models"
+	"{{.moduleName}}/components"
 	"{{.moduleName}}/global"
 	"{{.moduleName}}/utils/request"
 	"{{.moduleName}}/utils/response"
 )
 
 type RoleRepo struct {
-	db *global.MysqlODM
+	db *components.MysqlODM
 }
 
 func newRoleRepo() *RoleRepo {
