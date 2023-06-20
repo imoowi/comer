@@ -1,18 +1,14 @@
 package comer
 
 import (
-	"embed"
 	"fmt"
 	"os"
 	"runtime"
 	"text/template"
 )
 
-//go:embed templates/*
-var tpl embed.FS
-
 func (c *Comer) Version() string {
-	c.version = `v1.0`
+	c.version = `v1.1`
 	fmt.Println(`Comer version `, c.version)
 	return c.version
 }
@@ -46,9 +42,8 @@ func (c *Comer) generateFrameworkFileByMap(fileName string, tplFileName string, 
 		}
 		defer file.Close()
 
-		t, err := template.ParseFiles(tplFileName)
-		t2, err := template.ParseFS(tpl, tplFileName)
-		fmt.Println(`t2=`, t2, ` tplfilename=`, tplFileName)
+		// t, err := template.ParseFiles(tplFileName)
+		t, err := template.ParseFS(tplLocal, tplFileName)
 		if err != nil {
 			fmt.Println(`err:`, err.Error())
 			return

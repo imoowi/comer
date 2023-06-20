@@ -14,6 +14,7 @@ type Comer struct {
 	Framework  *Framework
 	tplData    map[string]any
 	moduleName string
+	path       string
 }
 
 type Framework struct {
@@ -23,7 +24,6 @@ type Framework struct {
 
 func (c *Comer) Start(cmd *cobra.Command, args []string) {
 	if !c.init(cmd, args) {
-		fmt.Println(`init failed`)
 		return
 	}
 
@@ -38,6 +38,7 @@ _________
 
 	c.generateFrameworkDir()
 	c.generateFrameworkFiles()
+	c.showTips()
 }
 
 func (c *Comer) generateFrameworkDir() {

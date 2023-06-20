@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
-	"github.com/imoowi/newProject/global"
+	"{{.moduleName}}/global"
 )
 
 type TokenClaims struct {
