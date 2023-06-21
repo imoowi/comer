@@ -3,18 +3,9 @@ package comer
 import (
 	"fmt"
 	"os"
-	"runtime"
 	"text/template"
 )
 
-func (c *Comer) Version() string {
-	c.version = `v1.1`
-	fmt.Println(`Comer version `, c.version)
-	return c.version
-}
-func (c *Comer) goVersion() string {
-	return runtime.Version()
-}
 func NewComer() *Comer {
 	return &Comer{}
 }
