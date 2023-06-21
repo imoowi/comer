@@ -15,6 +15,8 @@ comer --module=moduleName --path=projectDir
 ```sh
 cd projectDir
 comer genapp --app=appName
+#或者
+comer genapp --app=user --swaggerTags='Oauth' --handler=auth --service=user --model=user,role
 ```
 - 安装swag
 ```sh
