@@ -1,4 +1,5 @@
 # Comer
+[![Go](https://github.com/cosmtrek/air/actions/workflows/release.yml/badge.svg)](https://github.com/imoowi/comer/actions?query=workflow%3ACI) 
 ## Comer 是什么？
 Comer是一个用go语言写的代码生成工具，能够生成基本的web api框架，同时支持app新增。
 ## 安装
