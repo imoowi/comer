@@ -83,6 +83,6 @@ go mod tidy
 go run . server
 ```
 - 访问接口文件：[http://localhost:8000/swagger/index.html](http://localhost:8000/swagger/index.html)
-  
-## 接下来
-继续迭代
+![](assets/comer-swagger.png)
+## 接下来做什么？
+听取建议并采纳优秀的解决方案
