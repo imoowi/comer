@@ -1,4 +1,5 @@
 # Comer
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/fb7a1364ec7348ddbed67bade31b054f)](https://app.codacy.com/gh/imoowi/comer?utm_source=github.com&utm_medium=referral&utm_content=imoowi/comer&utm_campaign=Badge_Grade)
 [![Go](https://github.com/cosmtrek/air/actions/workflows/release.yml/badge.svg)](https://github.com/imoowi/comer/actions?query=workflow%3ACI) 
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/26b6baa851bc426c9bc7dcc9079485b3)](https://app.codacy.com/gh/imoowi/comer/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 ## Comer 是什么？
