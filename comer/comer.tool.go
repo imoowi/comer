@@ -9,7 +9,7 @@ import (
 func NewComer() *Comer {
 	return &Comer{}
 }
-func (c *Comer) generateFrameworkDirByName(dirName string) {
+func (c *Comer) generateDirByName(dirName string) {
 	_, err := os.Stat(dirName)
 	if os.IsNotExist(err) {
 		err := os.MkdirAll(dirName, os.ModePerm)
@@ -17,18 +17,19 @@ func (c *Comer) generateFrameworkDirByName(dirName string) {
 			fmt.Println(err.Error())
 			return
 		}
-		fmt.Println(`目录[`, dirName, `]创建成功`)
+		fmt.Println(`dir [`, dirName, `] created`)
 	} else {
-		fmt.Println(`目录[`, dirName, `] 已经存在，无需创建`)
+		fmt.Println(`dir [`, dirName, `] existed`)
 	}
 }
 
-func (c *Comer) generateFrameworkFileByMap(fileName string, tplFileName string, tplData any) {
+func (c *Comer) generateFileByMap(fileName string, tplFileName string, tplData any) {
+	// fmt.Println(`fileName=`, fileName, `tplFileName=`, tplFileName)
 	_, err := os.Stat(fileName)
 	if os.IsNotExist(err) {
 		file, err := os.OpenFile(fileName, os.O_WRONLY|os.O_CREATE, 0755)
 		if err != nil {
-			fmt.Println("文件["+fileName+"]打开失败", err.Error())
+			fmt.Println("file ["+fileName+"] open failed", err.Error())
 			return
 		}
 		defer file.Close()
@@ -43,8 +44,20 @@ func (c *Comer) generateFrameworkFileByMap(fileName string, tplFileName string, 
 		if err != nil {
 			fmt.Println(`err=`, err.Error())
 		}
-		fmt.Println(`文件[`, fileName, `] 创建成功`)
+		fmt.Println(`file [`, fileName, `] created`)
 	} else {
-		fmt.Println(`文件[`, fileName, `] 已经存在，无需创建`)
+		fmt.Println(`file [`, fileName, `] already exists`)
 	}
+}
+
+func (c *Comer) showLogo() {
+
+	fmt.Printf(`
+_________                                   
+\_   ___ \   ____    _____    ____  _______ 
+/    \  \/  /  _ \  /     \ _/ __ \ \_  __ \
+\     \____(  <_> )|  Y Y  \\  ___/  |  | \/
+ \______  / \____/ |__|_|  / \___  > |__|   
+		\/               \/      \/ %s, built with %s
+`, c.Version(), c.goVersion())
 }

@@ -1,7 +1,12 @@
 package comer
 
 import (
+	"bufio"
 	"fmt"
+	"io"
+	"log"
+	"os"
+	"strings"
 
 	"github.com/imoowi/comer/utils/maker"
 	"github.com/spf13/cobra"
@@ -17,18 +22,60 @@ func (c *Comer) init(cmd *cobra.Command, args []string) bool {
 		return false
 	}
 	c.path = path
-	moduleName, err := cmd.Flags().GetString(`module`)
-	if err != nil {
-		fmt.Println(err.Error())
-		return false
+	_moduleName := ``
+	moduleFile := `./go.mod`
+	_, gErr := os.Stat(moduleFile)
+	if os.IsNotExist(gErr) {
+		log.Println(`go.mod not exists`)
+		// return false
+	} else {
+		file, err := os.OpenFile(moduleFile, os.O_RDWR, 0544)
+		if err != nil {
+			fmt.Printf("File open failed! err: %v\n", err)
+			return false
+		}
+		reader := bufio.NewReader(file)
+		_moduleNameLine := ``
+		for {
+			line, err := reader.ReadString('\n') // 依次读一行
+			if err == io.EOF {
+				break
+			}
+			if err != nil {
+				fmt.Printf("File raed failed! err: %v\n", err)
+				return false
+			}
+			if strings.Contains(line, `module`) {
+				_moduleNameLine = line
+				break
+			}
+		}
+		file.Close()
+		if _moduleNameLine != `` {
+			_moduleName = strings.Replace(_moduleNameLine, "module ", "", -1)
+			_moduleName = strings.Replace(_moduleName, "\r", "", -1)
+			_moduleName = strings.Replace(_moduleName, "\n", "", -1)
+			_moduleName = strings.Replace(_moduleName, "\n\r", "", -1)
+			_moduleName = strings.Replace(_moduleName, "\r\n", "", -1)
+		}
 	}
-	if moduleName == `` {
-		fmt.Println(`pls input module, e.g. --module=comer-007 (请输入go.mod文件的module,例如 --module=comer-007)`)
-		return false
+	if _moduleName == `` {
+		moduleName, err := cmd.Flags().GetString(`module`)
+		if err != nil {
+			fmt.Println(err.Error())
+			return false
+		}
+		if _moduleName == `` && moduleName == `` {
+			fmt.Println(`pls input module, e.g. --module=ProjectModuleName (请输入go.mod文件的module,例如 --module=ProjectModuleName)`)
+			return false
+		}
+		c.moduleName = moduleName
+	} else {
+		c.moduleName = _moduleName
 	}
-	c.moduleName = moduleName
+
 	if c.path == `` {
-		c.path = c.moduleName
+		c.path = `.`
 	}
 	tplUri := ``
 	c.Framework = &Framework{
@@ -40,7 +87,7 @@ func (c *Comer) init(cmd *cobra.Command, args []string) bool {
 			c.path + `/apps/common/handlers`,
 			c.path + `/apps/swagger`,
 			c.path + `/apps/user/handlers`,
-			c.path + `/apps/user/migrate`,
+			c.path + `/apps/user/migrates`,
 			c.path + `/apps/user/models`,
 			c.path + `/apps/user/repos`,
 			c.path + `/apps/user/services`,
@@ -126,12 +173,12 @@ func (c *Comer) init(cmd *cobra.Command, args []string) bool {
 			c.path + `/apps/common/router.go`:                   tplUri + `templates/v1/apps/common/router.tpl`,
 			c.path + `/apps/common/handlers/captcha.handler.go`: tplUri + `templates/v1/apps/common/handlers/captcha.handler.tpl`,
 
-			c.path + `/apps/user/router.go`:                   tplUri + `templates/v1/apps/user/router.tpl`,
-			c.path + `/apps/user/handlers/auth.handler.go`:    tplUri + `templates/v1/apps/user/handlers/auth.handler.tpl`,
-			c.path + `/apps/user/migrate/role.migrate.go`:     tplUri + `templates/v1/apps/user/migrate/role.migrate.tpl`,
-			c.path + `/apps/user/migrate/user.migrate.go`:     tplUri + `templates/v1/apps/user/migrate/user.migrate.tpl`,
-			c.path + `/apps/user/migrate/userlog.migrate.go`:  tplUri + `templates/v1/apps/user/migrate/userlog.migrate.tpl`,
-			c.path + `/apps/user/migrate/userrole.migrate.go`: tplUri + `templates/v1/apps/user/migrate/userrole.migrate.tpl`,
+			c.path + `/apps/user/router.go`:                    tplUri + `templates/v1/apps/user/router.tpl`,
+			c.path + `/apps/user/handlers/auth.handler.go`:     tplUri + `templates/v1/apps/user/handlers/auth.handler.tpl`,
+			c.path + `/apps/user/migrates/role.migrate.go`:     tplUri + `templates/v1/apps/user/migrates/role.migrate.tpl`,
+			c.path + `/apps/user/migrates/user.migrate.go`:     tplUri + `templates/v1/apps/user/migrates/user.migrate.tpl`,
+			c.path + `/apps/user/migrates/userlog.migrate.go`:  tplUri + `templates/v1/apps/user/migrates/userlog.migrate.tpl`,
+			c.path + `/apps/user/migrates/userrole.migrate.go`: tplUri + `templates/v1/apps/user/migrates/userrole.migrate.tpl`,
 
 			c.path + `/apps/user/models/role.model.go`:     tplUri + `templates/v1/apps/user/models/role.model.tpl`,
 			c.path + `/apps/user/models/user.model.go`:     tplUri + `templates/v1/apps/user/models/user.model.tpl`,
@@ -149,9 +196,12 @@ func (c *Comer) init(cmd *cobra.Command, args []string) bool {
 			c.path + `/apps/user/services/userrole.service.go`: tplUri + `templates/v1/apps/user/services/userrole.service.tpl`,
 		},
 	}
+	moduleNameSlic := strings.Split(c.moduleName, `/`)
+	exeName := moduleNameSlic[len(moduleNameSlic)-1]
 	c.tplData = map[string]any{
 		`moduleName`: c.moduleName,
 		`dbName`:     fmt.Sprintf(`comer_project_db_%s`, maker.MakeRandStr(6)),
+		`exeName`:    exeName,
 	}
 	return true
 }

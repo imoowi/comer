@@ -14,7 +14,7 @@ import (
 var migrateCmd = &cobra.Command{
 	Use:          "migrate",
 	Short:        "数据迁移",
-	Example:      "github.com/imoowi/newProject migrate",
+	Example:      "{{.exeName}} migrate",
 	SilenceUsage: true,
 	PreRun: func(cmd *cobra.Command, args []string) {
 	},

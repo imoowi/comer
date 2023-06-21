@@ -23,7 +23,7 @@ import (
 var serverCmd = &cobra.Command{
 	Use:          "server",
 	Short:        "开始api服务",
-	Example:      "{{.moduleName}} server -c config/settings.yml",
+	Example:      "{{.exeName}} server -c config/settings.yml",
 	SilenceUsage: true,
 	PreRun: func(cmd *cobra.Command, args []string) {
 		setUp()

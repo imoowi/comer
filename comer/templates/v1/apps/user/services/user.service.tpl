@@ -2,8 +2,6 @@ package services
 
 import (
 	"errors"
-	"fmt"
-
 	"github.com/gin-gonic/gin"
 	"{{.moduleName}}/apps/user/models"
 	"{{.moduleName}}/apps/user/repos"
@@ -18,8 +16,6 @@ var User *UserService
 
 func RegisterUserService(s *UserService) {
 	User = s
-	fmt.Printf(`user.UserRepo=%v`, User.UserRepo)
-	fmt.Println()
 }
 
 type UserService struct {

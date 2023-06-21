@@ -3,7 +3,7 @@ package user
 import (
 	"github.com/gin-gonic/gin"
 	"{{.moduleName}}/apps/user/handlers"
-	_ "{{.moduleName}}/apps/user/migrate"
+	_ "{{.moduleName}}/apps/user/migrates"
 	"{{.moduleName}}/middlewares"
 	"{{.moduleName}}/router"
 )

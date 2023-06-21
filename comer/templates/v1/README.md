@@ -13,14 +13,14 @@ go run . migrate
 - 命令如下
 ```sh
 #--app=[模块名，必须输入] --swaggerTags=[接口文档Tags] --handler=[控制器名，默认为模块名] --service=[服务名，默认为控制器名] --model=[模型名1,模型名2,模型名...;默认取第一个生成service]
-go run . generator --app=user --swaggerTags='Oauth' --handler=auth --service=user --model=user
+comer genapp --app=user --swaggerTags='Oauth' --handler=auth --service=user --model=user
 
 ```
 
 ## 三、本系统脚手架使用步骤
 ### 步骤一、生成模块代码
 ```sh
-go run . generator --module=user
+comer genapp --module=user
 ```
 ### 步骤二、修改数据表定义文件"xxx.model.go"
 ```go
