@@ -111,7 +111,7 @@ func (c *Comer) init(cmd *cobra.Command, args []string) bool {
 			c.path + `/.vscode`,
 		},
 		files: map[string]string{
-			c.path + `/README.md`: tplUri + `templates/v1/README.md`,
+			c.path + `/README.md`: tplUri + `templates/v1/README.md.tpl`,
 			c.path + `/go.mod`:    tplUri + `templates/v1/go.mod.tpl`,
 			c.path + `/main.go`:   tplUri + `templates/v1/main.tpl`,
 			c.path + `/.air.toml`: tplUri + `templates/v1/air.tpl`,

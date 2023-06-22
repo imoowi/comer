@@ -4,11 +4,11 @@
 
 ### Patch Changes
 
-- add tag release ci
+-    add tag release ci
 
 ## 1.1.3
 
 ### Patch Changes
 
-- add generate command
+-    add generate command
 
