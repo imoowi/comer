@@ -17,7 +17,7 @@ go install github.com/imoowi/comer@latest
 
 ## 使用
 
-  - 创建项目
+- 创建项目
 
 ```sh
 comer --module=moduleName --path=projectDir
