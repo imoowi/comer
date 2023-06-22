@@ -1,6 +1,6 @@
 # Comer
 
-[![Go](https://github.com/imoowi/comer/actions/workflows/release-tag.yml/badge.svg)](https://github.com/imoowi/comer/actions?query=workflow%3ACI) 
+[![Go](https://github.com/imoowi/comer/actions/workflows/release-tag.yml/badge.svg)](https://github.com/imoowi/comer/actions?query=workflow%3ACI)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/26b6baa851bc426c9bc7dcc9079485b3)](https://app.codacy.com/gh/imoowi/comer/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 [![Go Report Card](https://goreportcard.com/badge/github.com/imoowi/comer)](https://goreportcard.com/report/github.com/imoowi/comer)
 [![codecov](https://codecov.io/gh/imoowi/comer/branch/main/graph/badge.svg)](https://codecov.io/gh/imoowi/comer)
@@ -17,13 +17,13 @@ go install github.com/imoowi/comer@latest
 
 ## 使用
 
--    创建项目
+- 创建项目
 
 ```sh
 comer --module=moduleName --path=projectDir
 ```
 
--    给项目添加app
+- 给项目添加app
 
 ```sh
 cd projectDir
@@ -32,25 +32,25 @@ comer genapp --app=appName
 comer genapp --app=user --swaggerTags='Oauth' --handler=auth --service=user --model=user,role
 ```
 
--    安装swag
+- 安装swag
 
 ```sh
 go install github.com/swaggo/swag/cmd/swag@latest
 ```
 
--    生成swagger文档
+- 生成swagger文档
 
 ```sh
 swag init
 ```
 
--    安装air
+- 安装air
 
 ```sh
 go install github.com/cosmtrek/air@latest
 ```
 
--    修改数据库配置(./configs/settings-local.yml)
+- 修改数据库配置(./configs/settings-local.yml)
 
 ```yml
 application: # dev开发环境 test测试环境 prod线上环境
@@ -95,13 +95,13 @@ cache:
 
 ```
 
--    数据迁移:生成基本的数据库表
+- 数据迁移:生成基本的数据库表
 
 ```sh
 go run . migrate
 ```
 
--    运行项目
+- 运行项目
 
 ```sh
 air
@@ -110,8 +110,9 @@ go mod tidy
 go run . server
 ```
 
--    访问接口文件：[http://localhost:8000/swagger/index.html](http://localhost:8000/swagger/index.html)
+- 访问接口文件：[http://localhost:8000/swagger/index.html](http://localhost:8000/swagger/index.html)
 ![](assets/comer-swagger.png)
 
 ## 接下来做什么？
+
 听取建议并采纳优秀的解决方案
