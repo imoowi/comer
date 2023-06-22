@@ -12,3 +12,10 @@
 
 -    add generate command
 
+
+## 1.1.5
+
+### Patch Changes
+
+-    update yml
+
