@@ -4,8 +4,8 @@ application: # dev开发环境 test测试环境 prod线上环境
 server:
   host: 0.0.0.0 # 服务器ip，默认使用 0.0.0.0
   port: 8000 # 服务端口号
-  readtimeout: 1 # 读超时时间
-  writertimeout: 2 # 写超时时间
+  readtimeout: 60 # 读超时时间
+  writertimeout: 60 # 写超时时间
 logger:
   path: runtime/logs/log # 日志存放路径
   stdout: "" # 日志输出，file：文件，default：命令行，其他：命令行
