@@ -44,7 +44,6 @@ func (c *Comer) showAppTips() {
 	fmt.Println(`comer genapp end.`)
 }
 
-// 添加模块包含file
 func (c *Comer) addAppsDepend() {
 	//*
 	appsGenFile := `./apps/apps.go`

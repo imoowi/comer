@@ -20,7 +20,7 @@ comer genapp --app=user --swaggerTags='Oauth' --handler=auth --service=user --mo
 ## 三、本系统脚手架使用步骤
 ### 步骤一、生成模块代码
 ```sh
-comer genapp --module=user
+comer genapp --app=user
 ```
 ### 步骤二、修改数据表定义文件"xxx.model.go"
 ```go
