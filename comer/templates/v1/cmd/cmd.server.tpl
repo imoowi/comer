@@ -22,7 +22,7 @@ import (
 // serverCmd represents the server command
 var serverCmd = &cobra.Command{
 	Use:          "server",
-	Short:        "开始api服务",
+	Short:        "start api server",
 	Example:      "{{.exeName}} server -c config/settings.yml",
 	SilenceUsage: true,
 	PreRun: func(cmd *cobra.Command, args []string) {
@@ -78,7 +78,10 @@ func startServer() {
 			log.Fatalf("listen: %s\n", err)
 		}
 	}()
-	log.Println(`server port: `, port)
+
+	fmt.Println(`server port: `, port)
+	fmt.Printf(`API document address http://localhost:%d/swagger/index.html`, port)
+	fmt.Println()
 
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, os.Interrupt)
