@@ -8,7 +8,6 @@ import (
 	"os"
 	"strings"
 
-	"github.com/imoowi/comer/utils/maker"
 	"github.com/spf13/cobra"
 )
 
@@ -200,7 +199,7 @@ func (c *Comer) init(cmd *cobra.Command, args []string) bool {
 	exeName := moduleNameSlic[len(moduleNameSlic)-1]
 	c.tplData = map[string]any{
 		`moduleName`: c.moduleName,
-		`dbName`:     fmt.Sprintf(`comer_project_db_%s`, maker.MakeRandStr(6)),
+		`dbName`:     `comer_project`,
 		`exeName`:    exeName,
 	}
 	return true
