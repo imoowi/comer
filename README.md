@@ -1,3 +1,4 @@
+
 # Comer
 
 [![Go](https://github.com/imoowi/comer/actions/workflows/release-tag.yml/badge.svg)](https://github.com/imoowi/comer/actions?query=workflow%3ACI)
@@ -137,7 +138,7 @@ go install github.com/imoowi/comer@latest
 
 ## 使用
 
-### 创建项目
+### 1、创建项目
 
 ```sh
 comer --module=github.com/imoowi/comer-example --path=comer-example
@@ -161,95 +162,7 @@ dir [ comer-example/components ] created
 dir [ comer-example/apps/common ] created
 dir [ comer-example/apps/common/handlers ] created
 dir [ comer-example/apps/swagger ] created
-dir [ comer-example/apps/user/handlers ] created
-dir [ comer-example/apps/user/migrates ] created
-dir [ comer-example/apps/user/models ] created
-dir [ comer-example/apps/user/repos ] created
-dir [ comer-example/apps/user/services ] created
-dir [ comer-example/configs ] created
-dir [ comer-example/global ] created
-dir [ comer-example/middlewares ] created
-dir [ comer-example/middlewares/token ] created
-dir [ comer-example/router ] created
-dir [ comer-example/runtime ] created
-dir [ comer-example/utils ] created
-dir [ comer-example/utils/copy ] created
-dir [ comer-example/utils/format ] created
-dir [ comer-example/utils/maker ] created
-dir [ comer-example/utils/myfile ] created
-dir [ comer-example/utils/mytime ] created
-dir [ comer-example/utils/office ] created
-dir [ comer-example/utils/password ] created
-dir [ comer-example/utils/request ] created
-dir [ comer-example/utils/response ] created
-dir [ comer-example/utils/slice ] created
-dir [ comer-example/.vscode ] created
-file [ comer-example/global/global.go ] created
-file [ comer-example/global/cache.go ] created
-file [ comer-example/middlewares/LoggerMiddleware.go ] created
-file [ comer-example/utils/myfile/myfile.go ] created
-file [ comer-example/utils/mytime/mytime.go ] created
-file [ comer-example/apps/user/handlers/auth.handler.go ] created
-file [ comer-example/components/mysql.go ] created
-file [ comer-example/configs/settings-local.yml ] created
-file [ comer-example/apps/user/models/userlog.model.go ] created
-file [ comer-example/cmd/migrate.go ] created
-file [ comer-example/utils/mytime/translater.go ] created
-file [ comer-example/go.mod ] created
-file [ comer-example/.vscode/launch.json ] created
-file [ comer-example/apps/user/router.go ] created
-file [ comer-example/apps/user/services/user.service.go ] created
-file [ comer-example/middlewares/middleware.go ] created
-file [ comer-example/apps/common/router.go ] created
-file [ comer-example/apps/user/models/userrole.model.go ] created
-file [ comer-example/README.md ] created
-file [ comer-example/global/log.go ] created
-file [ comer-example/utils/response/pages.go ] created
-file [ comer-example/apps/apps.go ] created
-file [ comer-example/components/captcha.go ] created
-file [ comer-example/middlewares/CrosMiddleware.go ] created
-file [ comer-example/apps/user/migrates/userlog.migrate.go ] created
-file [ comer-example/.air.toml ] created
-file [ comer-example/utils/mytime/week.go ] created
-file [ comer-example/middlewares/RateLimitMiddleware.go ] created
-file [ comer-example/apps/user/models/role.model.go ] created
-file [ comer-example/configs/casbin.conf ] created
-file [ comer-example/global/casbin.go ] created
-file [ comer-example/router/router.go ] created
-file [ comer-example/utils/maker/maker.go ] created
-file [ comer-example/apps/user/models/user.model.go ] created
-file [ comer-example/apps/user/repos/role.repo.go ] created
-file [ comer-example/.vscode/settings.json ] created
-file [ comer-example/cmd/init.go ] created
-file [ comer-example/utils/request/http.go ] created
-file [ comer-example/apps/common/handlers/captcha.handler.go ] created
-file [ comer-example/main.go ] created
-file [ comer-example/middlewares/JWTAuthMiddleware.go ] created
-file [ comer-example/utils/request/pages.go ] created
-file [ comer-example/utils/response/response.go ] created
-file [ comer-example/utils/logger.go ] created
-file [ comer-example/utils/utils.go ] created
-file [ comer-example/apps/user/repos/userlog.repo.go ] created
-file [ comer-example/apps/user/repos/userrole.repo.go ] created
-file [ comer-example/global/config.go ] created
-file [ comer-example/utils/copy/copy.go ] created
-file [ comer-example/apps/user/services/role.service.go ] created
-file [ comer-example/apps/user/services/userrole.service.go ] created
-file [ comer-example/cmd/server.go ] created
-file [ comer-example/components/redis.go ] created
-file [ comer-example/apps/user/repos/user.repo.go ] created
-file [ comer-example/middlewares/VcodeMiddleware.go ] created
-file [ comer-example/utils/password/password.go ] created
-file [ comer-example/utils/office/excel.go ] created
-file [ comer-example/apps/user/migrates/userrole.migrate.go ] created
-file [ comer-example/apps/user/migrates/role.migrate.go ] created
-file [ comer-example/apps/user/migrates/user.migrate.go ] created
-file [ comer-example/apps/user/services/userlog.service.go ] created
-file [ comer-example/global/redis.go ] created
-file [ comer-example/apps/swagger/router.go ] created
-file [ comer-example/middlewares/token/jwttoken.go ] created
-file [ comer-example/utils/format/format.go ] created
-file [ comer-example/cmd/root.go ] created
+...
 file [ comer-example/middlewares/CasbinMiddleware.go ] created
 file [ comer-example/global/mysql.go ] created
 file [ comer-example/utils/slice/slice.go ] created
@@ -261,7 +174,7 @@ Do next:
 
 ```
 
-### 给项目添加app
+### 2、给项目添加app
 
 ```sh
 cd comer-example
@@ -300,27 +213,28 @@ comer genapp end.
 
 ```
 
-### 安装swag
+### 3、安装swag
 
 ```sh
 go install github.com/swaggo/swag/cmd/swag@latest
 ```
 
-### 生成swagger文档
+### 4、生成swagger文档
 
 ```sh
 swag init
 ```
 
-### 安装air
+### 5、安装air
 
 ```sh
 go install github.com/cosmtrek/air@latest
 ```
 
-- 修改数据库配置(./configs/settings-local.yml)
+### 6、修改数据库配置
 
 ```yml
+#vim ./configs/settings-local.yml
 application: # dev开发环境 test测试环境 prod线上环境
   mode: dev
   name: comerProject # 服务名称
@@ -363,7 +277,7 @@ cache:
 
 ```
 
-### 数据迁移:生成基本的数据库表
+### 7、数据迁移:生成基本的数据库表
 
 ```sh
 go run . migrate
@@ -374,18 +288,6 @@ $ go run . migrate
 2023/06/26 14:57:32 Using config file: C:\Users\simpl\dev\golang\imoowi\comer-example\configs\settings-local.yml
 2023/06/26 14:57:32 migrate start.
 Connected to MySql!
-
-2023/06/26 14:57:32 C:/Users/simpl/dev/golang/imoowi/comer-example/apps/student/migrates/student.migrate.go:26
-[0.613ms] [rows:-] SELECT DATABASE()
-
-2023/06/26 14:57:32 C:/Users/simpl/dev/golang/imoowi/comer-example/apps/student/migrates/student.migrate.go:26
-[15.252ms] [rows:1] SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'comer_project%' ORDER BY SCHEMA_NAME='comer_project' DESC,SCHEMA_NAME limit 1
-
-2023/06/26 14:57:32 C:/Users/simpl/dev/golang/imoowi/comer-example/apps/student/migrates/student.migrate.go:26
-[3.550ms] [rows:-] SELECT count(*) FROM information_schema.tables WHERE table_schema = 'comer_project' AND table_name = 'students' AND table_type = 'BASE TABLE'
-
-2023/06/26 14:57:32 C:/Users/simpl/dev/golang/imoowi/comer-example/apps/student/migrates/student.migrate.go:26
-[29.227ms] [rows:0] CREATE TABLE `students` (`id` bigint unsigned AUTO_INCREMENT,`created_at` datetime(3) NULL,`updated_at` datetime(3) NULL,`deleted_at` datetime(3) NULL,`name` varchar(30) NOT NULL COMMENT '名称',PRIMARY KEY (`id`),INDEX `idx_students_deleted_at` (`deleted_at`))ENGINE=InnoDB,COMMENT='Student表'
 
 2023/06/26 14:57:32 C:/Users/simpl/dev/golang/imoowi/comer-example/apps/user/migrates/role.migrate.go:23
 [1.786ms] [rows:-] SELECT DATABASE()
@@ -398,47 +300,12 @@ Connected to MySql!
 
 2023/06/26 14:57:32 C:/Users/simpl/dev/golang/imoowi/comer-example/apps/user/migrates/role.migrate.go:23
 [35.863ms] [rows:0] CREATE TABLE `roles` (`id` bigint unsigned AUTO_INCREMENT,`created_at` datetime(3) NULL,`updated_at` datetime(3) NULL,`deleted_at` datetime(3) NULL,`name` varchar(30) NOT NULL COMMENT '角色名',`level` tinyint(3) COMMENT '角色等级',PRIMARY KEY (`id`),INDEX `idx_roles_deleted_at` (`deleted_at`))ENGINE=InnoDB,COMMENT='角色表'
-
-2023/06/26 14:57:32 C:/Users/simpl/dev/golang/imoowi/comer-example/apps/user/migrates/user.migrate.go:23
-[2.025ms] [rows:-] SELECT DATABASE()
-
-2023/06/26 14:57:33 C:/Users/simpl/dev/golang/imoowi/comer-example/apps/user/migrates/user.migrate.go:23
-[17.792ms] [rows:1] SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'comer_project%' ORDER BY SCHEMA_NAME='comer_project' DESC,SCHEMA_NAME limit 1
-
-2023/06/26 14:57:33 C:/Users/simpl/dev/golang/imoowi/comer-example/apps/user/migrates/user.migrate.go:23
-[2.729ms] [rows:-] SELECT count(*) FROM information_schema.tables WHERE table_schema = 'comer_project' AND table_name = 'users' AND table_type = 'BASE TABLE'
-
-2023/06/26 14:57:33 C:/Users/simpl/dev/golang/imoowi/comer-example/apps/user/migrates/user.migrate.go:23
-[38.228ms] [rows:0] CREATE TABLE `users` (`id` bigint unsigned AUTO_INCREMENT,`created_at` datetime(3) NULL,`updated_at` datetime(3) NULL,`deleted_at` datetime(3) NULL,`username` varchar(50) NOT NULL COMMENT '用户名',`password` varchar(255) NOT NULL,`salt` varchar(6) NOT NULL,`mp_openid` varchar(50),PRIMARY KEY (`id`),INDEX `idx_users_deleted_at` (`deleted_at`),UNIQUE INDEX `users_username` (`username`))ENGINE=InnoDB,COMMENT='用户表'
-
-2023/06/26 14:57:33 C:/Users/simpl/dev/golang/imoowi/comer-example/apps/user/migrates/userlog.migrate.go:23
-[1.397ms] [rows:-] SELECT DATABASE()
-
-2023/06/26 14:57:33 C:/Users/simpl/dev/golang/imoowi/comer-example/apps/user/migrates/userlog.migrate.go:23
-[18.770ms] [rows:1] SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'comer_project%' ORDER BY SCHEMA_NAME='comer_project' DESC,SCHEMA_NAME limit 1
-
-2023/06/26 14:57:33 C:/Users/simpl/dev/golang/imoowi/comer-example/apps/user/migrates/userlog.migrate.go:23
-[13.336ms] [rows:-] SELECT count(*) FROM information_schema.tables WHERE table_schema = 'comer_project' AND table_name = 'user_logs' AND table_type = 'BASE TABLE'
-
-2023/06/26 14:57:33 C:/Users/simpl/dev/golang/imoowi/comer-example/apps/user/migrates/userlog.migrate.go:23
-[36.882ms] [rows:0] CREATE TABLE `user_logs` (`id` bigint unsigned AUTO_INCREMENT,`created_at` datetime(3) NULL,`updated_at` datetime(3) NULL,`deleted_at` datetime(3) NULL,`user_id` bigint unsigned NOT NULL COMMENT '用户id',`log_type` tinyint(3) NOT NULL COMMENT '类型',`log_content` longtext COMMENT '记录内容',`ip` longtext COMMENT 'ip',PRIMARY KEY (`id`),INDEX `idx_user_logs_deleted_at` (`deleted_at`),INDEX `idx_user_logs_user_id` (`user_id`),INDEX `idx_user_logs_log_type` (`log_type`))ENGINE=InnoDB,COMMENT='用户行为记录表'
-
-2023/06/26 14:57:33 C:/Users/simpl/dev/golang/imoowi/comer-example/apps/user/migrates/userrole.migrate.go:23
-[1.044ms] [rows:-] SELECT DATABASE()
-
-2023/06/26 14:57:33 C:/Users/simpl/dev/golang/imoowi/comer-example/apps/user/migrates/userrole.migrate.go:23
-[17.370ms] [rows:1] SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'comer_project%' ORDER BY SCHEMA_NAME='comer_project' DESC,SCHEMA_NAME limit 1
-
-2023/06/26 14:57:33 C:/Users/simpl/dev/golang/imoowi/comer-example/apps/user/migrates/userrole.migrate.go:23
-[2.150ms] [rows:-] SELECT count(*) FROM information_schema.tables WHERE table_schema = 'comer_project' AND table_name = 'user_roles' AND table_type = 'BASE TABLE'
-
-2023/06/26 14:57:33 C:/Users/simpl/dev/golang/imoowi/comer-example/apps/user/migrates/userrole.migrate.go:23
-[36.904ms] [rows:0] CREATE TABLE `user_roles` (`id` bigint unsigned AUTO_INCREMENT,`created_at` datetime(3) NULL,`updated_at` datetime(3) NULL,`deleted_at` datetime(3) NULL,`user_id` bigint unsigned NOT NULL COMMENT '用户id',`role_id` bigint unsigned NOT NULL COMMENT '角色id',PRIMARY KEY (`id`),INDEX `idx_user_roles_deleted_at` (`deleted_at`),UNIQUE INDEX `idx_user_role_rel` (`user_id`,`role_id`))ENGINE=InnoDB,COMMENT='用户角色关系表'
+...
 2023/06/26 14:57:33 migrate end.
 
 
 ```
-### 初始化数据库
+### 8、初始化数据库
 
 ```sh
 go run . init
@@ -472,7 +339,7 @@ Connected to MySql!
 2023/06/26 15:00:59 init end.
 ```
 
-### 运行项目
+### 9、运行项目
 
 ```sh
 air
@@ -491,40 +358,7 @@ $ air
 watching .
 watching apps
 watching apps\common
-watching apps\common\handlers
-watching apps\student
-watching apps\student\handlers
-watching apps\student\migrates
-watching apps\student\models
-watching apps\student\repos
-watching apps\student\services
-watching apps\swagger
-watching apps\user
-watching apps\user\handlers
-watching apps\user\migrates
-watching apps\user\models
-watching apps\user\repos
-watching apps\user\services
-watching cmd
-watching components
-watching configs
-watching docs
-watching global
-watching middlewares
-watching middlewares\token
-watching router
-!exclude runtime
-watching utils
-watching utils\copy
-watching utils\format
-watching utils\maker
-watching utils\myfile
-watching utils\mytime
-watching utils\office
-watching utils\password
-watching utils\request
-watching utils\response
-watching utils\slice
+...
 building...
 2023/06/26 14:55:39 Generate swagger docs....
 2023/06/26 14:55:39 Generate general API Info, search dir:./
@@ -559,6 +393,7 @@ server port:  8000
 API document address http://localhost:8000/swagger/index.html
 
 ```
-### 访问接口文件：
+
+### 10、访问接口文件：
 [http://localhost:8000/swagger/index.html](http://localhost:8000/swagger/index.html)
 ![](assets/comer-swagger.png)
