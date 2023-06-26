@@ -12,7 +12,10 @@ func TestRoot(t *testing.T) {
 	output, _ := executeCommand(rootCmd, "--module", "user", "--path", "tmp/comer-example")
 	fmt.Println(output)
 }
-
+func TestVersion(t *testing.T) {
+	output, _ := executeCommand(rootCmd, "version")
+	fmt.Println(output)
+}
 func TestGenapp(t *testing.T) {
 	rootCmd.AddCommand(genappCmd)
 	output, _ := executeCommand(rootCmd, "genapp", "--app", "user")
