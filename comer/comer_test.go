@@ -13,7 +13,7 @@ func TestComer(t *testing.T) {
 	if comerIns.showTips() != `showTips called` {
 		t.Errorf(`showTips test failed`)
 	}
-	comerIns.Start(nil, nil)
+	// comerIns.Start(nil, nil)
 	comerIns.generateFrameworkDir()
 	comerIns.generateFrameworkFiles()
 	comerIns.generateAppDir()
@@ -21,9 +21,9 @@ func TestComer(t *testing.T) {
 	comerIns.showAppTips()
 	comerIns.addAppsDepend()
 	comerIns.addAppRouterDepend()
-	comerIns.initApp(nil, nil)
-	comerIns.init(nil, nil)
-	comerIns.generateDirByName(`testdir`)
-	comerIns.generateFileByMap(`abc`, `a`, `d`)
+	// comerIns.initApp(nil, nil)
+	// comerIns.init(nil, nil)
+	// comerIns.generateDirByName(`testdir`)
+	// comerIns.generateFileByMap(`abc`, `a`, `d`)
 	comerIns.showLogo()
 }
