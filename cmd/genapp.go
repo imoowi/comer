@@ -8,8 +8,8 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// generateCmd represents the generate command
-var generateCmd = &cobra.Command{
+// genappCmd represents the generate command
+var genappCmd = &cobra.Command{
 	Use:          "genapp",
 	Short:        "app生成器",
 	Example:      "comer genapp",
@@ -24,20 +24,20 @@ var generateCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(generateCmd)
+	rootCmd.AddCommand(genappCmd)
 
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
-	// generateCmd.PersistentFlags().String("foo", "", "A help for foo")
+	// genappCmd.PersistentFlags().String("foo", "", "A help for foo")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	// generateCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
-	generateCmd.PersistentFlags().String("app", "", "模块名")
-	generateCmd.PersistentFlags().String("swaggerTags", "", "接口文档模块名")
-	generateCmd.PersistentFlags().String("handler", "", "处理器名")
-	generateCmd.PersistentFlags().String("service", "", "服务名")
-	generateCmd.PersistentFlags().String("model", "", "模型名;多个模型名之间用英文半角逗号(,)分隔")
+	// genappCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	genappCmd.PersistentFlags().String("app", "", "模块名")
+	genappCmd.PersistentFlags().String("swaggerTags", "", "接口文档模块名")
+	genappCmd.PersistentFlags().String("handler", "", "处理器名")
+	genappCmd.PersistentFlags().String("service", "", "服务名")
+	genappCmd.PersistentFlags().String("model", "", "模型名;多个模型名之间用英文半角逗号(,)分隔")
 }
