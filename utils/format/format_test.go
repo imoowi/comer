@@ -8,6 +8,11 @@ func TestFirstUpper(t *testing.T) {
 	if Abc != `Abc` {
 		t.Errorf(`FirstUpper test failed`)
 	}
+	_abc := ``
+	_Abc := FirstUpper(_abc)
+	if _Abc != `` {
+		t.Errorf(`Empty str FirstUpper test failed`)
+	}
 }
 
 func TestFirstLower(t *testing.T) {
@@ -15,5 +20,10 @@ func TestFirstLower(t *testing.T) {
 	abc := FirstLower(Abc)
 	if abc != `abc` {
 		t.Errorf(`FirstLower test failed`)
+	}
+	_Abc := ``
+	_abc := FirstLower(_Abc)
+	if _abc != `` {
+		t.Errorf(`Empty str FirstUpper test failed`)
 	}
 }

@@ -7,4 +7,7 @@ func TestComer(t *testing.T) {
 	if comerIns.Version() == `` {
 		t.Errorf(`comer.Version() test failed`)
 	}
+	if comerIns.goVersion() == `` {
+		t.Errorf(`comer.goVersion() test failed`)
+	}
 }
