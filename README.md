@@ -137,7 +137,7 @@ go install github.com/imoowi/comer@latest
 
 ## 使用
 
-- 创建项目
+### 创建项目
 
 ```sh
 comer --module=github.com/imoowi/comer-example --path=comer-example
@@ -261,7 +261,7 @@ Do next:
 
 ```
 
-- 给项目添加app
+### 给项目添加app
 
 ```sh
 cd comer-example
@@ -300,19 +300,19 @@ comer genapp end.
 
 ```
 
-- 安装swag
+### 安装swag
 
 ```sh
 go install github.com/swaggo/swag/cmd/swag@latest
 ```
 
-- 生成swagger文档
+### 生成swagger文档
 
 ```sh
 swag init
 ```
 
-- 安装air
+### 安装air
 
 ```sh
 go install github.com/cosmtrek/air@latest
@@ -363,7 +363,7 @@ cache:
 
 ```
 
-- 数据迁移:生成基本的数据库表
+### 数据迁移:生成基本的数据库表
 
 ```sh
 go run . migrate
@@ -438,7 +438,7 @@ Connected to MySql!
 
 
 ```
-- 初始化数据库
+### 初始化数据库
 
 ```sh
 go run . init
@@ -472,7 +472,7 @@ Connected to MySql!
 2023/06/26 15:00:59 init end.
 ```
 
-- 运行项目
+### 运行项目
 
 ```sh
 air
@@ -559,5 +559,6 @@ server port:  8000
 API document address http://localhost:8000/swagger/index.html
 
 ```
-- 访问接口文件：[http://localhost:8000/swagger/index.html](http://localhost:8000/swagger/index.html)
+### 访问接口文件：
+[http://localhost:8000/swagger/index.html](http://localhost:8000/swagger/index.html)
 ![](assets/comer-swagger.png)
