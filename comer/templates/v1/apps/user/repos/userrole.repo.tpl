@@ -1,6 +1,7 @@
 package repos
 
 import (
+	"encoding/json"
 	"errors"
 
 	"github.com/gin-gonic/gin"
@@ -112,7 +113,7 @@ func (r *UserRoleRepo) PatchUpdate(c *gin.Context, patchData map[string]any, id 
 		return
 	}
 
-	db := r.Db.Client
+	db := r.db.Client
 	err = db.Omit(`created_at`).Save(&model).Error
 	if err == nil {
 		updated = true

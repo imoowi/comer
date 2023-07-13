@@ -49,16 +49,8 @@ $ tree
 |       |   |-- userlog.model.go //用户记录
 |       |   `-- userrole.model.go //用户角色关系
 |       |-- repos //数据提供方
-|       |   |-- role.repo.go
-|       |   |-- user.repo.go
-|       |   |-- userlog.repo.go
-|       |   `-- userrole.repo.go
 |       |-- router.go //路由
 |       `-- services //服务提供方
-|           |-- role.service.go
-|           |-- user.service.go
-|           |-- userlog.service.go
-|           `-- userrole.service.go
 |-- cmd //由Cobra命令生成
 |   |-- init.go //系统初始化
 |   |-- migrate.go //数据迁移
@@ -99,43 +91,18 @@ $ tree
 |-- router
 |   `-- router.go //路由定义
 |-- runtime //运行时
-|   `-- log2023062615.log
 `-- utils //工具箱
-    |-- copy
-    |   `-- copy.go
-    |-- format
-    |   `-- format.go
-    |-- logger.go
-    |-- maker
-    |   `-- maker.go
-    |-- myfile
-    |   `-- myfile.go
-    |-- mytime
-    |   |-- mytime.go
-    |   |-- translater.go
-    |   `-- week.go
-    |-- office
-    |   `-- excel.go
-    |-- password
-    |   `-- password.go
-    |-- request
-    |   |-- http.go
-    |   `-- pages.go
-    |-- response
-    |   |-- pages.go
-    |   `-- response.go
-    |-- slice
-    |   `-- slice.go
-    `-- utils.go
-
+.
+.
+.
 36 directories, 77 files
 ```
 ## 安装
 
 ```go
 go install github.com/imoowi/comer@latest
-#or
-go install github.com/imoowi/comer@v1.1.7
+//or
+go install github.com/imoowi/comer@v1.1.8
 ```
 
 ## 使用
@@ -143,12 +110,12 @@ go install github.com/imoowi/comer@v1.1.7
 ### 1、创建项目
 
 ```sh
-comer --module=github.com/imoowi/comer-example --path=comer-example
+comer --module=github.com/imoowi/comer-example 
 ```
 如下:
 
 ```sh
-$ comer --path=comer-example --module=github.com/imoowi/comer-example
+$ comer  --module=github.com/imoowi/comer-example
 2023/06/26 14:46:34 go.mod not exists
 Comer version  v1.1.6
 
@@ -159,18 +126,10 @@ _________
  \______  / \____/ |__|_|  / \___  > |__|
                 \/               \/      \/ v1.1.6, built with go1.20.2
 dir [ comer-example/apps ] created
-dir [ comer-example/cmd ] created
-dir [ comer-example/components ] created
-dir [ comer-example/apps/common ] created
-dir [ comer-example/apps/common/handlers ] created
-dir [ comer-example/apps/swagger ] created
 ...
-file [ comer-example/middlewares/CasbinMiddleware.go ] created
-file [ comer-example/global/mysql.go ] created
-file [ comer-example/utils/slice/slice.go ] created
-Do next:
+下一步，执行以下命令:
 1、cd  comer-example
-2、change file（comer-example/configs/settings-local.yml）mysql and redis config
+2、vim comer-example/configs/settings-local.yml #change mysql and redis config
 3、comer genapp --app=appName
 4、air OR swag init && go mod tidy && go run . server
 
@@ -199,18 +158,7 @@ _________
 dir [ ./apps ] existed
 dir [ ./apps/student/handlers ] created
 dir [ ./apps/student/migrates ] created
-dir [ ./apps/student/models ] created
-dir [ ./apps/student/repos ] created
-dir [ ./apps/student/services ] created
-file [ ./apps/student/models/student.model.go ] created
-file [ ./apps/student/repos/student.repo.go ] created
-file [ ./apps/student/services/student.service.go ] created
-file [ ./apps/apps.go ] already exists
-file [ ./apps/student/router.go ] created
-file [ ./apps/student/handlers/student.handler.go ] created
-file [ ./apps/student/migrates/student.migrate.go ] created
-file [ ./apps/apps.go ] already exists
-file [ ./apps/student/router.go ] already exists
+...
 comer genapp end.
 
 ```
@@ -359,37 +307,25 @@ $ air
 
 watching .
 watching apps
-watching apps\common
 ...
 building...
-2023/06/26 14:55:39 Generate swagger docs....
-2023/06/26 14:55:39 Generate general API Info, search dir:./
-2023/06/26 14:55:41 Generating response.PageList
-2023/06/26 14:55:41 Generating response.Pages
-2023/06/26 14:55:41 Generating models.UserLogin
-2023/06/26 14:55:41 Generating models.UserChgPwd
-2023/06/26 14:55:41 create docs.go at docs/docs.go
-2023/06/26 14:55:41 create swagger.json at docs/swagger.json
-2023/06/26 14:55:41 create swagger.yaml at docs/swagger.yaml
-docs\docs.go has changed
-running...
-Connected to MySql!
 [GIN-debug] [WARNING] Creating an Engine instance with the Logger and Recovery middleware already attached.
 
 [GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
  - using env:   export GIN_MODE=release
  - using code:  gin.SetMode(gin.ReleaseMode)
 
-[GIN-debug] GET    /api/student/students     --> github.com/imoowi/comer-example/apps/student/handlers.StudentPageList (8 handlers)
-[GIN-debug] GET    /api/student/students/:id --> github.com/imoowi/comer-example/apps/student/handlers.StudentOne (8 handlers)
-[GIN-debug] POST   /api/student/students     --> github.com/imoowi/comer-example/apps/student/handlers.StudentAdd (8 handlers)
-[GIN-debug] PUT    /api/student/students/:id --> github.com/imoowi/comer-example/apps/student/handlers.StudentUpdate (8 handlers)
-[GIN-debug] DELETE /api/student/students/:id --> github.com/imoowi/comer-example/apps/student/handlers.StudentDel (8 handlers)
+[GIN-debug] GET    /api/students             --> github.com/imoowi/comer-example/apps/student/handlers.StudentPageList (8 handlers)
+[GIN-debug] GET    /api/students/:id         --> github.com/imoowi/comer-example/apps/student/handlers.StudentOne (8 handlers)
+[GIN-debug] POST   /api/students             --> github.com/imoowi/comer-example/apps/student/handlers.StudentAdd (8 handlers)
+[GIN-debug] PUT    /api/students/:id         --> github.com/imoowi/comer-example/apps/student/handlers.StudentUpdate (8 handlers)
+[GIN-debug] PATCH  /api/students/:id         --> github.com/imoowi/comer-example/apps/student/handlers.StudentPatch (8 handlers)
+[GIN-debug] DELETE /api/students/:id         --> github.com/imoowi/comer-example/apps/student/handlers.StudentDel (8 handlers)
 [GIN-debug] GET    /api/common/captcha       --> github.com/imoowi/comer-example/apps/common/handlers.Captcha (6 handlers)
 [GIN-debug] GET    /swagger/*any             --> github.com/swaggo/gin-swagger.CustomWrapHandler.func1 (6 handlers)
-[GIN-debug] POST   /api/auth/login           --> github.com/imoowi/comer-example/apps/user/handlers.AuthLogin (7 handlers)
-[GIN-debug] GET    /api/auth/logout          --> github.com/imoowi/comer-example/apps/user/handlers.AuthLogout (7 handlers)
-[GIN-debug] POST   /api/auth/chgpwd          --> github.com/imoowi/comer-example/apps/user/handlers.AuthChgPwd (8 handlers)
+[GIN-debug] POST   /api/auth-login           --> github.com/imoowi/comer-example/apps/user/handlers.AuthLogin (7 handlers)
+[GIN-debug] GET    /api/auth-logout          --> github.com/imoowi/comer-example/apps/user/handlers.AuthLogout (7 handlers)
+[GIN-debug] POST   /api/auth-chpwd           --> github.com/imoowi/comer-example/apps/user/handlers.AuthChgPwd (8 handlers)
 [GIN-debug] GET    /api/casbins/allapi       --> github.com/imoowi/comer-example/router.InitRouter.func1 (6 handlers)
 server port:  8000
 API document address http://localhost:8000/swagger/index.html
@@ -399,3 +335,4 @@ API document address http://localhost:8000/swagger/index.html
 ### 10、访问接口文件：
 [http://localhost:8000/swagger/index.html](http://localhost:8000/swagger/index.html)
 ![](assets/comer-swagger.png)
+![](assets/comer-swagger2.png)
