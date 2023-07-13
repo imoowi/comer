@@ -134,6 +134,8 @@ $ tree
 
 ```go
 go install github.com/imoowi/comer@latest
+#or
+go install github.com/imoowi/comer@v1.1.7
 ```
 
 ## 使用

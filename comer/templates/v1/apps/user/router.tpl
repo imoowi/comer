@@ -13,10 +13,12 @@ func init() {
 }
 
 func Routers(e *gin.Engine) {
-	auth := e.Group(`/api`)
+	api := e.Group(`/api`)
 	{
-		auth.POST(`/auth-login`, middlewares.VcodeMiddleware(), handlers.AuthLogin)
-		auth.GET(`/auth-logout`, middlewares.JWTAuthMiddleware(), handlers.AuthLogout)
-		auth.POST(`/auth-chpwd`, middlewares.VcodeMiddleware(), middlewares.JWTAuthMiddleware(), handlers.AuthChgPwd)
+		api.POST(`/auth-login`, middlewares.VcodeMiddleware(), handlers.AuthLogin)
+		api.GET(`/auth-logout`, middlewares.JWTAuthMiddleware(), handlers.AuthLogout)
+		api.POST(`/auth-chpwd`, middlewares.VcodeMiddleware(), middlewares.JWTAuthMiddleware(), handlers.AuthChgPwd)
 	}
+	
+	//!import:do-not-delete-this-line,不要删除此行，主要用于代码生成器
 }

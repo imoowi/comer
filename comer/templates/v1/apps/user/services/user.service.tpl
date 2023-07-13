@@ -99,6 +99,12 @@ func (s *UserService) Update(c *gin.Context, _model *models.User, id uint) (upda
 	}
 	return
 }
+
+func (s *UserService) PatchUpdate(c *gin.Context, patchData map[string]any, id uint) (updated bool, err error) {
+	updated, err = s.UserRepo.PatchUpdate(c, patchData, id)
+	return
+}
+
 func (s *UserService) Delete(c *gin.Context, id uint) (deleted bool, err error) {
 	admin, _ := s.UserRepo.One(c, c.GetUint(`uid`))
 	deleted, err = s.UserRepo.Delete(c, id)

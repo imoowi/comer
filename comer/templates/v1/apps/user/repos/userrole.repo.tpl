@@ -87,6 +87,39 @@ func (r *UserRoleRepo) Update(c *gin.Context, model *models.UserRole, id uint) (
 	return
 }
 
+
+func (r *UserRoleRepo) PatchUpdate(c *gin.Context, patchData map[string]any, id uint) (updated bool, err error) {
+	if id == 0 {
+		updated = false
+		err = errors.New(`pls input id`)
+		return
+	}
+	model, err := r.One(c, id)
+	if err != nil {
+		return
+	}
+	if model == nil {
+		err = errors.New(`no data existed`)
+		return
+	}
+
+	patchDataBytes, err := json.Marshal(patchData)
+	if err != nil {
+		return
+	}
+	err = json.Unmarshal(patchDataBytes, &model)
+	if err != nil {
+		return
+	}
+
+	db := r.Db.Client
+	err = db.Omit(`created_at`).Save(&model).Error
+	if err == nil {
+		updated = true
+	}
+	return
+}
+
 func (r *UserRoleRepo) Delete(c *gin.Context, id uint) (deleted bool, err error) {
 	if id == 0 {
 		deleted = false

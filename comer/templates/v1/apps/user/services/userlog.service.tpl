@@ -47,6 +47,10 @@ func (s *UserLogService) Update(c *gin.Context, dpt *models.UserLog, id uint) (u
 	updated, err = s.UserLogRepo.Update(c, dpt, id)
 	return
 }
+func (s *UserLogService) PatchUpdate(c *gin.Context, patchData map[string]any, id uint) (updated bool, err error) {
+	updated, err = s.UserLogRepo.PatchUpdate(c, patchData, id)
+	return
+}
 func (s *UserLogService) Delete(c *gin.Context, id uint) (deleted bool, err error) {
 	deleted, err = s.UserLogRepo.Delete(c, id)
 	return

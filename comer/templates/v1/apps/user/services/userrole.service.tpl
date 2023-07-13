@@ -89,6 +89,10 @@ func (s *UserRoleService) Update(c *gin.Context, _model *models.UserRole, id uin
 	}
 	return
 }
+func (s *UserRoleService) PatchUpdate(c *gin.Context, patchData map[string]any, id uint) (updated bool, err error) {
+	updated, err = s.UserRoleRepo.PatchUpdate(c, patchData, id)
+	return
+}
 func (s *UserRoleService) Delete(c *gin.Context, id uint, admin *models.User) (deleted bool, err error) {
 	deleted, err = s.UserRoleRepo.Delete(c, id)
 	if deleted {

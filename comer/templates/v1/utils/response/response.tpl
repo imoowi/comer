@@ -13,8 +13,8 @@ type ErrMsg struct {
 }
 
 type ResponseList struct {
-	Pages Pages `json:"pages"`
-	List  any   `json:"list"`
+	Pages Pages `json:"pages"` //分页数据
+	List  any   `json:"data"`  //返回数据
 }
 
 func OK(data interface{}, c *gin.Context) {

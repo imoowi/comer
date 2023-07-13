@@ -84,6 +84,12 @@ func (s *RoleService) Update(c *gin.Context, _role *models.Role, id uint) (updat
 	}
 	return
 }
+
+func (s *RoleService) PatchUpdate(c *gin.Context, patchData map[string]any, id uint) (updated bool, err error) {
+	updated, err = s.RoleRepo.PatchUpdate(c, patchData, id)
+	return
+}
+
 func (s *RoleService) Delete(c *gin.Context, id uint) (deleted bool, err error) {
 	deleted, err = s.RoleRepo.Delete(c, id)
 	if deleted {

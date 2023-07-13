@@ -1,11 +1,7 @@
 package comer
 
 import (
-	"bufio"
 	"fmt"
-	"io"
-	"log"
-	"os"
 	"strings"
 
 	"github.com/spf13/cobra"
@@ -15,67 +11,81 @@ func (c *Comer) init(cmd *cobra.Command, args []string) bool {
 	c.debugMode = true
 	c.cmd = cmd
 	c.args = args
-	path, err := cmd.Flags().GetString(`path`)
-	if err != nil {
-		fmt.Println(err.Error())
-		return false
-	}
-	c.path = path
-	_moduleName := ``
-	moduleFile := `./go.mod`
-	_, gErr := os.Stat(moduleFile)
-	if os.IsNotExist(gErr) {
-		log.Println(`go.mod not exists`)
-		// return false
-	} else {
-		file, err := os.OpenFile(moduleFile, os.O_RDWR, 0544)
-		if err != nil {
-			fmt.Printf("File open failed! err: %v\n", err)
-			return false
-		}
-		reader := bufio.NewReader(file)
-		_moduleNameLine := ``
-		for {
-			line, err := reader.ReadString('\n') // 依次读一行
-			if err == io.EOF {
-				break
-			}
-			if err != nil {
-				fmt.Printf("File raed failed! err: %v\n", err)
-				return false
-			}
-			if strings.Contains(line, `module`) {
-				_moduleNameLine = line
-				break
-			}
-		}
-		file.Close()
-		if _moduleNameLine != `` {
-			_moduleName = strings.Replace(_moduleNameLine, "module ", "", -1)
-			_moduleName = strings.Replace(_moduleName, "\r", "", -1)
-			_moduleName = strings.Replace(_moduleName, "\n", "", -1)
-			_moduleName = strings.Replace(_moduleName, "\n\r", "", -1)
-			_moduleName = strings.Replace(_moduleName, "\r\n", "", -1)
-		}
-	}
-	if _moduleName == `` {
-		moduleName, err := cmd.Flags().GetString(`module`)
+	/*
+		path, err := cmd.Flags().GetString(`path`)
 		if err != nil {
 			fmt.Println(err.Error())
 			return false
 		}
-		if _moduleName == `` && moduleName == `` {
-			fmt.Println(`pls input module, e.g. --module=ProjectModuleName (请输入go.mod文件的module,例如 --module=ProjectModuleName)`)
-			return false
+		c.path = path
+		_moduleName := ``
+		moduleFile := `./go.mod`
+		_, gErr := os.Stat(moduleFile)
+		if os.IsNotExist(gErr) {
+			log.Println(`go.mod not exists`)
+			// return false
+		} else {
+			file, err := os.OpenFile(moduleFile, os.O_RDWR, 0544)
+			if err != nil {
+				fmt.Printf("File open failed! err: %v\n", err)
+				return false
+			}
+			reader := bufio.NewReader(file)
+			_moduleNameLine := ``
+			for {
+				line, err := reader.ReadString('\n') // 依次读一行
+				if err == io.EOF {
+					break
+				}
+				if err != nil {
+					fmt.Printf("File raed failed! err: %v\n", err)
+					return false
+				}
+				if strings.Contains(line, `module`) {
+					_moduleNameLine = line
+					break
+				}
+			}
+			file.Close()
+			if _moduleNameLine != `` {
+				_moduleName = strings.Replace(_moduleNameLine, "module ", "", -1)
+				_moduleName = strings.Replace(_moduleName, "\r", "", -1)
+				_moduleName = strings.Replace(_moduleName, "\n", "", -1)
+				_moduleName = strings.Replace(_moduleName, "\n\r", "", -1)
+				_moduleName = strings.Replace(_moduleName, "\r\n", "", -1)
+			}
 		}
-		c.moduleName = moduleName
-	} else {
-		c.moduleName = _moduleName
+		if _moduleName == `` {
+			moduleName, err := cmd.Flags().GetString(`module`)
+			if err != nil {
+				fmt.Println(err.Error())
+				return false
+			}
+			if _moduleName == `` && moduleName == `` {
+				fmt.Println(`pls input module, e.g. --module=ProjectModuleName (请输入go.mod文件的module,例如 --module=ProjectModuleName)`)
+				return false
+			}
+			c.moduleName = moduleName
+		} else {
+			c.moduleName = _moduleName
+		}
+		//*/
+	moduleName, err := cmd.Flags().GetString(`module`)
+	if err != nil {
+		fmt.Println(err.Error())
+		return false
 	}
-
-	if c.path == `` {
-		c.path = `.`
+	if moduleName == `` {
+		fmt.Println(`pls input module, e.g. --module=ProjectModuleName (请输入go.mod文件的module,例如 --module=ProjectModuleName)`)
+		return false
 	}
+	c.moduleName = moduleName
+	/*
+		if c.path == `` {
+			c.path = c.moduleName
+		}
+		//*/
+	c.path = c.moduleName
 	tplUri := ``
 	c.Framework = &Framework{
 		dirs: []string{

@@ -15,16 +15,15 @@ import (
 )
 
 // @Summary	分页列表(pagelist)
-// @Tags		{{.SwaggerTags}}
-// @Accept		application/json
+// @Tags	{{.SwaggerTags}}
+// @Accept	application/json
 // @Produce	application/json
-// @Param		Authorization	header		string				true	"Bearer 用户令牌"
-// @Param 		page 			query		number				false	"页码,默认为1"
-// @Param 		pageSize 		query		number				false	"页数,默认为20，最小为1，最大不超过1000"
-// @Success	200				{object}	response.PageList	"成功"
-// @Failure	400				{object}	string				"请求错误"
-// @Failure	401				{object}	string				"token验证失败"
-// @Failure	500				{object}	string				"内部错误"
+// @Param	Authorization	header		string				true	"Bearer 用户令牌"
+// @Param   {object}             query                 request.PageList  false "分页数据"
+// @Success 200                               {object} response.PageList "成功"
+// @Failure 400                        "请求错误"
+// @Failure 401                        "token验证失败"
+// @Failure 500                         "内部错误"
 // @Router		/api/{{.handlerName2Dash}}s [get]
 func {{.HandlerName}}PageList(c *gin.Context) {
 	var req request.PageList
@@ -57,9 +56,9 @@ func {{.HandlerName}}PageList(c *gin.Context) {
 // @Param		Authorization	header	string	true	"Bearer 用户令牌"
 // @Param		id				path	int		true	"id"
 // @Success	200
-// @Failure	400	{object}	string	"请求错误"
-// @Failure	401	{object}	string	"token验证失败"
-// @Failure	500	{object}	string	"内部错误"
+// @Failure 400                        "请求错误"
+// @Failure 401                        "token验证失败"
+// @Failure 500                         "内部错误"
 // @Router		/api/{{.handlerName2Dash}}s/:id [get]
 func {{.HandlerName}}One(c *gin.Context) {
 	id := c.Param(`id`)
@@ -82,9 +81,9 @@ func {{.HandlerName}}One(c *gin.Context) {
 // @Param		Authorization	header	string	true	"Bearer 用户令牌"
 // @Param		id				path	int		true	"id"
 // @Success	200
-// @Failure	400	{object}	string	"请求错误"
-// @Failure	401	{object}	string	"token验证失败"
-// @Failure	500	{object}	string	"内部错误"
+// @Failure 400                        "请求错误"
+// @Failure 401                        "token验证失败"
+// @Failure 500                         "内部错误"
 // @Router		/api/{{.handlerName2Dash}}s [post]
 func {{.HandlerName}}Add(c *gin.Context) {
 	var {{.modelName}} *models.{{.ModelName}}
@@ -108,9 +107,9 @@ func {{.HandlerName}}Add(c *gin.Context) {
 // @Param		Authorization	header	string	true	"Bearer 用户令牌"
 // @Param		id				path	int		true	"id"
 // @Success	200
-// @Failure	400	{object}	string	"请求错误"
-// @Failure	401	{object}	string	"token验证失败"
-// @Failure	500	{object}	string	"内部错误"
+// @Failure 400                        "请求错误"
+// @Failure 401                        "token验证失败"
+// @Failure 500                         "内部错误"
 // @Router		/api/{{.handlerName2Dash}}s/:id [put]
 func {{.HandlerName}}Update(c *gin.Context) {
 	id := c.Param(`id`)
@@ -139,9 +138,9 @@ func {{.HandlerName}}Update(c *gin.Context) {
 // @Param		Authorization	header	string	true	"Bearer 用户令牌"
 // @Param		id				path	int		true	"id"
 // @Success	200
-// @Failure	400	{object}	string	"请求错误"
-// @Failure	401	{object}	string	"token验证失败"
-// @Failure	500	{object}	string	"内部错误"
+// @Failure 400                        "请求错误"
+// @Failure 401                        "token验证失败"
+// @Failure 500                         "内部错误"
 // @Router		/api/{{.handlerName2Dash}}s/:id [patch]
 func {{.HandlerName}}Patch(c *gin.Context) {
 	id := c.Param(`id`)
@@ -170,9 +169,9 @@ func {{.HandlerName}}Patch(c *gin.Context) {
 // @Param		Authorization	header	string	true	"Bearer 用户令牌"
 // @Param		id				path	int		true	"id"
 // @Success	200
-// @Failure	400	{object}	string	"请求错误"
-// @Failure	401	{object}	string	"token验证失败"
-// @Failure	500	{object}	string	"内部错误"
+// @Failure 400                        "请求错误"
+// @Failure 401                        "token验证失败"
+// @Failure 500                         "内部错误"
 // @Router		/api/{{.handlerName2Dash}}s/:id [delete]
 func {{.HandlerName}}Del(c *gin.Context) {
 	id := c.Param(`id`)
