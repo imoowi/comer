@@ -170,7 +170,9 @@ func (c *Comer) addAppRouterDepend() {
 	}
 	reader := bufio.NewReader(file)
 	linesPos := make([]string, 0)
-	controllerLine := strings.ToLower(cast.ToString(c.tplAppData[`handlerName`])) + `s := ` + strings.ToLower(cast.ToString(c.tplAppData[`appName`])) + `.Group("/` + strings.ToLower(cast.ToString(c.tplAppData[`handlerName`])) + `s")`
+	// controllerLine := strings.ToLower(cast.ToString(c.tplAppData[`handlerName`])) + `s := ` + strings.ToLower(cast.ToString(c.tplAppData[`appName`])) + `.Group("/` + strings.ToLower(cast.ToString(c.tplAppData[`handlerName`])) + `s")`
+	// handlerName := c.tplAppData[`handlerName`]
+	controllerLine := cast.ToString(c.tplAppData[`lHandlerName`]) + `s := ` + `api.Group("/` + strings.ToLower(cast.ToString(c.tplAppData[`handler_name`])) + `s")`
 	needAddDashLine := true
 
 	for {
@@ -188,11 +190,12 @@ func (c *Comer) addAppRouterDepend() {
 		if strings.Contains(line, `do-not-delete-this-line`) {
 			linesPos = append(linesPos, `	`+controllerLine+"\r\n")
 			linesPos = append(linesPos, `	{`+"\r\n")
-			linesPos = append(linesPos, `		`+strings.ToLower(cast.ToString(c.tplAppData[`handlerName`]))+`s.GET("",handlers.`+format.FirstUpper(cast.ToString(c.tplAppData[`handlerName`]))+`PageList) //分页列表`+"\r\n")
-			linesPos = append(linesPos, `		`+strings.ToLower(cast.ToString(c.tplAppData[`handlerName`]))+`s.GET("/:id",handlers.`+format.FirstUpper(cast.ToString(c.tplAppData[`handlerName`]))+`One) //详情`+"\r\n")
-			linesPos = append(linesPos, `		`+strings.ToLower(cast.ToString(c.tplAppData[`handlerName`]))+`s.POST("",handlers.`+format.FirstUpper(cast.ToString(c.tplAppData[`handlerName`]))+`Add) //新增`+"\r\n")
-			linesPos = append(linesPos, `		`+strings.ToLower(cast.ToString(c.tplAppData[`handlerName`]))+`s.PUT("/:id",handlers.`+format.FirstUpper(cast.ToString(c.tplAppData[`handlerName`]))+`Update) //更新`+"\r\n")
-			linesPos = append(linesPos, `		`+strings.ToLower(cast.ToString(c.tplAppData[`handlerName`]))+`s.DELETE("/:id",handlers.`+format.FirstUpper(cast.ToString(c.tplAppData[`handlerName`]))+`Del) //删除，默认为软删除`+"\r\n")
+			linesPos = append(linesPos, `		`+cast.ToString(c.tplAppData[`lHandlerName`])+`s.GET("",handlers.`+format.FirstUpper(cast.ToString(c.tplAppData[`HandlerName`]))+`PageList) //分页列表`+"\r\n")
+			linesPos = append(linesPos, `		`+cast.ToString(c.tplAppData[`lHandlerName`])+`s.GET("/:id",handlers.`+format.FirstUpper(cast.ToString(c.tplAppData[`HandlerName`]))+`One) //详情`+"\r\n")
+			linesPos = append(linesPos, `		`+cast.ToString(c.tplAppData[`lHandlerName`])+`s.POST("",handlers.`+format.FirstUpper(cast.ToString(c.tplAppData[`HandlerName`]))+`Add) //新增`+"\r\n")
+			linesPos = append(linesPos, `		`+cast.ToString(c.tplAppData[`lHandlerName`])+`s.PUT("/:id",handlers.`+format.FirstUpper(cast.ToString(c.tplAppData[`HandlerName`]))+`Update) //更新`+"\r\n")
+			linesPos = append(linesPos, `		`+cast.ToString(c.tplAppData[`lHandlerName`])+`s.PATCH("/:id",handlers.`+format.FirstUpper(cast.ToString(c.tplAppData[`HandlerName`]))+`Patch) //部分更新`+"\r\n")
+			linesPos = append(linesPos, `		`+cast.ToString(c.tplAppData[`lHandlerName`])+`s.DELETE("/:id",handlers.`+format.FirstUpper(cast.ToString(c.tplAppData[`HandlerName`]))+`Del) //删除，默认为软删除`+"\r\n")
 			linesPos = append(linesPos, `	}`+"\r\n")
 		}
 		linesPos = append(linesPos, line)

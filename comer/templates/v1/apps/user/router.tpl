@@ -13,10 +13,10 @@ func init() {
 }
 
 func Routers(e *gin.Engine) {
-	auth := e.Group(`/api/auth`)
+	auth := e.Group(`/api`)
 	{
 		auth.POST(`/login`, middlewares.VcodeMiddleware(), handlers.AuthLogin)
 		auth.GET(`/logout`, middlewares.JWTAuthMiddleware(), handlers.AuthLogout)
-		auth.POST(`/chgpwd`, middlewares.JWTAuthMiddleware(), middlewares.VcodeMiddleware(), handlers.AuthChgPwd)
+		auth.POST(`/chpwd`, middlewares.VcodeMiddleware(), middlewares.JWTAuthMiddleware(), handlers.AuthChgPwd)
 	}
 }

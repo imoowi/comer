@@ -25,7 +25,7 @@ import (
 // @Failure	400				{object}	string				"请求错误"
 // @Failure	401				{object}	string				"token验证失败"
 // @Failure	500				{object}	string				"内部错误"
-// @Router		/api/{{.appName}}/{{.handlerName}}s [get]
+// @Router		/api/{{.handler_name}}s [get]
 func {{.HandlerName}}PageList(c *gin.Context) {
 	var req request.PageList
 	err := c.ShouldBindQuery(&req)
@@ -60,7 +60,7 @@ func {{.HandlerName}}PageList(c *gin.Context) {
 // @Failure	400	{object}	string	"请求错误"
 // @Failure	401	{object}	string	"token验证失败"
 // @Failure	500	{object}	string	"内部错误"
-// @Router		/api/{{.appName}}/{{.handlerName}}s/:id [get]
+// @Router		/api/{{.handler_name}}s/:id [get]
 func {{.HandlerName}}One(c *gin.Context) {
 	id := c.Param(`id`)
 	if id == `` {
@@ -85,7 +85,7 @@ func {{.HandlerName}}One(c *gin.Context) {
 // @Failure	400	{object}	string	"请求错误"
 // @Failure	401	{object}	string	"token验证失败"
 // @Failure	500	{object}	string	"内部错误"
-// @Router		/api/{{.appName}}/{{.handlerName}}s [post]
+// @Router		/api/{{.handler_name}}s [post]
 func {{.HandlerName}}Add(c *gin.Context) {
 	var {{.modelName}} *models.{{.ModelName}}
 	err := c.ShouldBindJSON(&{{.modelName}})
@@ -111,7 +111,7 @@ func {{.HandlerName}}Add(c *gin.Context) {
 // @Failure	400	{object}	string	"请求错误"
 // @Failure	401	{object}	string	"token验证失败"
 // @Failure	500	{object}	string	"内部错误"
-// @Router		/api/{{.appName}}/{{.handlerName}}s/:id [put]
+// @Router		/api/{{.handler_name}}s/:id [put]
 func {{.HandlerName}}Update(c *gin.Context) {
 	id := c.Param(`id`)
 	if id == `` {
@@ -132,6 +132,37 @@ func {{.HandlerName}}Update(c *gin.Context) {
 	response.OK(updated,c)
 }
 
+// @Summary	部分更新(update)
+// @Tags		{{.SwaggerTags}}
+// @Accept		application/json
+// @Produce	application/json
+// @Param		Authorization	header	string	true	"Bearer 用户令牌"
+// @Param		id				path	int		true	"id"
+// @Success	200
+// @Failure	400	{object}	string	"请求错误"
+// @Failure	401	{object}	string	"token验证失败"
+// @Failure	500	{object}	string	"内部错误"
+// @Router		/api/{{.handler_name}}s/:id [patch]
+func {{.HandlerName}}Patch(c *gin.Context) {
+	id := c.Param(`id`)
+	if id == `` {
+		response.Error(`pls input id`, http.StatusBadRequest, c)
+		return
+	}
+	patchObj := make(map[string]any)
+	err := c.BindJSON(&patchObj)
+	if err != nil {
+		response.Error(err.Error(), http.StatusBadRequest, c)
+		return
+	}
+	updated, err := services.{{.ServiceName}}.PatchUpdate(c, patchObj, cast.ToUint(id))
+	if err != nil {
+		response.Error(err.Error(), http.StatusBadRequest, c)
+		return
+	}
+	response.OK(updated, c)
+}
+
 // @Summary	删除(delete)
 // @Tags		{{.SwaggerTags}}
 // @Accept		application/json
@@ -142,7 +173,7 @@ func {{.HandlerName}}Update(c *gin.Context) {
 // @Failure	400	{object}	string	"请求错误"
 // @Failure	401	{object}	string	"token验证失败"
 // @Failure	500	{object}	string	"内部错误"
-// @Router		/api/{{.appName}}/{{.handlerName}}s/:id [delete]
+// @Router		/api/{{.handler_name}}s/:id [delete]
 func {{.HandlerName}}Del(c *gin.Context) {
 	id := c.Param(`id`)
 	if id == `` {

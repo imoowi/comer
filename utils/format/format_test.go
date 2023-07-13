@@ -1,6 +1,9 @@
 package format
 
-import "testing"
+import (
+	"fmt"
+	"testing"
+)
 
 func TestFirstUpper(t *testing.T) {
 	abc := `abc`
@@ -26,4 +29,22 @@ func TestFirstLower(t *testing.T) {
 	if _abc != `` {
 		t.Errorf(`Empty str FirstUpper test failed`)
 	}
+}
+
+func TestCamel2Dash(t *testing.T) {
+	s := `userRole`
+	d := Camel2Dash(s)
+	if d != `user-role` {
+		t.Errorf(`test failed`)
+	}
+	fmt.Println(d)
+}
+
+func TestCamel2Snake(t *testing.T) {
+	s := `userRole`
+	d := Camel2Snake(s)
+	if d != `user_role` {
+		t.Errorf(`test failed`)
+	}
+	fmt.Println(d)
 }

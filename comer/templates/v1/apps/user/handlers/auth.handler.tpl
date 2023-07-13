@@ -20,7 +20,7 @@ import (
 // @Failure	400	{object}	string	"请求错误"
 // @Failure	401	{object}	string	"token验证失败"
 // @Failure	500	{object}	string	"内部错误"
-// @Router		/api/auth/login [post]
+// @Router		/api/login [post]
 func AuthLogin(c *gin.Context) {
 	var userLogin *models.UserLogin
 	err := c.ShouldBindBodyWith(&userLogin, binding.JSON)
@@ -54,7 +54,7 @@ func AuthLogin(c *gin.Context) {
 // @Failure	400	{object}	string	"请求错误"
 // @Failure	401	{object}	string	"token验证失败"
 // @Failure	500	{object}	string	"内部错误"
-// @Router		/api/auth/logout [get]
+// @Router		/api/logout [get]
 func AuthLogout(c *gin.Context) {
 	authHeader := c.Request.Header.Get("Authorization")
 	if authHeader == "" {
@@ -75,7 +75,7 @@ func AuthLogout(c *gin.Context) {
 // @Failure	400	{object}	string	"请求错误"
 // @Failure	401	{object}	string	"token验证失败"
 // @Failure	500	{object}	string	"内部错误"
-// @Router		/api/auth/chgpwd [post]
+// @Router		/api/chpwd [post]
 func AuthChgPwd(c *gin.Context) {
 	var userChgPwd *models.UserChgPwd
 	err := c.ShouldBindBodyWith(&userChgPwd, binding.JSON)

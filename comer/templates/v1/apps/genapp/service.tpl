@@ -65,6 +65,12 @@ func (s *{{.ServiceName}}Service) Update(c *gin.Context, _model *models.{{.Model
 	updated, err = s.{{.ModelName}}Repo.Update(c, _model, id)
 	return
 }
+
+func (s *{{.ServiceName}}Service) PatchUpdate(c *gin.Context, patchData map[string]any, id uint) (updated bool, err error) {
+	updated, err = s.{{.ModelName}}Repo.PatchUpdate(c, patchData, id)
+	return
+}
+
 func (s *{{.ServiceName}}Service) Delete(c *gin.Context, id uint) (deleted bool, err error) {
 	deleted, err = s.{{.ModelName}}Repo.Delete(c, id)
 	return

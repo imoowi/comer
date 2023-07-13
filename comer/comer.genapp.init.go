@@ -108,17 +108,19 @@ func (c *Comer) initApp(cmd *cobra.Command, args []string) bool {
 		},
 	}
 	c.tplAppData = map[string]any{
-		`ModuleName`:  ModuleName,
-		`moduleName`:  strings.ToLower(ModuleName),
-		`AppName`:     format.FirstUpper(appName),
-		`appName`:     strings.ToLower(appName),
-		`HandlerName`: format.FirstUpper(HandlerName),
-		`handlerName`: strings.ToLower(HandlerName),
-		`ServiceName`: format.FirstUpper(ServiceName),
-		`serviceName`: strings.ToLower(ServiceName),
-		`ModelName`:   format.FirstUpper(ModelName),
-		`modelName`:   strings.ToLower(ModelName),
-		`SwaggerTags`: SwaggerTags,
+		`ModuleName`:   ModuleName,
+		`moduleName`:   strings.ToLower(ModuleName),
+		`AppName`:      format.FirstUpper(appName),
+		`appName`:      strings.ToLower(appName),
+		`HandlerName`:  format.FirstUpper(HandlerName),
+		`lHandlerName`: format.FirstLower(HandlerName),
+		`handlerName`:  strings.ToLower(HandlerName),
+		`handler_name`: format.Camel2Dash(HandlerName),
+		`ServiceName`:  format.FirstUpper(ServiceName),
+		`serviceName`:  strings.ToLower(ServiceName),
+		`ModelName`:    format.FirstUpper(ModelName),
+		`modelName`:    strings.ToLower(ModelName),
+		`SwaggerTags`:  SwaggerTags,
 	}
 	return true
 }
