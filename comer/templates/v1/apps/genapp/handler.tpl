@@ -25,7 +25,7 @@ import (
 // @Failure	400				{object}	string				"请求错误"
 // @Failure	401				{object}	string				"token验证失败"
 // @Failure	500				{object}	string				"内部错误"
-// @Router		/api/{{.handler_name}}s [get]
+// @Router		/api/{{.handlerName2Dash}}s [get]
 func {{.HandlerName}}PageList(c *gin.Context) {
 	var req request.PageList
 	err := c.ShouldBindQuery(&req)
@@ -60,7 +60,7 @@ func {{.HandlerName}}PageList(c *gin.Context) {
 // @Failure	400	{object}	string	"请求错误"
 // @Failure	401	{object}	string	"token验证失败"
 // @Failure	500	{object}	string	"内部错误"
-// @Router		/api/{{.handler_name}}s/:id [get]
+// @Router		/api/{{.handlerName2Dash}}s/:id [get]
 func {{.HandlerName}}One(c *gin.Context) {
 	id := c.Param(`id`)
 	if id == `` {
@@ -85,7 +85,7 @@ func {{.HandlerName}}One(c *gin.Context) {
 // @Failure	400	{object}	string	"请求错误"
 // @Failure	401	{object}	string	"token验证失败"
 // @Failure	500	{object}	string	"内部错误"
-// @Router		/api/{{.handler_name}}s [post]
+// @Router		/api/{{.handlerName2Dash}}s [post]
 func {{.HandlerName}}Add(c *gin.Context) {
 	var {{.modelName}} *models.{{.ModelName}}
 	err := c.ShouldBindJSON(&{{.modelName}})
@@ -111,7 +111,7 @@ func {{.HandlerName}}Add(c *gin.Context) {
 // @Failure	400	{object}	string	"请求错误"
 // @Failure	401	{object}	string	"token验证失败"
 // @Failure	500	{object}	string	"内部错误"
-// @Router		/api/{{.handler_name}}s/:id [put]
+// @Router		/api/{{.handlerName2Dash}}s/:id [put]
 func {{.HandlerName}}Update(c *gin.Context) {
 	id := c.Param(`id`)
 	if id == `` {
@@ -142,7 +142,7 @@ func {{.HandlerName}}Update(c *gin.Context) {
 // @Failure	400	{object}	string	"请求错误"
 // @Failure	401	{object}	string	"token验证失败"
 // @Failure	500	{object}	string	"内部错误"
-// @Router		/api/{{.handler_name}}s/:id [patch]
+// @Router		/api/{{.handlerName2Dash}}s/:id [patch]
 func {{.HandlerName}}Patch(c *gin.Context) {
 	id := c.Param(`id`)
 	if id == `` {
@@ -173,7 +173,7 @@ func {{.HandlerName}}Patch(c *gin.Context) {
 // @Failure	400	{object}	string	"请求错误"
 // @Failure	401	{object}	string	"token验证失败"
 // @Failure	500	{object}	string	"内部错误"
-// @Router		/api/{{.handler_name}}s/:id [delete]
+// @Router		/api/{{.handlerName2Dash}}s/:id [delete]
 func {{.HandlerName}}Del(c *gin.Context) {
 	id := c.Param(`id`)
 	if id == `` {

@@ -99,12 +99,12 @@ func (c *Comer) initApp(cmd *cobra.Command, args []string) bool {
 		},
 		files: map[string]string{
 			`./apps/apps.go`: tplUri + `templates/v1/apps/apps.tpl`,
-			`./apps/` + strings.ToLower(appName) + `/router.go`:                                                tplUri + `templates/v1/apps/genapp/router.tpl`,
-			`./apps/` + strings.ToLower(appName) + `/handlers/` + strings.ToLower(HandlerName) + `.handler.go`: tplUri + `templates/v1/apps/genapp/handler.tpl`,
-			`./apps/` + strings.ToLower(appName) + `/migrates/` + strings.ToLower(ModelName) + `.migrate.go`:   tplUri + `templates/v1/apps/genapp/migrate.tpl`,
-			`./apps/` + strings.ToLower(appName) + `/models/` + strings.ToLower(ModelName) + `.model.go`:       tplUri + `templates/v1/apps/genapp/model.tpl`,
-			`./apps/` + strings.ToLower(appName) + `/repos/` + strings.ToLower(ModelName) + `.repo.go`:         tplUri + `templates/v1/apps/genapp/repo.tpl`,
-			`./apps/` + strings.ToLower(appName) + `/services/` + strings.ToLower(ServiceName) + `.service.go`: tplUri + `templates/v1/apps/genapp/service.tpl`,
+			`./apps/` + strings.ToLower(appName) + `/router.go`:                                                   tplUri + `templates/v1/apps/genapp/router.tpl`,
+			`./apps/` + strings.ToLower(appName) + `/handlers/` + format.Camel2Snake(HandlerName) + `.handler.go`: tplUri + `templates/v1/apps/genapp/handler.tpl`,
+			`./apps/` + strings.ToLower(appName) + `/migrates/` + format.Camel2Snake(ModelName) + `.migrate.go`:   tplUri + `templates/v1/apps/genapp/migrate.tpl`,
+			`./apps/` + strings.ToLower(appName) + `/models/` + format.Camel2Snake(ModelName) + `.model.go`:       tplUri + `templates/v1/apps/genapp/model.tpl`,
+			`./apps/` + strings.ToLower(appName) + `/repos/` + format.Camel2Snake(ModelName) + `.repo.go`:         tplUri + `templates/v1/apps/genapp/repo.tpl`,
+			`./apps/` + strings.ToLower(appName) + `/services/` + format.Camel2Snake(ServiceName) + `.service.go`: tplUri + `templates/v1/apps/genapp/service.tpl`,
 		},
 	}
 	c.tplAppData = map[string]any{
@@ -115,12 +115,14 @@ func (c *Comer) initApp(cmd *cobra.Command, args []string) bool {
 		`HandlerName`:  format.FirstUpper(HandlerName),
 		`lHandlerName`: format.FirstLower(HandlerName),
 		`handlerName`:  strings.ToLower(HandlerName),
-		`handler_name`: format.Camel2Dash(HandlerName),
-		`ServiceName`:  format.FirstUpper(ServiceName),
-		`serviceName`:  strings.ToLower(ServiceName),
-		`ModelName`:    format.FirstUpper(ModelName),
-		`modelName`:    strings.ToLower(ModelName),
-		`SwaggerTags`:  SwaggerTags,
+		// `handler_name`:      format.Camel2Dash(HandlerName),
+		`handlerName2Dash`:  format.Camel2Dash(HandlerName),
+		`handlerName2Snake`: format.Camel2Snake(HandlerName),
+		`ServiceName`:       format.FirstUpper(ServiceName),
+		`serviceName`:       strings.ToLower(ServiceName),
+		`ModelName`:         format.FirstUpper(ModelName),
+		`modelName`:         strings.ToLower(ModelName),
+		`SwaggerTags`:       SwaggerTags,
 	}
 	return true
 }

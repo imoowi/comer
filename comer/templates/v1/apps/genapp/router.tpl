@@ -5,7 +5,7 @@ package {{.appName}}
 
 import (
 	"github.com/gin-gonic/gin"
-	_ "{{.ModuleName}}/apps/{{.handlerName}}/migrates"
+	_ "{{.ModuleName}}/apps/{{.appName}}/migrates"
 	"{{.ModuleName}}/middlewares"
 	"{{.ModuleName}}/apps/{{.appName}}/handlers"
 	"{{.ModuleName}}/router"
@@ -19,7 +19,7 @@ func Routers(e *gin.Engine) {
 	api := e.Group("/api")
 	api.Use(middlewares.JWTAuthMiddleware())
 	api.Use(middlewares.CasbinMiddleware())
-	{{.lHandlerName}}s := api.Group("/{{.handler_name}}s")
+	{{.lHandlerName}}s := api.Group("/{{.handlerName2Dash}}s")
 	{
 		{{.lHandlerName}}s.GET("", handlers.{{.HandlerName}}PageList) //分页
 		{{.lHandlerName}}s.GET("/:id", handlers.{{.HandlerName}}One) //一个

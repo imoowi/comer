@@ -172,7 +172,7 @@ func (c *Comer) addAppRouterDepend() {
 	linesPos := make([]string, 0)
 	// controllerLine := strings.ToLower(cast.ToString(c.tplAppData[`handlerName`])) + `s := ` + strings.ToLower(cast.ToString(c.tplAppData[`appName`])) + `.Group("/` + strings.ToLower(cast.ToString(c.tplAppData[`handlerName`])) + `s")`
 	// handlerName := c.tplAppData[`handlerName`]
-	controllerLine := cast.ToString(c.tplAppData[`lHandlerName`]) + `s := ` + `api.Group("/` + strings.ToLower(cast.ToString(c.tplAppData[`handler_name`])) + `s")`
+	controllerLine := cast.ToString(c.tplAppData[`lHandlerName`]) + `s := ` + `api.Group("/` + strings.ToLower(cast.ToString(c.tplAppData[`handlerName2Dash`])) + `s")`
 	needAddDashLine := true
 
 	for {
