@@ -65,7 +65,7 @@ func (c *Comer) init(cmd *cobra.Command, args []string) bool {
 				return false
 			}
 			if _moduleName == `` && moduleName == `` {
-				fmt.Println(`pls input module, e.g. --module=github.com/imoowi/comer-example (请输入go.mod文件的module,例如 --module=github.com/imoowi/comer-example)`)
+				fmt.Println(`pls input module, e.g. -m=github.com/imoowi/comer-example (请输入go.mod文件的module,例如 -m=github.com/imoowi/comer-example)`)
 				return false
 			}
 			c.moduleName = moduleName
@@ -79,8 +79,8 @@ func (c *Comer) init(cmd *cobra.Command, args []string) bool {
 		return false
 	}
 	if moduleName == `` {
-		// fmt.Println(`pls input module, e.g. --module=github.com/imoowi/comer-example (请输入go.mod文件的module,例如 --module=github.com/imoowi/comer-example)`)
-		fmt.Println(`请输入module,例如: --module=github.com/imoowi/comer-example(pls input module, e.g. --module=github.com/imoowi/comer-example)`)
+		// fmt.Println(`pls input module, e.g. -m=github.com/imoowi/comer-example (请输入go.mod文件的module,例如 -m=github.com/imoowi/comer-example)`)
+		fmt.Println(`请输入module,例如: -m=github.com/imoowi/comer-example(pls input module, e.g. -m=github.com/imoowi/comer-example)`)
 		return false
 	}
 	c.moduleName = moduleName
