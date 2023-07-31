@@ -108,12 +108,12 @@ go install github.com/imoowi/comer@latest
 ### 1、创建项目
 
 ```sh
-comer create --module=github.com/imoowi/comer-example 
+comer create -m=github.com/imoowi/comer-example 
 ```
 如下:
 
 ```sh
-$ comer create --module=github.com/imoowi/comer-example
+$ comer create -m=github.com/imoowi/comer-example
 2023/06/26 14:46:34 go.mod not exists
 Comer version  v1.2.0
 
