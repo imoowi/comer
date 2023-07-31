@@ -1,3 +1,6 @@
+/*
+Copyright © 2023 jun<simpleyuan@gmail.com>
+*/
 package comer
 
 import (
@@ -190,12 +193,12 @@ func (c *Comer) addAppRouterDepend() {
 		if strings.Contains(line, `do-not-delete-this-line`) {
 			linesPos = append(linesPos, `	`+controllerLine+"\r\n")
 			linesPos = append(linesPos, `	{`+"\r\n")
-			linesPos = append(linesPos, `		`+cast.ToString(c.tplAppData[`lHandlerName`])+`s.GET("",handlers.`+format.FirstUpper(cast.ToString(c.tplAppData[`HandlerName`]))+`PageList) //分页列表`+"\r\n")
-			linesPos = append(linesPos, `		`+cast.ToString(c.tplAppData[`lHandlerName`])+`s.GET("/:id",handlers.`+format.FirstUpper(cast.ToString(c.tplAppData[`HandlerName`]))+`One) //详情`+"\r\n")
-			linesPos = append(linesPos, `		`+cast.ToString(c.tplAppData[`lHandlerName`])+`s.POST("",handlers.`+format.FirstUpper(cast.ToString(c.tplAppData[`HandlerName`]))+`Add) //新增`+"\r\n")
-			linesPos = append(linesPos, `		`+cast.ToString(c.tplAppData[`lHandlerName`])+`s.PUT("/:id",handlers.`+format.FirstUpper(cast.ToString(c.tplAppData[`HandlerName`]))+`Update) //更新`+"\r\n")
-			linesPos = append(linesPos, `		`+cast.ToString(c.tplAppData[`lHandlerName`])+`s.PATCH("/:id",handlers.`+format.FirstUpper(cast.ToString(c.tplAppData[`HandlerName`]))+`Patch) //部分更新`+"\r\n")
-			linesPos = append(linesPos, `		`+cast.ToString(c.tplAppData[`lHandlerName`])+`s.DELETE("/:id",handlers.`+format.FirstUpper(cast.ToString(c.tplAppData[`HandlerName`]))+`Del) //删除，默认为软删除`+"\r\n")
+			linesPos = append(linesPos, `		`+cast.ToString(c.tplAppData[`lHandlerName`])+`s.GET("",handlers.`+format.FirstUpper(cast.ToString(c.tplAppData[`HandlerName`]))+`PageList, middlewares.UserLogMiddleware()) //分页列表`+"\r\n")
+			linesPos = append(linesPos, `		`+cast.ToString(c.tplAppData[`lHandlerName`])+`s.GET("/:id",handlers.`+format.FirstUpper(cast.ToString(c.tplAppData[`HandlerName`]))+`One, middlewares.UserLogMiddleware()) //详情`+"\r\n")
+			linesPos = append(linesPos, `		`+cast.ToString(c.tplAppData[`lHandlerName`])+`s.POST("",handlers.`+format.FirstUpper(cast.ToString(c.tplAppData[`HandlerName`]))+`Add, middlewares.UserLogMiddleware()) //新增`+"\r\n")
+			linesPos = append(linesPos, `		`+cast.ToString(c.tplAppData[`lHandlerName`])+`s.PUT("/:id",handlers.`+format.FirstUpper(cast.ToString(c.tplAppData[`HandlerName`]))+`Update, middlewares.UserLogMiddleware()) //更新`+"\r\n")
+			linesPos = append(linesPos, `		`+cast.ToString(c.tplAppData[`lHandlerName`])+`s.PATCH("/:id",handlers.`+format.FirstUpper(cast.ToString(c.tplAppData[`HandlerName`]))+`Patch, middlewares.UserLogMiddleware()) //部分更新`+"\r\n")
+			linesPos = append(linesPos, `		`+cast.ToString(c.tplAppData[`lHandlerName`])+`s.DELETE("/:id",handlers.`+format.FirstUpper(cast.ToString(c.tplAppData[`HandlerName`]))+`Del, middlewares.UserLogMiddleware()) //删除，默认为软删除`+"\r\n")
 			linesPos = append(linesPos, `	}`+"\r\n")
 		}
 		linesPos = append(linesPos, line)

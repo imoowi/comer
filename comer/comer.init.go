@@ -1,3 +1,6 @@
+/*
+Copyright © 2023 jun<simpleyuan@gmail.com>
+*/
 package comer
 
 import (
@@ -136,6 +139,7 @@ func (c *Comer) init(cmd *cobra.Command, args []string) bool {
 			c.path + `/configs/settings-local.yml`:              tplUri + `templates/v1/config/config.settings-local.tpl`,
 			c.path + `/configs/casbin.conf`:                     tplUri + `templates/v1/config/config.casbin.tpl`,
 			c.path + `/global/global.go`:                        tplUri + `templates/v1/global/global.tpl`,
+			c.path + `/global/global.userlog.go`:                tplUri + `templates/v1/global/global.userlog.tpl`,
 			c.path + `/global/cache.go`:                         tplUri + `templates/v1/global/global.cache.tpl`,
 			c.path + `/global/casbin.go`:                        tplUri + `templates/v1/global/global.casbin.tpl`,
 			c.path + `/global/config.go`:                        tplUri + `templates/v1/global/global.config.tpl`,
@@ -149,6 +153,7 @@ func (c *Comer) init(cmd *cobra.Command, args []string) bool {
 			c.path + `/middlewares/LoggerMiddleware.go`:         tplUri + `templates/v1/middleware/middleware.Logger.tpl`,
 			c.path + `/middlewares/RateLimitMiddleware.go`:      tplUri + `templates/v1/middleware/middleware.RateLimit.tpl`,
 			c.path + `/middlewares/VcodeMiddleware.go`:          tplUri + `templates/v1/middleware/middleware.Vcode.tpl`,
+			c.path + `/middlewares/UserlogMiddleware.go`:        tplUri + `templates/v1/middleware/middleware.Userlog.tpl`,
 			c.path + `/middlewares/middleware.go`:               tplUri + `templates/v1/middleware/middleware.tpl`,
 			c.path + `/router/router.go`:                        tplUri + `templates/v1/router/router.tpl`,
 			c.path + `/utils/copy/copy.go`:                      tplUri + `templates/v1/utils/copy/copy.tpl`,
