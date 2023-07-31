@@ -8,6 +8,11 @@ import (
 	"github.com/spf13/cobra"
 )
 
+func TestRoot(t *testing.T) {
+	output, _ := executeCommand(rootCmd)
+	fmt.Println(output)
+}
+
 func TestCreate(t *testing.T) {
 	output, _ := executeCommand(rootCmd, "create", "-m", "tmp/comer-example/user")
 	fmt.Println(output)
