@@ -138,7 +138,7 @@ go run . init
 ### 7、运行项目
 
 ```sh
-//依赖air, go install github.com/cosmtrek/air@latest
+#依赖air, go install github.com/cosmtrek/air@latest
 air
 #或者
 go mod tidy
