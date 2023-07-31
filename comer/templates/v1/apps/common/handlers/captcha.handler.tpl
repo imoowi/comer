@@ -18,9 +18,9 @@ import (
 // @Produce	application/json
 // @Param		type	query	string	false	"验证码类型：audio|string|math|chinese；默认为 math"
 // @Success	200
-// @Failure	400	{object}	string	"请求错误"
-// @Failure	401	{object}	string	"token验证失败"
-// @Failure	500	{object}	string	"内部错误"
+// @Failure	400	"请求错误"
+// @Failure	401	"token验证失败"
+// @Failure	500	"内部错误"
 // @Router		/api/common/captcha [get]
 func Captcha(c *gin.Context) {
 	driverType := c.DefaultQuery(`type`, `digit`)

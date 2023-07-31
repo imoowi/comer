@@ -8,8 +8,8 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func TestRoot(t *testing.T) {
-	output, _ := executeCommand(rootCmd, "--module", "user", "--path", "../tmp/comer-example")
+func TestCreate(t *testing.T) {
+	output, _ := executeCommand(rootCmd, "create", "-m", "tmp/comer-example/user")
 	fmt.Println(output)
 }
 
@@ -18,11 +18,11 @@ func TestVersion(t *testing.T) {
 	fmt.Println(output)
 }
 
-func TestGenapp(t *testing.T) {
-	rootCmd.AddCommand(genappCmd)
+func TestAddapp(t *testing.T) {
+	rootCmd.AddCommand(addappCmd)
 
-	output, _ := executeCommand(rootCmd, "--module", "user", "--path", "../tmp/comer-example", "genapp", "--app", "user")
-	// output, _ := executeCommand(rootCmd, "genapp", "--app", "user")
+	output, _ := executeCommand(rootCmd, "addapp", "--app", "student")
+	// output, _ := executeCommand(rootCmd, "addapp", "--app", "user")
 	fmt.Println(`output is : `, output)
 }
 

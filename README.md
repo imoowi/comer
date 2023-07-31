@@ -8,7 +8,7 @@
 
 ## Comer 是什么？
 
-Comer是一个用go语言写的代码生成工具，能够生成基本的web api框架，同时支持app新增；其中包括gin 、gorm、redis、casbin、auth、captcha等
+Comer是一个用go语言写的RESTFul代码生成工具，能够生成基本的web api框架，同时支持app新增；其中包括gin 、gorm、redis、casbin、auth、captcha等
 
 ## 用Comer生成的项目结构
 ```sh
@@ -21,7 +21,7 @@ $ tree
 |   |   |-- handlers //路由处理方
 |   |   |   `-- captcha.handler.go //默认的验证码
 |   |   `-- router.go //路由
-|   |-- student //通过 comer genapp --app=appName生成
+|   |-- student //通过 comer addapp --app=appName生成
 |   |   |-- handlers
 |   |   |   `-- student.handler.go
 |   |   |-- migrates
@@ -108,27 +108,27 @@ go install github.com/imoowi/comer@latest
 ### 1、创建项目
 
 ```sh
-comer --module=github.com/imoowi/comer-example 
+comer create --module=github.com/imoowi/comer-example 
 ```
 如下:
 
 ```sh
-$ comer  --module=github.com/imoowi/comer-example
+$ comer create --module=github.com/imoowi/comer-example
 2023/06/26 14:46:34 go.mod not exists
-Comer version  v1.1.9
+Comer version  v1.2.0
 
 _________
 \_   ___ \   ____    _____    ____  _______
 /    \  \/  /  _ \  /     \ _/ __ \ \_  __ \
 \     \____(  <_> )|  Y Y  \\  ___/  |  | \/
  \______  / \____/ |__|_|  / \___  > |__|
-                \/               \/      \/ v1.1.9, built with go1.20.2
+                \/               \/      \/ v1.2.0, built with go1.20.2
 dir [ comer-example/apps ] created
 ...
 下一步，执行以下命令:
-1、cd  comer-example3
+1、cd  comer-example
 2、change file（comer-example/configs/settings-local.yml）mysql and redis config
-3、comer genapp --app=appName
+3、comer addapp --app=appName
 4、air OR swag init && go mod tidy && go run . server
 
 ```
@@ -137,27 +137,27 @@ dir [ comer-example/apps ] created
 
 ```sh
 cd comer-example
-comer genapp --app=appName
+comer addapp --app=appName
 #或者
-comer genapp --app=user --swaggerTags='Oauth' --handler=auth --service=user --model=user,role
+comer addapp --app=user --swaggerTags='Oauth' --handler=auth --service=user --model=user,role
 ```
 例如：
 ```sh
 cd comer-example
-$ comer genapp --app=student
-Comer version  v1.1.9
+$ comer addapp --app=student
+Comer version  v1.2.0
 
 _________
 \_   ___ \   ____    _____    ____  _______
 /    \  \/  /  _ \  /     \ _/ __ \ \_  __ \
 \     \____(  <_> )|  Y Y  \\  ___/  |  | \/
  \______  / \____/ |__|_|  / \___  > |__|
-                \/               \/      \/ v1.1.9, built with go1.20.2
+                \/               \/      \/ v1.2.0, built with go1.20.2
 dir [ ./apps ] existed
 dir [ ./apps/student/handlers ] created
 dir [ ./apps/student/migrates ] created
 ...
-comer genapp end.
+comer addapp end.
 
 ```
 

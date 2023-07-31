@@ -26,3 +26,11 @@
 
 -    add userlog middleware
 
+
+
+## 1.2.0
+
+### Patch Changes
+
+-    add create cmd
+-    change genapp cmd to addapp cmd

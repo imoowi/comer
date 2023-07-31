@@ -80,7 +80,6 @@ func {{.HandlerName}}One(c *gin.Context) {
 // @Accept		application/json
 // @Produce	application/json
 // @Param		Authorization	header	string	true	"Bearer 用户令牌"
-// @Param		id				path	int		true	"id"
 // @Success	200
 // @Failure 400                        "请求错误"
 // @Failure 401                        "token验证失败"
