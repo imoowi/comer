@@ -42,11 +42,13 @@ dir [ comer-example/apps ] created
 1、cd  comer-example
 2、change file（comer-example/configs/settings-local.yml）mysql and redis config
 3、comer addapp --app=appName
-4、air OR swag init && go mod tidy && go run . server
+4、go mod tidy
+5、swag init
+6、go run . server
 
 ```
 
-### 2、给项目添加app
+### 2、添加app
 
 ```sh
 cd comer-example
@@ -56,7 +58,7 @@ comer addapp --app=user --swaggerTags='Oauth' --handler=auth --service=user --mo
 ```
 例如：
 ```sh
-cd comer-example
+$ cd comer-example
 $ comer addapp --app=student
 Comer version  v1.2.1
 
@@ -74,25 +76,16 @@ comer addapp end.
 
 ```
 
-### 3、安装swag
+
+### 3、生成swagger文档
 
 ```sh
-go install github.com/swaggo/swag/cmd/swag@latest
-```
-
-### 4、生成swagger文档
-
-```sh
+#依赖swago, go install github.com/swaggo/swag/cmd/swag@latest
 swag init
 ```
 
-### 5、安装air
 
-```sh
-go install github.com/cosmtrek/air@latest
-```
-
-### 6、修改数据库配置
+### 4、修改数据库配置
 
 ```yml
 #vim ./configs/settings-local.yml
@@ -122,12 +115,6 @@ jwt:
 mysql:
   dsn: root:password@tcp(127.0.0.1:3306)/comer_project?charset=utf8&parseTime=True&loc=Local&timeout=1000ms
   casbin: root:password@tcp(127.0.0.1:3306)/comer_project
-# influxdb:
-#   addr: http://127.0.0.1:8086
-#   token: [token string]
-#   org: [orgnization name]
-#   bucket: [bucket name]
-#   testSwitchOn: false
 redis:
   addr: com.redis.host:6379
   password: "password"
@@ -138,71 +125,20 @@ cache:
 
 ```
 
-### 7、数据迁移:生成基本的数据库表
+### 5、数据迁移:生成基本的数据库表
 
 ```sh
 go run . migrate
 ```
-例如：
-```sh
-$ go run . migrate
-2023/06/26 14:57:32 Using config file: C:\Users\simpl\dev\golang\imoowi\comer-example\configs\settings-local.yml
-2023/06/26 14:57:32 migrate start.
-Connected to MySql!
-
-2023/06/26 14:57:32 C:/Users/simpl/dev/golang/imoowi/comer-example/apps/user/migrates/role.migrate.go:23
-[1.786ms] [rows:-] SELECT DATABASE()
-
-2023/06/26 14:57:32 C:/Users/simpl/dev/golang/imoowi/comer-example/apps/user/migrates/role.migrate.go:23
-[51.542ms] [rows:1] SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'comer_project%' ORDER BY SCHEMA_NAME='comer_project' DESC,SCHEMA_NAME limit 1
-
-2023/06/26 14:57:32 C:/Users/simpl/dev/golang/imoowi/comer-example/apps/user/migrates/role.migrate.go:23
-[2.822ms] [rows:-] SELECT count(*) FROM information_schema.tables WHERE table_schema = 'comer_project' AND table_name = 'roles' AND table_type = 'BASE TABLE'
-
-2023/06/26 14:57:32 C:/Users/simpl/dev/golang/imoowi/comer-example/apps/user/migrates/role.migrate.go:23
-[35.863ms] [rows:0] CREATE TABLE `roles` (`id` bigint unsigned AUTO_INCREMENT,`created_at` datetime(3) NULL,`updated_at` datetime(3) NULL,`deleted_at` datetime(3) NULL,`name` varchar(30) NOT NULL COMMENT '角色名',`level` tinyint(3) COMMENT '角色等级',PRIMARY KEY (`id`),INDEX `idx_roles_deleted_at` (`deleted_at`))ENGINE=InnoDB,COMMENT='角色表'
-...
-2023/06/26 14:57:33 migrate end.
-
-
-```
-### 8、初始化数据库
+### 6、初始化数据库
 
 ```sh
 go run . init
 ```
-例如：
-```sh
-$ go run . init
-2023/06/26 15:00:26 Using config file: C:\Users\simpl\dev\golang\imoowi\comer-example\configs\settings-local.yml
-init called
-2023/06/26 15:00:26 init start.
-Connected to MySql!
-
-2023/06/26 15:00:26 C:/Users/simpl/go/pkg/mod/github.com/casbin/gorm-adapter/v3@v3.18.0/adapter.go:413 SLOW SQL >= 200ms
-[222.496ms] [rows:1] SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'comer_project%' ORDER BY SCHEMA_NAME='comer_project' DESC,SCHEMA_NAME limit 1
-[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
- - using env:   export GIN_MODE=release
- - using code:  gin.SetMode(gin.ReleaseMode)
-
-
-2023/06/26 15:00:26 C:/Users/simpl/dev/golang/imoowi/comer-example/apps/user/repos/role.repo.go:57 record not found
-[10.772ms] [rows:0] SELECT * FROM `roles` WHERE name='超级管理员' AND `roles`.`deleted_at` IS NULL ORDER BY `roles`.`id` LIMIT 1
-
-2023/06/26 15:00:26 C:/Users/simpl/dev/golang/imoowi/comer-example/apps/user/repos/role.repo.go:57 record not found
-[2.152ms] [rows:0] SELECT * FROM `roles` WHERE name='超级管理员' AND `roles`.`deleted_at` IS NULL ORDER BY `roles`.`id` LIMIT 1
-
-2023/06/26 15:00:26 C:/Users/simpl/dev/golang/imoowi/comer-example/apps/user/repos/role.repo.go:62
-[6.441ms] [rows:1] INSERT INTO `roles` (`created_at`,`updated_at`,`deleted_at`,`name`,`level`) VALUES ('2023-06-26 15:00:26.591','2023-06-26 15:00:26.591',NULL,'超级管理员','1')
-
-2023/06/26 15:00:26 C:/Users/simpl/dev/golang/imoowi/comer-example/apps/user/repos/user.repo.go:52 record not found
-[7.794ms] [rows:0] SELECT * FROM `users` WHERE id=0 AND `users`.`deleted_at` IS NULL ORDER BY `users`.`id` LIMIT 1
-2023/06/26 15:00:59 init end.
-```
-
-### 9、运行项目
+### 7、运行项目
 
 ```sh
+//依赖air, go install github.com/cosmtrek/air@latest
 air
 #或者
 go mod tidy
@@ -225,25 +161,18 @@ building...
 [GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
  - using env:   export GIN_MODE=release
  - using code:  gin.SetMode(gin.ReleaseMode)
-
-[GIN-debug] GET    /api/students             --> github.com/imoowi/comer-example/apps/student/handlers.StudentPageList (8 handlers)
-[GIN-debug] GET    /api/students/:id         --> github.com/imoowi/comer-example/apps/student/handlers.StudentOne (8 handlers)
-[GIN-debug] POST   /api/students             --> github.com/imoowi/comer-example/apps/student/handlers.StudentAdd (8 handlers)
-[GIN-debug] PUT    /api/students/:id         --> github.com/imoowi/comer-example/apps/student/handlers.StudentUpdate (8 handlers)
-[GIN-debug] PATCH  /api/students/:id         --> github.com/imoowi/comer-example/apps/student/handlers.StudentPatch (8 handlers)
-[GIN-debug] DELETE /api/students/:id         --> github.com/imoowi/comer-example/apps/student/handlers.StudentDel (8 handlers)
-[GIN-debug] GET    /api/common/captcha       --> github.com/imoowi/comer-example/apps/common/handlers.Captcha (6 handlers)
 [GIN-debug] GET    /swagger/*any             --> github.com/swaggo/gin-swagger.CustomWrapHandler.func1 (6 handlers)
 [GIN-debug] POST   /api/auth-login           --> github.com/imoowi/comer-example/apps/user/handlers.AuthLogin (7 handlers)
 [GIN-debug] GET    /api/auth-logout          --> github.com/imoowi/comer-example/apps/user/handlers.AuthLogout (7 handlers)
 [GIN-debug] POST   /api/auth-chpwd           --> github.com/imoowi/comer-example/apps/user/handlers.AuthChgPwd (8 handlers)
 [GIN-debug] GET    /api/casbins/allapi       --> github.com/imoowi/comer-example/router.InitRouter.func1 (6 handlers)
+...
 server port:  8000
 API document address http://localhost:8000/swagger/index.html
 
 ```
 
-### 10、访问接口文件：
+### 8、访问接口文件：
 [http://localhost:8000/swagger/index.html](http://localhost:8000/swagger/index.html)
 ![](assets/comer-swagger.png)
 ![](assets/comer-swagger2.png)
