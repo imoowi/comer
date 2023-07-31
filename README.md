@@ -115,14 +115,14 @@ comer create -m=github.com/imoowi/comer-example
 ```sh
 $ comer create -m=github.com/imoowi/comer-example
 2023/06/26 14:46:34 go.mod not exists
-Comer version  v1.2.0
+Comer version  v1.2.1
 
 _________
 \_   ___ \   ____    _____    ____  _______
 /    \  \/  /  _ \  /     \ _/ __ \ \_  __ \
 \     \____(  <_> )|  Y Y  \\  ___/  |  | \/
  \______  / \____/ |__|_|  / \___  > |__|
-                \/               \/      \/ v1.2.0, built with go1.20.2
+                \/               \/      \/ v1.2.1, built with go1.20.2
 dir [ comer-example/apps ] created
 ...
 下一步，执行以下命令:
@@ -145,14 +145,14 @@ comer addapp --app=user --swaggerTags='Oauth' --handler=auth --service=user --mo
 ```sh
 cd comer-example
 $ comer addapp --app=student
-Comer version  v1.2.0
+Comer version  v1.2.1
 
 _________
 \_   ___ \   ____    _____    ____  _______
 /    \  \/  /  _ \  /     \ _/ __ \ \_  __ \
 \     \____(  <_> )|  Y Y  \\  ___/  |  | \/
  \______  / \____/ |__|_|  / \___  > |__|
-                \/               \/      \/ v1.2.0, built with go1.20.2
+                \/               \/      \/ v1.2.1, built with go1.20.2
 dir [ ./apps ] existed
 dir [ ./apps/student/handlers ] created
 dir [ ./apps/student/migrates ] created
