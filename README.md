@@ -101,8 +101,6 @@ $ tree
 
 ```go
 go install github.com/imoowi/comer@latest
-//or
-go install github.com/imoowi/comer@v1.1.8
 ```
 
 ## 使用
@@ -117,19 +115,19 @@ comer --module=github.com/imoowi/comer-example
 ```sh
 $ comer  --module=github.com/imoowi/comer-example
 2023/06/26 14:46:34 go.mod not exists
-Comer version  v1.1.6
+Comer version  v1.1.9
 
 _________
 \_   ___ \   ____    _____    ____  _______
 /    \  \/  /  _ \  /     \ _/ __ \ \_  __ \
 \     \____(  <_> )|  Y Y  \\  ___/  |  | \/
  \______  / \____/ |__|_|  / \___  > |__|
-                \/               \/      \/ v1.1.6, built with go1.20.2
+                \/               \/      \/ v1.1.9, built with go1.20.2
 dir [ comer-example/apps ] created
 ...
 下一步，执行以下命令:
-1、cd  comer-example
-2、vim comer-example/configs/settings-local.yml #change mysql and redis config
+1、cd  comer-example3
+2、change file（comer-example/configs/settings-local.yml）mysql and redis config
 3、comer genapp --app=appName
 4、air OR swag init && go mod tidy && go run . server
 
@@ -147,14 +145,14 @@ comer genapp --app=user --swaggerTags='Oauth' --handler=auth --service=user --mo
 ```sh
 cd comer-example
 $ comer genapp --app=student
-Comer version  v1.1.6
+Comer version  v1.1.9
 
 _________
 \_   ___ \   ____    _____    ____  _______
 /    \  \/  /  _ \  /     \ _/ __ \ \_  __ \
 \     \____(  <_> )|  Y Y  \\  ___/  |  | \/
  \______  / \____/ |__|_|  / \___  > |__|
-                \/               \/      \/ v1.1.6, built with go1.20.2
+                \/               \/      \/ v1.1.9, built with go1.20.2
 dir [ ./apps ] existed
 dir [ ./apps/student/handlers ] created
 dir [ ./apps/student/migrates ] created
