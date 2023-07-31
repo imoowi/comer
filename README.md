@@ -10,93 +10,6 @@
 
 Comer是一个用go语言写的RESTFul代码生成工具，能够生成基本的web api框架，同时支持app新增；其中包括gin 、gorm、redis、casbin、auth、captcha等
 
-## 用Comer生成的项目结构
-```sh
-$ tree
-.
-|-- README.md
-|-- apps //应用集合
-|   |-- apps.go //多个应用自动加载文件
-|   |-- common //公共模块
-|   |   |-- handlers //路由处理方
-|   |   |   `-- captcha.handler.go //默认的验证码
-|   |   `-- router.go //路由
-|   |-- student //通过 comer addapp --app=appName生成
-|   |   |-- handlers
-|   |   |   `-- student.handler.go
-|   |   |-- migrates
-|   |   |   `-- student.migrate.go
-|   |   |-- models
-|   |   |   `-- student.model.go
-|   |   |-- repos
-|   |   |   `-- student.repo.go
-|   |   |-- router.go
-|   |   `-- services
-|   |       `-- student.service.go
-|   |-- swagger //默认包含的swagger文档应用
-|   |   `-- router.go
-|   `-- user //默认包含用户应用
-|       |-- handlers
-|       |   `-- auth.handler.go //用户认证
-|       |-- migrates //数据迁移文件，会自动生成
-|       |   |-- role.migrate.go
-|       |   |-- user.migrate.go
-|       |   |-- userlog.migrate.go
-|       |   `-- userrole.migrate.go
-|       |-- models //数据表对应的model，自动生成，表结构通过结构体修改，禁止直接修改数据库里表的结构
-|       |   |-- role.model.go //角色
-|       |   |-- user.model.go //用户
-|       |   |-- userlog.model.go //用户记录
-|       |   `-- userrole.model.go //用户角色关系
-|       |-- repos //数据提供方
-|       |-- router.go //路由
-|       `-- services //服务提供方
-|-- cmd //由Cobra命令生成
-|   |-- init.go //系统初始化
-|   |-- migrate.go //数据迁移
-|   |-- root.go //主入口
-|   `-- server.go api服务
-|-- components //组件
-|   |-- captcha.go
-|   |-- mysql.go
-|   `-- redis.go
-|-- configs //配置目录
-|   |-- casbin.conf
-|   `-- settings-local.yml
-|-- docs //swagger生成的apidoc
-|   |-- docs.go
-|   |-- swagger.json
-|   `-- swagger.yaml
-|-- global //全局文件
-|   |-- cache.go
-|   |-- casbin.go
-|   |-- config.go
-|   |-- global.go
-|   |-- log.go
-|   |-- mysql.go
-|   `-- redis.go
-|-- go.mod
-|-- go.sum
-|-- main.go //程序主入口
-|-- middlewares //中间件
-|   |-- CasbinMiddleware.go //权限控制
-|   |-- CrosMiddleware.go //跨域访问
-|   |-- JWTAuthMiddleware.go //JWT认证
-|   |-- LoggerMiddleware.go //日志
-|   |-- RateLimitMiddleware.go //访问频率控制
-|   |-- VcodeMiddleware.go //验证码中间件
-|   |-- middleware.go
-|   `-- token //jwttoken
-|       `-- jwttoken.go
-|-- router
-|   `-- router.go //路由定义
-|-- runtime //运行时
-`-- utils //工具箱
-.
-.
-.
-36 directories, 77 files
-```
 ## 安装
 
 ```go
@@ -334,3 +247,87 @@ API document address http://localhost:8000/swagger/index.html
 [http://localhost:8000/swagger/index.html](http://localhost:8000/swagger/index.html)
 ![](assets/comer-swagger.png)
 ![](assets/comer-swagger2.png)
+
+## 用Comer生成的项目结构
+```sh
+$ tree
+.
+|-- README.md
+|-- apps //应用集合
+|   |-- apps.go //多个应用自动加载文件
+|   |-- common //公共模块
+|   |   |-- handlers //路由处理方
+|   |   |   `-- captcha.handler.go //默认的验证码
+|   |   `-- router.go //路由
+|   |-- student //通过 comer addapp --app=appName生成
+|   |   |-- handlers
+|   |   |   `-- student.handler.go
+|   |   |-- migrates
+|   |   |   `-- student.migrate.go
+|   |   |-- models
+|   |   |   `-- student.model.go
+|   |   |-- repos
+|   |   |   `-- student.repo.go
+|   |   |-- router.go
+|   |   `-- services
+|   |       `-- student.service.go
+|   |-- swagger //默认包含的swagger文档应用
+|   |   `-- router.go
+|   `-- user //默认包含用户应用
+|       |-- handlers
+|       |   `-- auth.handler.go //用户认证
+|       |-- migrates //数据迁移文件，会自动生成
+|       |   |-- role.migrate.go
+|       |   |-- user.migrate.go
+|       |   |-- userlog.migrate.go
+|       |   `-- userrole.migrate.go
+|       |-- models //数据表对应的model，自动生成，表结构通过结构体修改，禁止直接修改数据库里表的结构
+|       |   |-- role.model.go //角色
+|       |   |-- user.model.go //用户
+|       |   |-- userlog.model.go //用户记录
+|       |   `-- userrole.model.go //用户角色关系
+|       |-- repos //数据提供方
+|       |-- router.go //路由
+|       `-- services //服务提供方
+|-- cmd //由Cobra命令生成
+|   |-- init.go //系统初始化
+|   |-- migrate.go //数据迁移
+|   |-- root.go //主入口
+|   `-- server.go api服务
+|-- components //组件
+|   |-- captcha.go
+|   |-- mysql.go
+|   `-- redis.go
+|-- configs //配置目录
+|   |-- casbin.conf
+|   `-- settings-local.yml
+|-- docs //swagger生成的apidoc
+|   |-- docs.go
+|   |-- swagger.json
+|   `-- swagger.yaml
+|-- global //全局文件
+|   |-- cache.go
+    ...
+|   `-- redis.go
+|-- go.mod
+|-- go.sum
+|-- main.go //程序主入口
+|-- middlewares //中间件
+|   |-- CasbinMiddleware.go //权限控制
+|   |-- CrosMiddleware.go //跨域访问
+|   |-- JWTAuthMiddleware.go //JWT认证
+|   |-- LoggerMiddleware.go //日志
+|   |-- RateLimitMiddleware.go //访问频率控制
+|   |-- VcodeMiddleware.go //验证码中间件
+|   |-- middleware.go
+|   `-- token //jwttoken
+|       `-- jwttoken.go
+|-- router
+|   `-- router.go //路由定义
+|-- runtime //运行时
+`-- utils //工具箱
+.
+.
+.
+36 directories, 77 files
+```
