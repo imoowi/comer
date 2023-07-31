@@ -177,7 +177,7 @@ API document address http://localhost:8000/swagger/index.html
 ![](assets/comer-swagger.png)
 ![](assets/comer-swagger2.png)
 
-## 用Comer生成的项目结构
+## 目录结构
 ```sh
 $ tree
 .
