@@ -4,10 +4,18 @@ Copyright © 2023 jun<simpleyuan@gmail.com>
 */
 package models
 
-import "{{.ModuleName}}/components"
+import (
+	"{{.ModuleName}}/components"
+	"{{.ModuleName}}/utils/request"
+)
 
 // {{.ModelName}}表
 type {{.ModelName}} struct {
 	components.GormModel
 	Name string `gorm:"column:name;type:varchar(30);not null;comment:名称"`
+}
+
+type {{.ModelName}}Query struct {
+	request.PageList
+	Key string `json:"key" form:"key"`
 }

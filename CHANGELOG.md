@@ -34,3 +34,9 @@
 
 -    add create cmd
 -    change genapp cmd to addapp cmd
+
+## 1.2.2
+
+### Patch Changes
+
+-    change tpl

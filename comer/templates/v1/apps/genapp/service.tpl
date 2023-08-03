@@ -11,7 +11,6 @@ import (
 	"{{.ModuleName}}/apps/{{.appName}}/models"
 	"{{.ModuleName}}/apps/{{.appName}}/repos"
 	"{{.ModuleName}}/global"
-	"{{.ModuleName}}/utils/request"
 	"{{.ModuleName}}/utils/response"
 )
 
@@ -36,8 +35,13 @@ func init() {
 	global.RegisterContainerProviders(Register{{.ServiceName}}Service)
 }
 
-func (s *{{.ServiceName}}Service) PageList(c *gin.Context, req *request.PageList) (res *response.PageList, err error) {
-	res, err = s.{{.ModelName}}Repo.PageList(c, req)
+func (s *{{.ServiceName}}Service) All(c *gin.Context, query *models.{{.ModelName}}Query) (res []*models.{{.ModelName}}, err error) {
+	res, err = s.{{.ModelName}}Repo.All(c, query)
+	return
+}
+
+func (s *{{.ServiceName}}Service) PageList(c *gin.Context, query *models.{{.ModelName}}Query) (res *response.PageList, err error) {
+	res, err = s.{{.ModelName}}Repo.PageList(c, query)
 	return
 }
 

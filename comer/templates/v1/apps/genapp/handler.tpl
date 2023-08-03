@@ -9,7 +9,6 @@ import (
 	"{{.ModuleName}}/utils/response"
 	"{{.ModuleName}}/apps/{{.appName}}/models"
 	"{{.ModuleName}}/apps/{{.appName}}/services"
-	"{{.ModuleName}}/utils/request"
 	"net/http"
 
 	"github.com/spf13/cast"
@@ -20,29 +19,38 @@ import (
 // @Accept	application/json
 // @Produce	application/json
 // @Param	Authorization	header		string				true	"Bearer 用户令牌"
-// @Param   {object}             query                 request.PageList  false "分页数据"
+// @Param   {object}             query                 models.{{.ModelName}}Query  false "query参数"
 // @Success 200                               {object} response.PageList "成功"
 // @Failure 400                        "请求错误"
 // @Failure 401                        "token验证失败"
 // @Failure 500                         "内部错误"
 // @Router		/api/{{.handlerName2Dash}}s [get]
 func {{.HandlerName}}PageList(c *gin.Context) {
-	var req request.PageList
-	err := c.ShouldBindQuery(&req)
+	var query models.{{.ModelName}}Query
+	err := c.ShouldBindQuery(&query)
 	if err != nil {
 		response.Error(err.Error(), http.StatusBadRequest,c)
 		return
 	}
-	if 0 >= req.Page{
-		req.Page = 1
+	if 0 >= query.Page{
+		result, err := services.{{.ServiceName}}.All(c, &query)
+		if err != nil {
+			response.Error(err.Error(), http.StatusBadRequest,c)
+			return
+		}
+		response.OK(result,c)
+		return
 	}
-	if 0 >= req.PageSize{
-		req.PageSize = 20
+	if 0 >= query.Page{
+		query.Page = 1
 	}
-	if req.PageSize >= 1000 {
-		req.PageSize = 1000
+	if 0 >= query.PageSize{
+		query.PageSize = 20
 	}
-	result, err := services.{{.ServiceName}}.PageList(c, &req)
+	if query.PageSize >= 1000 {
+		query.PageSize = 1000
+	}
+	result, err := services.{{.ServiceName}}.PageList(c, &query)
 	if err != nil {
 		response.Error(err.Error(), http.StatusBadRequest,c)
 		return

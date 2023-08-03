@@ -12,8 +12,8 @@ import (
 	"{{.ModuleName}}/apps/{{.appName}}/models"
 	"{{.ModuleName}}/components"
 	"{{.ModuleName}}/global"
-	"{{.ModuleName}}/utils/request"
 	"{{.ModuleName}}/utils/response"
+	"gorm.io/gorm"
 )
 
 type {{.ModelName}}Repo struct {
@@ -28,15 +28,30 @@ func new{{.ModelName}}Repo() *{{.ModelName}}Repo {
 func init() {
 	global.DigContainer.Provide(new{{.ModelName}}Repo)
 }
-func (r *{{.ModelName}}Repo) PageList(c *gin.Context, req *request.PageList) (res *response.PageList, err error) {
+
+
+func (r *{{.ModelName}}Repo) All(c *gin.Context, query *models.{{.ModelName}}Query) (res []*models.{{.ModelName}}, err error) {
+	db := r.Db.Client
+	if query.Key != `` {
+		db = db.Where("`key`=?", query.Key)
+	}
+
+	err = db.Find(&res).Error
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		err = nil
+	}
+	return
+}
+
+func (r *{{.ModelName}}Repo) PageList(c *gin.Context, query *models.{{.ModelName}}Query) (res *response.PageList, err error) {
 	db := r.Db.Client
 	var users []*models.{{.ModelName}}
 
-	if req.SearchKey != `` {
-		db = db.Where(`name LIKE ?`, `%`+req.SearchKey+`%`)
+	if query.SearchKey != `` {
+		db = db.Where(`name LIKE ?`, `%`+query.SearchKey+`%`)
 	}
-	offset := (req.Page - 1) * req.PageSize
-	db = db.Offset(int(offset)).Limit(int(req.PageSize))
+	offset := (query.Page - 1) * query.PageSize
+	db = db.Offset(int(offset)).Limit(int(query.PageSize))
 	// db=db.Order(`name desc`)
 	err = db.Find(&users).Error
 
@@ -45,7 +60,7 @@ func (r *{{.ModelName}}Repo) PageList(c *gin.Context, req *request.PageList) (re
 
 	res = &response.PageList{
 		List:  users,
-		Pages: response.MakePages(count, req.Page, req.PageSize),
+		Pages: response.MakePages(count, query.Page, query.PageSize),
 	}
 	return
 }
