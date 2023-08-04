@@ -14,7 +14,7 @@ func TestRoot(t *testing.T) {
 }
 
 func TestCreate(t *testing.T) {
-	output, _ := executeCommand(rootCmd, "create", "-m", "tmp/comer-example/user")
+	output, _ := executeCommand(rootCmd, "new", "-m", "tmp/comer-example/user")
 	fmt.Println(output)
 }
 
@@ -26,8 +26,7 @@ func TestVersion(t *testing.T) {
 func TestAddapp(t *testing.T) {
 	rootCmd.AddCommand(addCmd)
 
-	output, _ := executeCommand(rootCmd, "addapp", "--app", "student")
-	// output, _ := executeCommand(rootCmd, "addapp", "--app", "user")
+	output, _ := executeCommand(rootCmd, "add", "-a", "student")
 	fmt.Println(`output is : `, output)
 }
 
