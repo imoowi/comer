@@ -19,6 +19,7 @@ type User struct {
 type UserLogin struct {
 	Username string `json:"username" form:"username" binding:"required"` //用户名
 	Passwd   string `json:"password" form:"password" binding:"required"` //密码
+	components.POSTVcode
 }
 
 // 添加用户
@@ -34,6 +35,5 @@ type UserChgPwd struct {
 	OriginPwd  string `json:"origin_pwd" binding:"required"`  //原始密码
 	NewPwd     string `json:"new_pwd" binding:"required"`     //新密码
 	ConfirmPwd string `json:"confirm_pwd" binding:"required"` //确认密码
-	Vcode      string `json:"vcode"`                          //验证码
-	// Vcode      string `json:"vcode" binding:"required"`       //验证码
+	components.POSTVcode
 }

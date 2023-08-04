@@ -24,7 +24,7 @@ func TestVersion(t *testing.T) {
 }
 
 func TestAddapp(t *testing.T) {
-	rootCmd.AddCommand(addappCmd)
+	rootCmd.AddCommand(addCmd)
 
 	output, _ := executeCommand(rootCmd, "addapp", "--app", "student")
 	// output, _ := executeCommand(rootCmd, "addapp", "--app", "user")

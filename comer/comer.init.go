@@ -73,14 +73,20 @@ func (c *Comer) init(cmd *cobra.Command, args []string) bool {
 			c.moduleName = _moduleName
 		}
 		//*/
-	moduleName, err := cmd.Flags().GetString(`module`)
-	if err != nil {
-		fmt.Println(err.Error())
-		return false
+	moduleName := ``
+	if len(args) > 0 {
+		moduleName = args[0]
 	}
+	// fmt.Println(`args=`, args[0])
+	// return false
+	// moduleName, err := cmd.Flags().GetString(`module`)
+	// if err != nil {
+	// 	fmt.Println(err.Error())
+	// 	return false
+	// }
 	if moduleName == `` {
-		// fmt.Println(`pls input module, e.g. -m=github.com/imoowi/comer-example (请输入go.mod文件的module,例如 -m=github.com/imoowi/comer-example)`)
-		fmt.Println(`请输入module,例如: -m=github.com/imoowi/comer-example(pls input module, e.g. -m=github.com/imoowi/comer-example)`)
+		// fmt.Println(`请输入module,例如: -m=github.com/imoowi/comer-example(pls input module, e.g. -m=github.com/imoowi/comer-example)`)
+		fmt.Println(`请输入module,例如: comer new github.com/imoowi/comer-example (pls input module, e.g. comer new github.com/imoowi/comer-example)`)
 		return false
 	}
 	c.moduleName = moduleName

@@ -19,7 +19,7 @@ import (
 // @Tags		Auth
 // @Accept		application/json
 // @Produce	application/json
-// @Param		body	body	models.UserLogin	true	"登录信息"
+// @Param {object} body  models.UserLogin true "登录信息"
 // @Success	200
 // @Failure	400	{object}	string	"请求错误"
 // @Failure	401	{object}	string	"token验证失败"
@@ -74,7 +74,7 @@ func AuthLogout(c *gin.Context) {
 // @Accept		application/json
 // @Produce	application/json
 // @Param		Authorization	header	string				true	"Bearer 用户令牌"
-// @Param		body			body	models.UserChgPwd	true	"改密信息"
+// @Param {object} body  models.UserChgPwd true "改密信息"
 // @Success	200
 // @Failure	400	{object}	string	"请求错误"
 // @Failure	401	{object}	string	"token验证失败"

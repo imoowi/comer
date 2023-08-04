@@ -13,14 +13,10 @@ import (
 	"{{.moduleName}}/utils/response"
 )
 
-type POSTVcode struct {
-	Id    string `json:"captcha_id" form:"captcha_id" binding:"required"`
-	Vcode string `json:"captcha_code" form:"captcha_code" binding:"required"`
-}
 
 func VcodeMiddleware() func(c *gin.Context) {
 	return func(c *gin.Context) {
-		var postVcode *POSTVcode
+		var postVcode *components.POSTVcode
 		err := c.ShouldBindBodyWith(&postVcode, binding.JSON)
 		if err != nil {
 			response.Error(err.Error(), http.StatusBadRequest, c)

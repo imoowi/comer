@@ -20,14 +20,15 @@ func Routers(e *gin.Engine) {
 	api := e.Group("/api")
 	api.Use(middlewares.JWTAuthMiddleware())
 	api.Use(middlewares.CasbinMiddleware())
+	api.Use(middlewares.UserLogMiddleware())
 	{{.lHandlerName}}s := api.Group("/{{.handlerName2Dash}}s")
 	{
-		{{.lHandlerName}}s.GET("", handlers.{{.HandlerName}}PageList, middlewares.UserLogMiddleware()) //分页
-		{{.lHandlerName}}s.GET("/:id", handlers.{{.HandlerName}}One, middlewares.UserLogMiddleware()) //一个
-		{{.lHandlerName}}s.POST("", handlers.{{.HandlerName}}Add, middlewares.UserLogMiddleware()) //新增
-		{{.lHandlerName}}s.PUT("/:id", handlers.{{.HandlerName}}Update, middlewares.UserLogMiddleware()) //更新
-		{{.lHandlerName}}s.PATCH("/:id", handlers.{{.HandlerName}}Patch, middlewares.UserLogMiddleware()) //部分更新
-		{{.lHandlerName}}s.DELETE("/:id", handlers.{{.HandlerName}}Del, middlewares.UserLogMiddleware()) //默认为软删除
+		{{.lHandlerName}}s.GET("", handlers.{{.HandlerName}}PageList) //分页
+		{{.lHandlerName}}s.GET("/:id", handlers.{{.HandlerName}}One) //一个
+		{{.lHandlerName}}s.POST("", handlers.{{.HandlerName}}Add) //新增
+		{{.lHandlerName}}s.PUT("/:id", handlers.{{.HandlerName}}Update) //更新
+		{{.lHandlerName}}s.PATCH("/:id", handlers.{{.HandlerName}}Patch) //部分更新
+		{{.lHandlerName}}s.DELETE("/:id", handlers.{{.HandlerName}}Del) //默认为软删除
 	}
 
 	//!import:do-not-delete-this-line,不要删除此行，主要用于代码生成器

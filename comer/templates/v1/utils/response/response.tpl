@@ -23,7 +23,7 @@ type ResponseList struct {
 
 func OK(data interface{}, c *gin.Context) {
 	c.JSON(http.StatusOK, data)
-	c.Abort()
+	c.Next()
 }
 
 func Error(msg interface{}, code int, c *gin.Context) {

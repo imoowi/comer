@@ -21,27 +21,27 @@ go install github.com/imoowi/comer@latest
 ### 1、创建项目
 
 ```sh
-comer create -m=github.com/imoowi/comer-example 
+comer new github.com/imoowi/comer-example 
 ```
 如下:
 
 ```sh
-$ comer create -m=github.com/imoowi/comer-example
-2023/06/26 14:46:34 go.mod not exists
-Comer version  v1.2.1
+$ comer new github.com/imoowi/comer-example
+
+Comer version  v1.2.3
 
 _________
 \_   ___ \   ____    _____    ____  _______
 /    \  \/  /  _ \  /     \ _/ __ \ \_  __ \
 \     \____(  <_> )|  Y Y  \\  ___/  |  | \/
  \______  / \____/ |__|_|  / \___  > |__|
-                \/               \/      \/ v1.2.1, built with go1.20.2
-dir [ comer-example/apps ] created
+                \/               \/      \/ v1.2.3, built with go1.20.2
+dir [ github.com/imoowi/comer-example/apps ] created
 ...
 下一步，执行以下命令:
-1、cd  comer-example
+1、cd  github.com/imoowi/comer-example
 2、change file（comer-example/configs/settings-local.yml）mysql and redis config
-3、comer addapp --app=appName
+3、comer add -a=appName -c=handlerName -w=swaggerTagsName -s=serviceName -m=modelName1,modelName2,[...]
 4、go mod tidy
 5、swag init
 6、go run . server
@@ -52,27 +52,27 @@ dir [ comer-example/apps ] created
 
 ```sh
 cd comer-example
-comer addapp --app=appName
+comer add -a=appName
 #或者
-comer addapp --app=user --swaggerTags='Oauth' --handler=auth --service=user --model=user,role
+comer add -a=user -w='Oauth' -c=auth -s=user -m=user,role
 ```
 例如：
 ```sh
 $ cd comer-example
-$ comer addapp --app=student
-Comer version  v1.2.1
+$ comer add -a=student
+Comer version  v1.2.3
 
 _________
 \_   ___ \   ____    _____    ____  _______
 /    \  \/  /  _ \  /     \ _/ __ \ \_  __ \
 \     \____(  <_> )|  Y Y  \\  ___/  |  | \/
  \______  / \____/ |__|_|  / \___  > |__|
-                \/               \/      \/ v1.2.1, built with go1.20.2
+                \/               \/      \/ v1.2.3, built with go1.20.2
 dir [ ./apps ] existed
 dir [ ./apps/student/handlers ] created
 dir [ ./apps/student/migrates ] created
 ...
-comer addapp end.
+comer add end.
 
 ```
 
@@ -188,7 +188,7 @@ $ tree
 |   |   |-- handlers //路由处理方
 |   |   |   `-- captcha.handler.go //默认的验证码
 |   |   `-- router.go //路由
-|   |-- student //通过 comer addapp --app=appName生成
+|   |-- student //通过 comer add -a=appName生成
 |   |   |-- handlers
 |   |   |   `-- student.handler.go
 |   |   |-- migrates

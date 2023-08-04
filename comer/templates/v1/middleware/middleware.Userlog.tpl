@@ -12,6 +12,7 @@ import (
 // 用户日志中间件
 func UserLogMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		c.Next()
 		// user_log_obj_id := c.GetUint(`user_log_obj_id`) //操作对象id
 		// user_log_res_type, ok := c.Get(`user_log_res_type`) //操作对象的资源类型
 		user_log_obj_id := 0

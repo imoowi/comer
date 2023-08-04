@@ -8,11 +8,11 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// createCmd represents the create command
+// createCmd represents the new command
 var createCmd = &cobra.Command{
-	Use:   "create",
-	Short: "Create a Project (新建一个项目)",
-	Long:  `comer create -m=[module]`,
+	Use:   "new",
+	Short: "Create a project",
+	Long:  `comer new [module]`,
 	Run: func(cmd *cobra.Command, args []string) {
 		comerIns := comer.NewComer()
 		comerIns.Start(cmd, args)
@@ -31,6 +31,8 @@ func init() {
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
 	// createCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
-	createCmd.PersistentFlags().StringP(`module`, `m`, ``, `go.mod module(go.mod文件的module名称)`)
+	// createCmd.PersistentFlags().StringP(`module`, `m`, ``, `go.mod module(go.mod文件的module名称)`)
+	// createCmd.MarkFlagRequired(`module`)
 	// createCmd.PersistentFlags().String(`path`, ``, `project root (项目所在目录)`)
+
 }

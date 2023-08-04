@@ -23,7 +23,7 @@ func (c *Comer) initApp(cmd *cobra.Command, args []string) bool {
 		return false
 	}
 	if appName == `` {
-		fmt.Println(`pls input app, e.g. --app=student (请输入app,例如 --app=student)`)
+		fmt.Println(`pls input app, e.g. -a=student (请输入app,例如 -a=student)`)
 		return false
 	}
 	moduleFile := `go.mod`
