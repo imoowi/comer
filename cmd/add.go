@@ -12,7 +12,7 @@ import (
 var addCmd = &cobra.Command{
 	Use:          "add",
 	Short:        "Add an app",
-	Example:      "comer add",
+	Example:      "comer add -a=app01 -c=handler01 -w='app01' -s=service01 -m=model01",
 	SilenceUsage: true,
 	PreRun: func(cmd *cobra.Command, args []string) {
 	},
