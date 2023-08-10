@@ -7,10 +7,10 @@ package response
 import "math"
 
 type Pages struct {
-	Count     int64 `json:"count"` //总数
-	CurPage   int64 `json:"page"`  //当前页码
+	Count     int64 `json:"count"`     //总数
+	CurPage   int64 `json:"page"`      //当前页码
 	TotalPage int64 `json:"totalPage"` //总页数
-	PageSize  int64 `json:"pageSize"` //分页数
+	PageSize  int64 `json:"pageSize"`  //分页数
 }
 
 type PageList struct {

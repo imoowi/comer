@@ -47,3 +47,9 @@
 ### Patch Changes
 
 -    update response.OK
+
+## 1.2.4
+
+### Patch Changes
+
+-    update handler.tpl

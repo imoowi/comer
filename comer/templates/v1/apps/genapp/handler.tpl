@@ -32,7 +32,8 @@ func {{.HandlerName}}PageList(c *gin.Context) {
 		response.Error(err.Error(), http.StatusBadRequest,c)
 		return
 	}
-	if 0 >= query.Page{
+	/*
+	if 0 >= query.Page && 0 >= query.PageSize{
 		result, err := services.{{.ServiceName}}.All(c, &query)
 		if err != nil {
 			response.Error(err.Error(), http.StatusBadRequest,c)
@@ -41,6 +42,7 @@ func {{.HandlerName}}PageList(c *gin.Context) {
 		response.OK(result,c)
 		return
 	}
+	//*/
 	if 0 >= query.Page{
 		query.Page = 1
 	}
