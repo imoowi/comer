@@ -5,6 +5,7 @@ Copyright © 2023 jun<simpleyuan@gmail.com>
 package middlewares
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -16,6 +17,9 @@ import (
 
 func VcodeMiddleware() func(c *gin.Context) {
 	return func(c *gin.Context) {
+		requestid := c.GetString(`requestid`)
+		log.Println(`requestid = `, requestid)
+
 		var postVcode *components.POSTVcode
 		err := c.ShouldBindBodyWith(&postVcode, binding.JSON)
 		if err != nil {
