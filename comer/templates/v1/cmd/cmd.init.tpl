@@ -18,9 +18,9 @@ import (
 
 // initCmd represents the init command
 var initCmd = &cobra.Command{
-	Use:   "init",
-	Example:      "{{.exeName}} init",
-	Short: "A brief description of your command",
+	Use:     "init",
+	Example: "{{.exeName}} init",
+	Short:   "A brief description of your command",
 	Long: `A longer description that spans multiple lines and likely contains examples
 and usage of using your command. For example:
 

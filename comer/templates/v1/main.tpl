@@ -6,6 +6,9 @@ package main
 
 import "{{.moduleName}}/cmd"
 
+// @title           Comer API
+// @version         1.0
+// @description     This is a comer-example server.
 func main() {
 	cmd.Execute()
 }

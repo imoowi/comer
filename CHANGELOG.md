@@ -53,3 +53,9 @@
 ### Patch Changes
 
 -    update handler.tpl
+
+## 1.2.6
+
+### Patch Changes
+
+-    add makefile.tpl test.tpl

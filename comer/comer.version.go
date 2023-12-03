@@ -13,7 +13,7 @@ func (c *Comer) goVersion() string {
 }
 
 func (c *Comer) Version() string {
-	c.version = `v1.2.4`
+	c.version = `v1.2.6`
 	fmt.Println(`Comer version `, c.version)
 	return c.version
 }

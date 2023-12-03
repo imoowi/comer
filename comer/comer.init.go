@@ -116,6 +116,7 @@ func (c *Comer) init(cmd *cobra.Command, args []string) bool {
 			c.path + `/middlewares/token`,
 			c.path + `/router`,
 			c.path + `/runtime`,
+			c.path + `/test`,
 			c.path + `/utils`,
 			c.path + `/utils/copy`,
 			c.path + `/utils/format`,
@@ -131,6 +132,7 @@ func (c *Comer) init(cmd *cobra.Command, args []string) bool {
 		},
 		files: map[string]string{
 			c.path + `/README.md`:                               tplUri + `templates/v1/README.md.tpl`,
+			c.path + `/Makefile`:                                tplUri + `templates/v1/Makefile.tpl`,
 			c.path + `/go.mod`:                                  tplUri + `templates/v1/go.mod.tpl`,
 			c.path + `/main.go`:                                 tplUri + `templates/v1/main.tpl`,
 			c.path + `/.air.toml`:                               tplUri + `templates/v1/air.tpl`,
@@ -201,6 +203,7 @@ func (c *Comer) init(cmd *cobra.Command, args []string) bool {
 			c.path + `/apps/user/services/user.service.go`:      tplUri + `templates/v1/apps/user/services/user.service.tpl`,
 			c.path + `/apps/user/services/userlog.service.go`:   tplUri + `templates/v1/apps/user/services/userlog.service.tpl`,
 			c.path + `/apps/user/services/userrole.service.go`:  tplUri + `templates/v1/apps/user/services/userrole.service.tpl`,
+			c.path + `/test/login.go`:                           tplUri + `templates/v1/test/login.tpl`,
 		},
 	}
 	moduleNameSlic := strings.Split(c.moduleName, `/`)
