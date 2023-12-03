@@ -163,6 +163,7 @@ func (c *Comer) init(cmd *cobra.Command, args []string) bool {
 			c.path + `/middlewares/RateLimitMiddleware.go`:      tplUri + `templates/v1/middleware/middleware.RateLimit.tpl`,
 			c.path + `/middlewares/VcodeMiddleware.go`:          tplUri + `templates/v1/middleware/middleware.Vcode.tpl`,
 			c.path + `/middlewares/UserlogMiddleware.go`:        tplUri + `templates/v1/middleware/middleware.Userlog.tpl`,
+			c.path + `/middlewares/RequestIdMiddleware.go`:      tplUri + `templates/v1/middleware/middleware.Requestid.tpl`,
 			c.path + `/middlewares/middleware.go`:               tplUri + `templates/v1/middleware/middleware.tpl`,
 			c.path + `/router/router.go`:                        tplUri + `templates/v1/router/router.tpl`,
 			c.path + `/utils/copy/copy.go`:                      tplUri + `templates/v1/utils/copy/copy.tpl`,

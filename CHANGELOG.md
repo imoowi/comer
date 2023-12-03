@@ -54,6 +54,12 @@
 
 -    update handler.tpl
 
+## 1.2.5
+
+### Patch Changes
+
+-    add requestid , you can get it by "c.GetString(`requestid`)"
+
 ## 1.2.6
 
 ### Patch Changes
