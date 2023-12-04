@@ -5,7 +5,6 @@ Copyright © 2023 jun<simpleyuan@gmail.com>
 package repos
 
 import (
-	"encoding/json"
 	"errors"
 
 	"github.com/gin-gonic/gin"
@@ -100,39 +99,6 @@ func (r *{{.ModelName}}Repo) Update(c *gin.Context, model *models.{{.ModelName}}
 	return
 }
 
-
-func (r *{{.ModelName}}Repo) PatchUpdate(c *gin.Context, patchData map[string]any, id uint) (updated bool, err error) {
-	if id == 0 {
-		updated = false
-		err = errors.New(`pls input id`)
-		return
-	}
-	model, err := r.One(c, id)
-	if err != nil {
-		return
-	}
-	if model == nil {
-		err = errors.New(`no data existed`)
-		return
-	}
-
-	patchDataBytes, err := json.Marshal(patchData)
-	if err != nil {
-		return
-	}
-	err = json.Unmarshal(patchDataBytes, &model)
-	if err != nil {
-		return
-	}
-
-	db := r.Db.Client
-	err = db.Omit(`created_at`).Save(&model).Error
-	if err == nil {
-		updated = true
-	}
-	return
-}
-
 func (r *{{.ModelName}}Repo) Delete(c *gin.Context, id uint) (deleted bool, err error) {
 	if id == 0 {
 		deleted = false
@@ -145,7 +111,7 @@ func (r *{{.ModelName}}Repo) Delete(c *gin.Context, id uint) (deleted bool, err 
 		return
 	}
 	if model.ID == 0 {
-		err = errors.New(`obj not existe`)
+		err = errors.New(`obj not exist`)
 		return
 	}
 	err = db.Delete(&model).Error

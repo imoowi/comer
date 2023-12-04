@@ -12,6 +12,7 @@ import (
 	"{{.ModuleName}}/apps/{{.appName}}/repos"
 	"{{.ModuleName}}/global"
 	"{{.ModuleName}}/utils/response"
+	"github.com/jinzhu/copier"
 )
 
 var {{.ServiceName}} *{{.ServiceName}}Service
@@ -55,24 +56,45 @@ func (s *{{.ServiceName}}Service) OneByName(c *gin.Context, name string) (model 
 	return
 }
 
-func (s *{{.ServiceName}}Service) Add(c *gin.Context, _model *models.{{.ModelName}}) (newId uint, err error) {
+func (s *{{.ServiceName}}Service) Add(c *gin.Context, _model *models.{{.ModelName}}Add) (newId uint, err error) {
 	model, err := s.{{.ModelName}}Repo.OneByName(c, _model.Name)
 	if model != nil && model.ID > 0 {
 		newId = 0
 		err = errors.New(`name existed`)
 		return
 	}
-	newId, err = s.{{.ModelName}}Repo.Add(c, _model)
+	newModel := &models.{{.ModelName}}{}
+	err = copier.Copy(&newModel, _model)
+	if err != nil {
+		return
+	}
+	newId, err = s.{{.ModelName}}Repo.Add(c, newModel)
 	return
 }
 
-func (s *{{.ServiceName}}Service) Update(c *gin.Context, _model *models.{{.ModelName}}, id uint) (updated bool, err error) {
-	updated, err = s.{{.ModelName}}Repo.Update(c, _model, id)
+func (s *{{.ServiceName}}Service) Update(c *gin.Context, _model *models.{{.ModelName}}Update, id uint) (updated bool, err error) {
+	model, err := s.{{.ModelName}}Repo.One(c, id)
+	if err != nil {
+		return
+	}
+	err = copier.Copy(&model, _model)
+	if err != nil {
+		return
+	}
+	updated, err = s.{{.ModelName}}Repo.Update(c, model, id)
 	return
 }
 
-func (s *{{.ServiceName}}Service) PatchUpdate(c *gin.Context, patchData map[string]any, id uint) (updated bool, err error) {
-	updated, err = s.{{.ModelName}}Repo.PatchUpdate(c, patchData, id)
+func (s *{{.ServiceName}}Service) PatchUpdate(c *gin.Context, _model *models.{{.ModelName}}PatchUpdate, id uint) (updated bool, err error) {
+	model, err := s.One(c, id)
+	if err != nil {
+		return
+	}
+	err = copier.Copy(&model, _model)
+	if err != nil {
+		return
+	}
+	updated, err = s.{{.ModelName}}Repo.Update(c, model, id)
 	return
 }
 

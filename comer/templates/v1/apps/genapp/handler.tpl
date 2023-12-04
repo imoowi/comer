@@ -43,14 +43,15 @@ func {{.HandlerName}}PageList(c *gin.Context) {
 		return
 	}
 	//*/
-	if 0 >= query.Page{
+	if 0 >= query.Page{ //如果不传Page，默认为1
 		query.Page = 1
 	}
-	if 0 >= query.PageSize{
+	if 0 >= query.PageSize{ //如果不传PageSize，默认取20条
 		query.PageSize = 20
 	}
-	if query.PageSize >= 1000 {
-		query.PageSize = 1000
+	if query.PageSize > 1000 {
+		response.Error(`每一页不能超过1000条记录`, http.StatusBadRequest,c)
+		return
 	}
 	result, err := services.{{.ServiceName}}.PageList(c, &query)
 	if err != nil {
@@ -70,7 +71,7 @@ func {{.HandlerName}}PageList(c *gin.Context) {
 // @Failure 400                        "请求错误"
 // @Failure 401                        "token验证失败"
 // @Failure 500                         "内部错误"
-// @Router		/api/{{.handlerName2Dash}}s/:id [get]
+// @Router		/api/{{.handlerName2Dash}}s/{id} [get]
 func {{.HandlerName}}One(c *gin.Context) {
 	id := c.Param(`id`)
 	if id == `` {
@@ -90,14 +91,14 @@ func {{.HandlerName}}One(c *gin.Context) {
 // @Accept		application/json
 // @Produce	application/json
 // @Param		Authorization	header	string	true	"Bearer 用户令牌"
-// @Param {object} body  models.{{.ModelName}} true "body"
+// @Param {object} body  models.{{.ModelName}}Add true "body"
 // @Success	200
 // @Failure 400                        "请求错误"
 // @Failure 401                        "token验证失败"
 // @Failure 500                         "内部错误"
 // @Router		/api/{{.handlerName2Dash}}s [post]
 func {{.HandlerName}}Add(c *gin.Context) {
-	var {{.modelName}} *models.{{.ModelName}}
+	var {{.modelName}} *models.{{.ModelName}}Add
 	err := c.ShouldBindJSON(&{{.modelName}})
 	if err != nil {
 		response.Error(err.Error(), http.StatusBadRequest,c)
@@ -117,19 +118,19 @@ func {{.HandlerName}}Add(c *gin.Context) {
 // @Produce	application/json
 // @Param		Authorization	header	string	true	"Bearer 用户令牌"
 // @Param		id				path	int		true	"id"
-// @Param {object} body  models.{{.ModelName}} true "body"
+// @Param {object} body  models.{{.ModelName}}Update true "body"
 // @Success	200
 // @Failure 400                        "请求错误"
 // @Failure 401                        "token验证失败"
 // @Failure 500                         "内部错误"
-// @Router		/api/{{.handlerName2Dash}}s/:id [put]
+// @Router		/api/{{.handlerName2Dash}}s/{id} [put]
 func {{.HandlerName}}Update(c *gin.Context) {
 	id := c.Param(`id`)
 	if id == `` {
 		response.Error(`pls input id`, http.StatusBadRequest,c)
 		return
 	}
-	var {{.modelName}} *models.{{.ModelName}}
+	var {{.modelName}} *models.{{.ModelName}}Update
 	err := c.ShouldBindJSON(&{{.modelName}})
 	if err != nil {
 		response.Error(err.Error(), http.StatusBadRequest,c)
@@ -149,24 +150,25 @@ func {{.HandlerName}}Update(c *gin.Context) {
 // @Produce	application/json
 // @Param		Authorization	header	string	true	"Bearer 用户令牌"
 // @Param		id				path	int		true	"id"
+// @Param {object} body  models.{{.ModelName}}PatchUpdate true "body"
 // @Success	200
 // @Failure 400                        "请求错误"
 // @Failure 401                        "token验证失败"
 // @Failure 500                         "内部错误"
-// @Router		/api/{{.handlerName2Dash}}s/:id [patch]
+// @Router		/api/{{.handlerName2Dash}}s/{id} [patch]
 func {{.HandlerName}}Patch(c *gin.Context) {
 	id := c.Param(`id`)
 	if id == `` {
 		response.Error(`pls input id`, http.StatusBadRequest, c)
 		return
 	}
-	patchObj := make(map[string]any)
-	err := c.BindJSON(&patchObj)
+	var {{.modelName}} *models.{{.ModelName}}PatchUpdate
+	err := c.ShouldBindJSON(&{{.modelName}})
 	if err != nil {
-		response.Error(err.Error(), http.StatusBadRequest, c)
+		response.Error(err.Error(), http.StatusBadRequest,c)
 		return
 	}
-	updated, err := services.{{.ServiceName}}.PatchUpdate(c, patchObj, cast.ToUint(id))
+	updated, err := services.{{.ServiceName}}.PatchUpdate(c, {{.modelName}}, cast.ToUint(id))
 	if err != nil {
 		response.Error(err.Error(), http.StatusBadRequest, c)
 		return
@@ -184,7 +186,7 @@ func {{.HandlerName}}Patch(c *gin.Context) {
 // @Failure 400                        "请求错误"
 // @Failure 401                        "token验证失败"
 // @Failure 500                         "内部错误"
-// @Router		/api/{{.handlerName2Dash}}s/:id [delete]
+// @Router		/api/{{.handlerName2Dash}}s/{id} [delete]
 func {{.HandlerName}}Del(c *gin.Context) {
 	id := c.Param(`id`)
 	if id == `` {
