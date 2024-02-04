@@ -18,7 +18,7 @@ func GenCaptcha(driverType string) (id string, b64s string, err error) {
 	// 生成base64图片
 	captcha := base64Captcha.NewCaptcha(driver, store)
 	// 获取
-	id, b64s, err = captcha.Generate()
+	id, b64s, _ , err = captcha.Generate()
 	return
 }
 
