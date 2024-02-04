@@ -9,7 +9,8 @@ import (
 	"strings"
 	"time"
 
-	"{{.moduleName}}/utils/format"
+	//"{{.moduleName}}/utils/format"
+	"github.com/imoowi/comer/utils/format"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cast"
 )

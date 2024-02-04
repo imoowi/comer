@@ -8,9 +8,9 @@ import (
 	"github.com/gin-gonic/gin"
 	"{{.moduleName}}/apps/user/models"
 	"{{.moduleName}}/apps/user/repos"
-	"{{.moduleName}}/global"
-	"{{.moduleName}}/utils/request"
-	"{{.moduleName}}/utils/response"
+	"{{.moduleName}}/global" 
+	"github.com/imoowi/comer/utils/request" 
+	"github.com/imoowi/comer/utils/response"
 )
 
 var UserLog *UserLogService

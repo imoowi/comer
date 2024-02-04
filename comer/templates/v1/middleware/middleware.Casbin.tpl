@@ -9,7 +9,7 @@ import (
 	"net/http"
 
 	"{{.moduleName}}/global"
-	"{{.moduleName}}/utils/response"
+	"github.com/imoowi/comer/utils/response"
 
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"

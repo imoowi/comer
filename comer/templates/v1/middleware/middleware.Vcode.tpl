@@ -10,8 +10,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
-	"{{.moduleName}}/components"
-	"{{.moduleName}}/utils/response"
+	"github.com/imoowi/comer/components"
+	"github.com/imoowi/comer/utils/response"
 )
 
 

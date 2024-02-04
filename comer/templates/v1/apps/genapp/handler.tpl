@@ -6,7 +6,7 @@ package handlers
 
 import (
 	"github.com/gin-gonic/gin"
-	"{{.ModuleName}}/utils/response"
+	"github.com/imoowi/comer/utils/response"
 	"{{.ModuleName}}/apps/{{.appName}}/models"
 	"{{.ModuleName}}/apps/{{.appName}}/services"
 	"net/http"

@@ -5,8 +5,8 @@ Copyright © 2023 jun<simpleyuan@gmail.com>
 package models
 
 import (
-	"{{.ModuleName}}/components"
-	"{{.ModuleName}}/utils/request"
+	"github.com/imoowi/comer/components"
+	"github.com/imoowi/comer/utils/request"
 )
 
 // {{.ModelName}}表

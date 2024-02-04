@@ -10,12 +10,12 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"{{.moduleName}}/apps/user/models"
-	"{{.moduleName}}/components"
-	"{{.moduleName}}/global"
-	"{{.moduleName}}/utils/maker"
-	"{{.moduleName}}/utils/password"
-	"{{.moduleName}}/utils/request"
-	"{{.moduleName}}/utils/response"
+	"github.com/imoowi/comer/components"
+	"{{.moduleName}}/global" 
+	"github.com/imoowi/comer/utils/maker" 
+	"github.com/imoowi/comer/utils/password" 
+	"github.com/imoowi/comer/utils/request" 
+	"github.com/imoowi/comer/utils/response"
 )
 
 type UserRepo struct {

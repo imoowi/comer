@@ -9,9 +9,9 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"{{.ModuleName}}/apps/{{.appName}}/models"
-	"{{.ModuleName}}/components"
+	"github.com/imoowi/comer/components"
 	"{{.ModuleName}}/global"
-	"{{.ModuleName}}/utils/response"
+	"github.com/imoowi/comer/utils/response"
 	"gorm.io/gorm"
 )
 

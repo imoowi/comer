@@ -6,7 +6,7 @@ package migrate
 
 import (
 	"{{.ModuleName}}/apps/{{.appName}}/models"
-	"{{.ModuleName}}/components"
+	"github.com/imoowi/comer/components"
 	"{{.ModuleName}}/global"
 )
 

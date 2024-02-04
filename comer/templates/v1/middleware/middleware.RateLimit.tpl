@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"{{.moduleName}}/global"
-	"{{.moduleName}}/utils/response"
+	"github.com/imoowi/comer/utils/response"
 
 	"github.com/gin-gonic/gin"
 	"github.com/juju/ratelimit"

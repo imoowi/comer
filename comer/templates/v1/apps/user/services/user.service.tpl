@@ -10,9 +10,9 @@ import (
 	"{{.moduleName}}/apps/user/models"
 	"{{.moduleName}}/apps/user/repos"
 	"{{.moduleName}}/global"
-	"{{.moduleName}}/middlewares/token"
-	"{{.moduleName}}/utils/request"
-	"{{.moduleName}}/utils/response"
+	"{{.moduleName}}/middlewares/token" 
+	"github.com/imoowi/comer/utils/request" 
+	"github.com/imoowi/comer/utils/response"
 	"github.com/spf13/cast"
 )
 

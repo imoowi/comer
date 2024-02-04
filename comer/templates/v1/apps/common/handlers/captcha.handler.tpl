@@ -8,8 +8,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"{{.moduleName}}/components"
-	"{{.moduleName}}/utils/response"
+	"github.com/imoowi/comer/components"
+	"github.com/imoowi/comer/utils/response"
 )
 
 // @Summary	验证码  /api/common/captcha?type=audio|string|math|chinese

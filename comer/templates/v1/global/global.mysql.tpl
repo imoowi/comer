@@ -7,7 +7,7 @@ package global
 import (
 	"log"
 
-	"{{.moduleName}}/components"
+	"github.com/imoowi/comer/components"
 )
 
 var MysqlDb *components.MysqlODM

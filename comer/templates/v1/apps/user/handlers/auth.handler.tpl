@@ -11,8 +11,8 @@ import (
 	"github.com/gin-gonic/gin/binding"
 	"{{.moduleName}}/apps/user/models"
 	"{{.moduleName}}/apps/user/services"
-	"{{.moduleName}}/middlewares/token"
-	"{{.moduleName}}/utils/response"
+	"{{.moduleName}}/middlewares/token" 
+	"github.com/imoowi/comer/utils/response"
 )
 
 // @Summary	登录

@@ -4,7 +4,7 @@ Copyright © 2023 jun<simpleyuan@gmail.com>
 */
 package models
 
-import "{{.moduleName}}/components"
+import "github.com/imoowi/comer/components"
 import "{{.moduleName}}/global"
 
 type USER_LOG_TYPE int

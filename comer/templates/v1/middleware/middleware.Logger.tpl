@@ -6,7 +6,7 @@ package middlewares
 
 import (
 	"fmt"
-	"{{.moduleName}}/utils"
+	"github.com/imoowi/comer/utils"
 	"math"
 	"os"
 	"time"

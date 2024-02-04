@@ -10,8 +10,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"{{.ModuleName}}/apps/{{.appName}}/models"
 	"{{.ModuleName}}/apps/{{.appName}}/repos"
-	"{{.ModuleName}}/global"
-	"{{.ModuleName}}/utils/response"
+	"{{.ModuleName}}/global" 
+	"github.com/imoowi/comer/utils/response"
 	"github.com/jinzhu/copier"
 )
 

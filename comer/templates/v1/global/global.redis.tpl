@@ -8,7 +8,7 @@ import (
 	"log"
 
 	"github.com/go-redis/redis/v8"
-	"{{.moduleName}}/components"
+	"github.com/imoowi/comer/components"
 )
 
 // 全局Redis客户端

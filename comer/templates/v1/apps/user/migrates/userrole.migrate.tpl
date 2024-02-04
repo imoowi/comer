@@ -5,8 +5,8 @@ Copyright © 2023 jun<simpleyuan@gmail.com>
 package migrate
 
 import (
-	"{{.moduleName}}/apps/user/models"
-	"{{.moduleName}}/components"
+	"{{.moduleName}}/apps/user/models" 
+	"github.com/imoowi/comer/components"
 	"{{.moduleName}}/global"
 )
 

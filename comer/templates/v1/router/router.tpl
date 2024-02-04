@@ -7,7 +7,7 @@ package router
 import (
 	"github.com/gin-gonic/gin"
 	"{{.moduleName}}/middlewares"
-	"{{.moduleName}}/utils/response"
+	"github.com/imoowi/comer/utils/response"
 )
 
 type Router func(*gin.Engine)

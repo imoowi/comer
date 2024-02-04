@@ -10,10 +10,10 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"{{.moduleName}}/apps/user/models"
-	"{{.moduleName}}/components"
-	"{{.moduleName}}/global"
-	"{{.moduleName}}/utils/request"
-	"{{.moduleName}}/utils/response"
+	"github.com/imoowi/comer/components"
+	"{{.moduleName}}/global" 
+	"github.com/imoowi/comer/utils/request" 
+	"github.com/imoowi/comer/utils/response"
 )
 
 type UserLogRepo struct {
