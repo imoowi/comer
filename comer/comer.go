@@ -8,16 +8,17 @@ import (
 )
 
 type Comer struct {
-	debugMode  bool
-	version    string
-	cmd        *cobra.Command
-	args       []string
-	Framework  *Framework
-	tplData    map[string]any
-	moduleName string
-	path       string
-	App        *App
-	tplAppData map[string]any
+	debugMode         bool
+	version           string
+	cmd               *cobra.Command
+	args              []string
+	Framework         *Framework
+	tplData           map[string]any
+	moduleName        string
+	moduleProjectName string
+	path              string
+	App               *App
+	tplAppData        map[string]any
 }
 
 type Framework struct {

@@ -71,3 +71,9 @@
 ### Patch Changes
 
 -    change template
+
+## 1.2.8
+
+### Patch Changes
+
+-    add docker support

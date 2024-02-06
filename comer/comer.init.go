@@ -90,6 +90,9 @@ func (c *Comer) init(cmd *cobra.Command, args []string) bool {
 		return false
 	}
 	c.moduleName = moduleName
+	moduleNameArr := strings.Split(c.moduleName, `/`)
+	c.moduleProjectName = moduleNameArr[len(moduleNameArr)-1]
+
 	/*
 		if c.path == `` {
 			c.path = c.moduleName
@@ -131,17 +134,20 @@ func (c *Comer) init(cmd *cobra.Command, args []string) bool {
 			c.path + `/.vscode`,
 		},
 		files: map[string]string{
-			c.path + `/README.md`:             tplUri + `templates/v1/README.md.tpl`,
-			c.path + `/Makefile`:              tplUri + `templates/v1/Makefile.tpl`,
-			c.path + `/go.mod`:                tplUri + `templates/v1/go.mod.tpl`,
-			c.path + `/main.go`:               tplUri + `templates/v1/main.tpl`,
-			c.path + `/.air.toml`:             tplUri + `templates/v1/air.tpl`,
-			c.path + `/.vscode/launch.json`:   tplUri + `templates/v1/vscode/launch.json`,
-			c.path + `/.vscode/settings.json`: tplUri + `templates/v1/vscode/settings.json`,
-			c.path + `/cmd/root.go`:           tplUri + `templates/v1/cmd/cmd.root.tpl`,
-			c.path + `/cmd/server.go`:         tplUri + `templates/v1/cmd/cmd.server.tpl`,
-			c.path + `/cmd/init.go`:           tplUri + `templates/v1/cmd/cmd.init.tpl`,
-			c.path + `/cmd/migrate.go`:        tplUri + `templates/v1/cmd/cmd.migrate.tpl`,
+			c.path + `/README.md`:                 tplUri + `templates/v1/README.md.tpl`,
+			c.path + `/Makefile`:                  tplUri + `templates/v1/Makefile.tpl`,
+			c.path + `/Dockerfile`:                tplUri + `templates/v1/Dockerfile.tpl`,
+			c.path + `/docker-compose.yml`:        tplUri + `templates/v1/docker-compose.yml.tpl`,
+			c.path + `/start_server_in_docker.sh`: tplUri + `templates/v1/start_server_in_docker.sh.tpl`,
+			c.path + `/go.mod`:                    tplUri + `templates/v1/go.mod.tpl`,
+			c.path + `/main.go`:                   tplUri + `templates/v1/main.tpl`,
+			c.path + `/.air.toml`:                 tplUri + `templates/v1/air.tpl`,
+			c.path + `/.vscode/launch.json`:       tplUri + `templates/v1/vscode/launch.json`,
+			c.path + `/.vscode/settings.json`:     tplUri + `templates/v1/vscode/settings.json`,
+			c.path + `/cmd/root.go`:               tplUri + `templates/v1/cmd/cmd.root.tpl`,
+			c.path + `/cmd/server.go`:             tplUri + `templates/v1/cmd/cmd.server.tpl`,
+			c.path + `/cmd/init.go`:               tplUri + `templates/v1/cmd/cmd.init.tpl`,
+			c.path + `/cmd/migrate.go`:            tplUri + `templates/v1/cmd/cmd.migrate.tpl`,
 			// c.path + `/components/mysql.go`:                tplUri + `templates/v1/components/components.mysql.tpl`,
 			// c.path + `/components/redis.go`:                tplUri + `templates/v1/components/components.redis.tpl`,
 			// c.path + `/components/captcha.go`:              tplUri + `templates/v1/components/components.captcha.tpl`,
@@ -210,9 +216,10 @@ func (c *Comer) init(cmd *cobra.Command, args []string) bool {
 	moduleNameSlic := strings.Split(c.moduleName, `/`)
 	exeName := moduleNameSlic[len(moduleNameSlic)-1]
 	c.tplData = map[string]any{
-		`moduleName`: c.moduleName,
-		`dbName`:     `comer_project`,
-		`exeName`:    exeName,
+		`moduleName`:        c.moduleName,
+		`dbName`:            `comer_project`,
+		`exeName`:           exeName,
+		`moduleProjectName`: c.moduleProjectName,
 	}
 	return true
 }
