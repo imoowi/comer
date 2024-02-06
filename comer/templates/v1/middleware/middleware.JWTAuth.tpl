@@ -14,7 +14,6 @@ import (
 	"github.com/imoowi/comer/utils/response"
 
 	"github.com/gin-gonic/gin"
-	"github.com/spf13/viper"
 )
 
 func JWTAuthMiddleware() func(c *gin.Context) {

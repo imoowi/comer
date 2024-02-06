@@ -65,3 +65,9 @@
 ### Patch Changes
 
 -    add makefile.tpl test.tpl
+
+## 1.2.7
+
+### Patch Changes
+
+-    change template
