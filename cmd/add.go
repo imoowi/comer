@@ -45,4 +45,6 @@ func init() {
 	addCmd.PersistentFlags().StringP(`service`, `s`, ``, `服务名`)
 	// addCmd.PersistentFlags().String("model", "", "模型名;多个模型名之间用英文半角逗号(,)分隔")
 	addCmd.PersistentFlags().StringP(`model`, `m`, ``, `模型名;多个模型名之间用英文半角逗号(,)分隔`)
+
+	addCmd.PersistentFlags().String(`tpl`, ``, `模板目录地址`)
 }

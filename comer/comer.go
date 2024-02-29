@@ -52,7 +52,7 @@ func (c *Comer) generateFrameworkDir() {
 func (c *Comer) generateFrameworkFiles() {
 	if len(c.Framework.files) > 0 {
 		for file, tpl := range c.Framework.files {
-			c.generateFileByMap(file, tpl, c.tplData)
+			c.generateFileByMap(file, tpl, c.tplData, false)
 		}
 	}
 }

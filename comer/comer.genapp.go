@@ -36,13 +36,29 @@ func (c *Comer) generateAppDir() {
 	}
 }
 
-func (c *Comer) generateAppFiles() {
-	if len(c.App.files) > 0 {
-		for file, tpl := range c.App.files {
-			c.generateFileByMap(file, tpl, c.tplAppData)
+func (c *Comer) generateDirs(dirs []string) {
+	if len(dirs) > 0 {
+		for _, dir := range dirs {
+			c.generateDirByName(dir)
 		}
 	}
 }
+
+func (c *Comer) generateAppFiles() {
+	if len(c.App.files) > 0 {
+		for file, tpl := range c.App.files {
+			c.generateFileByMap(file, tpl, c.tplAppData, false)
+		}
+	}
+}
+func (c *Comer) generateFiles(files map[string]string, tplData any) {
+	if len(files) > 0 {
+		for file, tpl := range files {
+			c.generateFileByMap(file, tpl, tplData, true)
+		}
+	}
+}
+
 func (c *Comer) showAppTips() {
 	fmt.Println(`comer genapp end.`)
 }

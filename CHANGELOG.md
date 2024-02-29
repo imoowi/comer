@@ -76,4 +76,10 @@
 
 ### Patch Changes
 
--    add docker support
+-    add template docker support
+
+## 1.2.9
+
+### Patch Changes
+
+-    add new cmd "comer add-with-tpl"

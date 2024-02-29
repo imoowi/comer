@@ -35,7 +35,7 @@ _________
 /    \  \/  /  _ \  /     \ _/ __ \ \_  __ \
 \     \____(  <_> )|  Y Y  \\  ___/  |  | \/
  \______  / \____/ |__|_|  / \___  > |__|
-                \/               \/      \/ v1.2.6, built with go1.20.2
+                \/               \/      \/ v1.2.9, built with go1.20.2
 dir [ github.com/imoowi/comer-example/apps ] created
 ...
 下一步，执行以下命令:
@@ -67,7 +67,7 @@ _________
 /    \  \/  /  _ \  /     \ _/ __ \ \_  __ \
 \     \____(  <_> )|  Y Y  \\  ___/  |  | \/
  \______  / \____/ |__|_|  / \___  > |__|
-                \/               \/      \/ v1.2.3, built with go1.20.2
+                \/               \/      \/ v1.2.9, built with go1.20.2
 dir [ ./apps ] existed
 dir [ ./apps/student/handlers ] created
 dir [ ./apps/student/migrates ] created
@@ -76,8 +76,86 @@ comer add end.
 
 ```
 
+### 3、通过自定义模板添加
+- 3.1 在项目根目录下创建文件夹：".comer-templates"
+- 3.2 创建配置文件".comer-templates/setting.json5"
+```json5
+[//多组
+    {
+        var: [//变量，可多组
+            {
+                module_name:"github.com/imoowi/examples/comer_add_with_tpl", //项目根目录下go.mod文件里的module
+                controller_name:"PostPlus",// 控制器名
+                service_name:"", // 服务名；如果为空，使用ControllerName
+                model_name: "", // 数据库模型名；如果为空，使用ServiceName
+                swagger_tags:"PostPlus(页面加)"
+            },
+            {
+                module_name:"github.com/imoowi/examples/comer_add_with_tpl", 
+                controller_name:"PostPlus2",
+                service_name:"", 
+                model_name: "", 
+                swagger_tags:"PostPlus2(页面加)"
+            },
+        ],
+        dir: {//目录
+            controller: "internal/controllers",// 控制器目录
+            migrate: "internal/db/migrates",// 数据迁移目录
+            model: "internal/models",// 模型目录
+            repo: "internal/models",// 数据资源目录
+            service: "internal/services",// 服务目录
+            router: "internal/app/monitor/router"// 路由目录
+        }
+    }
+]
+```
+- 3.3 创建模板文件，详情请见:"example/comer_add_with_tpl"
+```
+$ tree .comer-templates/
+.comer-templates/
+|-- controller.tpl
+|-- migrate.tpl
+|-- model.tpl
+|-- repo.tpl
+|-- router.tpl
+|-- service.tpl
+`-- setting.json5
 
-### 3、生成swagger文档
+0 directories, 7 files
+```
+- 3.4 运行命令: "comer add-with-tpl"
+```sh
+$ comer add-with-tpl
+Comer version  v1.2.9
+
+_________
+\_   ___ \   ____    _____    ____  _______
+/    \  \/  /  _ \  /     \ _/ __ \ \_  __ \
+\     \____(  <_> )|  Y Y  \\  ___/  |  | \/
+ \______  / \____/ |__|_|  / \___  > |__|
+                \/               \/      \/ v1.2.9, built with go1.20.2
+comer-templates dir is:  .comer-templates
+dir [ internal/controllers ] created
+dir [ internal/services ] created
+dir [ internal/models ] created
+dir [ internal/models ] existed
+dir [ internal/db/migrates ] created
+dir [ internal/app/monitor/router ] created
+file [ ./internal/controllers/post_plus.handler.go ] created
+file [ ./internal/db/migrates/post_plus.migrate.go ] created
+file [ ./internal/models/post_plus.model.go ] created
+file [ ./internal/models/post_plus.repo.go ] created
+file [ ./internal/services/post_plus.service.go ] created
+file [ ./internal/app/monitor/router/post_plus.router.go ] created
+file [ ./internal/controllers/post_plus2.handler.go ] created
+file [ ./internal/db/migrates/post_plus2.migrate.go ] created
+file [ ./internal/models/post_plus2.model.go ] created
+file [ ./internal/models/post_plus2.repo.go ] created
+file [ ./internal/services/post_plus2.service.go ] created
+file [ ./internal/app/monitor/router/post_plus2.router.go ] created
+```
+
+### 4、生成swagger文档
 
 ```sh
 #依赖swago, go install github.com/swaggo/swag/cmd/swag@latest
@@ -85,7 +163,7 @@ swag init
 ```
 
 
-### 4、修改数据库配置
+### 5、修改数据库配置
 
 ```yml
 #vim ./configs/settings-local.yml
@@ -125,17 +203,17 @@ cache:
 
 ```
 
-### 5、数据迁移:生成基本的数据库表
+### 6、数据迁移:生成基本的数据库表
 
 ```sh
 go run . migrate
 ```
-### 6、初始化数据库
+### 7、初始化数据库
 
 ```sh
 go run . init
 ```
-### 7、运行项目
+### 8、运行项目
 
 ```sh
 #依赖air, go install github.com/cosmtrek/air@latest
@@ -172,7 +250,7 @@ API document address http://localhost:8000/swagger/index.html
 
 ```
 
-### 8、访问接口文件：
+### 9、访问接口文件：
 [http://localhost:8000/swagger/index.html](http://localhost:8000/swagger/index.html)
 ![](assets/comer-swagger.png)
 ![](assets/comer-swagger2.png)

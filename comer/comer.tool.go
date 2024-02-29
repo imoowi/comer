@@ -26,7 +26,7 @@ func (c *Comer) generateDirByName(dirName string) {
 	}
 }
 
-func (c *Comer) generateFileByMap(fileName string, tplFileName string, tplData any) {
+func (c *Comer) generateFileByMap(fileName string, tplFileName string, tplData any, customeTpl bool) {
 	// fmt.Println(`fileName=`, fileName, `tplFileName=`, tplFileName)
 	_, err := os.Stat(fileName)
 	if os.IsNotExist(err) {
@@ -36,9 +36,14 @@ func (c *Comer) generateFileByMap(fileName string, tplFileName string, tplData a
 			return
 		}
 		defer file.Close()
-
+		var t *template.Template
+		if customeTpl {
+			t, err = template.ParseFiles(tplFileName)
+		} else {
+			t, err = template.ParseFS(tplLocal, tplFileName)
+		}
 		// t, err := template.ParseFiles(tplFileName)
-		t, err := template.ParseFS(tplLocal, tplFileName)
+
 		if err != nil {
 			fmt.Println(`err:`, err.Error())
 			return
