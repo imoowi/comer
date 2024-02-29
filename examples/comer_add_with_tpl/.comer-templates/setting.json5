@@ -1,0 +1,35 @@
+[
+    {
+      var: [
+        {
+          module_name: "github.com/imoowi/examples/comer_add_with_tpl", //项目根目录下go.mod文件里的module
+          controller_name: "PostPlus", // 控制器名
+          service_name: "", // 服务名；如果为空，使用ControllerName
+          model_name: "", // 数据库模型名；如果为空，使用ServiceName
+          swagger_tags: "PostPlus(页面加)"
+        },
+        {
+          module_name: "github.com/imoowi/examples/comer_add_with_tpl",
+          controller_name: "PostPlus2",
+          service_name: "",
+          model_name: "",
+          swagger_tags: "PostPlus2(页面加)"
+        }
+      ],
+      dir: {
+        // 控制器目录
+        controller: "internal/controllers", 
+        // 数据迁移目录
+        migrate: "internal/db/migrates", 
+        // 模型目录
+        model: "internal/models",
+        // 数据资源目录
+        repo: "internal/models", 
+        // 服务目录
+        service: "internal/services", 
+        // 路由目录
+        router: "internal/app/monitor/router", 
+      },
+    }
+  ]
+  
