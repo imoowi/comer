@@ -83,3 +83,9 @@
 ### Patch Changes
 
 -    add new cmd "comer add-with-tpl"
+-    
+## 1.3.0
+
+### Patch Changes
+
+-    add flag -v
