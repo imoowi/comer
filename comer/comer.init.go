@@ -132,6 +132,7 @@ func (c *Comer) init(cmd *cobra.Command, args []string) bool {
 			// c.path + `/utils/response`,
 			// c.path + `/utils/slice`,
 			c.path + `/.vscode`,
+			c.path + `/docs`,
 		},
 		files: map[string]string{
 			c.path + `/README.md`:                 tplUri + `templates/v1/README.md.tpl`,
@@ -142,6 +143,8 @@ func (c *Comer) init(cmd *cobra.Command, args []string) bool {
 			c.path + `/go.mod`:                    tplUri + `templates/v1/go.mod.tpl`,
 			c.path + `/main.go`:                   tplUri + `templates/v1/main.tpl`,
 			c.path + `/.air.toml`:                 tplUri + `templates/v1/air.tpl`,
+			c.path + `/.gitignore`:                tplUri + `templates/v1/gitignore.tpl`,
+			c.path + `/docs/doc.go`:               tplUri + `templates/v1/doc.tpl`,
 			c.path + `/.vscode/launch.json`:       tplUri + `templates/v1/vscode/launch.json`,
 			c.path + `/.vscode/settings.json`:     tplUri + `templates/v1/vscode/settings.json`,
 			c.path + `/cmd/root.go`:               tplUri + `templates/v1/cmd/cmd.root.tpl`,

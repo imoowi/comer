@@ -20,24 +20,7 @@
       "mode": "debug",
       "program": "${workspaceFolder}/main.go",
       "env": {},
-      "args": ["migrate"]
-    },
-    {
-      "name": "LaunchGenerator",
-      "type": "go",
-      "request": "launch",
-      "mode": "debug",
-      "program": "${workspaceFolder}/main.go",
-      "env": {},
-      "args": [
-        "generator",
-        "--module",
-        "warehouse"
-        // "--service",
-        // "dptmt",
-        // "--model",
-        // "user,role,department,right"
-      ]
+      "args": ["migrate", "-c", "configs/settings-local.yml"]
     },
     {
       "name": "LaunchInit",

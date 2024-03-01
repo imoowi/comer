@@ -9,20 +9,24 @@ import (
 	"github.com/imoowi/comer/utils/request"
 )
 
+type {{.ModelName}}Base struct {
+	Name string `gorm:"column:name;type:varchar(30);not null;comment:名称"`
+}
+
 // {{.ModelName}}表
 type {{.ModelName}} struct {
 	components.GormModel
-	Name string `gorm:"column:name;type:varchar(30);not null;comment:名称"`
+	{{.ModelName}}Base
 }
 
 //新增
 type {{.ModelName}}Add struct {
-	Name string `json:"name" form:"name"` //名称
+	{{.ModelName}}Base
 }
 
 //完全更新
 type {{.ModelName}}Update struct {
-	Name string `json:"name" form:"name"` //名称
+	{{.ModelName}}Base
 }
 
 //部分更新

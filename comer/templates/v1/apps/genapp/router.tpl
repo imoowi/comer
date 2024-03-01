@@ -31,5 +31,5 @@ func Routers(e *gin.Engine) {
 		{{.lHandlerName}}s.DELETE("/:id", handlers.{{.HandlerName}}Del) //默认为软删除
 	}
 
-	//!import:do-not-delete-this-line,不要删除此行，主要用于代码生成器
+	//!important:do-not-delete-this-line,不要删除此行，主要用于代码生成器
 }
