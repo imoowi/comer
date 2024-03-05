@@ -26,9 +26,18 @@ type TplVar struct {
 	ModelName      string `json:"model_name"`
 	SwaggerTags    string `json:"swagger_tags"`
 }
+type DirAndTpl struct {
+	Dir string `json:"dir"`
+	Tpl string `json:"tpl"`
+}
 type TplSetting struct {
-	Dir  TplDir   `json:"dir"`
-	Vars []TplVar `json:"var"`
+	Vars       []TplVar    `json:"var"`
+	Controller []DirAndTpl `json:"controller"`
+	Service    []DirAndTpl `json:"service"`
+	Repo       []DirAndTpl `json:"repo"`
+	Model      []DirAndTpl `json:"model"`
+	Migrate    []DirAndTpl `json:"migrate"`
+	Router     []DirAndTpl `json:"router"`
 }
 
 func (c *Comer) GenAppWithTpl(cmd *cobra.Command, args []string) {
@@ -59,12 +68,30 @@ func (c *Comer) GenAppWithTpl(cmd *cobra.Command, args []string) {
 	for _, v := range tplSetting {
 
 		dirs := make([]string, 0)
-		dirs = append(dirs, v.Dir.Controller)
-		dirs = append(dirs, v.Dir.Service)
-		dirs = append(dirs, v.Dir.Model)
-		dirs = append(dirs, v.Dir.Repo)
-		dirs = append(dirs, v.Dir.Migrate)
-		dirs = append(dirs, v.Dir.Router)
+		for _, vv := range v.Controller {
+			dirs = append(dirs, vv.Dir)
+		}
+		// dirs = append(dirs, v.Dir.Controller)
+		for _, vv := range v.Service {
+			dirs = append(dirs, vv.Dir)
+		}
+		// dirs = append(dirs, v.Dir.Service)
+		for _, vv := range v.Model {
+			dirs = append(dirs, vv.Dir)
+		}
+		// dirs = append(dirs, v.Dir.Model)
+		for _, vv := range v.Repo {
+			dirs = append(dirs, vv.Dir)
+		}
+		// dirs = append(dirs, v.Dir.Repo)
+		for _, vv := range v.Migrate {
+			dirs = append(dirs, vv.Dir)
+		}
+		// dirs = append(dirs, v.Dir.Migrate)
+		for _, vv := range v.Router {
+			dirs = append(dirs, vv.Dir)
+		}
+		// dirs = append(dirs, v.Dir.Router)
 		c.generateDirs(dirs)
 
 		for _, vv := range v.Vars {
@@ -74,14 +101,33 @@ func (c *Comer) GenAppWithTpl(cmd *cobra.Command, args []string) {
 			if vv.ModelName == `` {
 				vv.ModelName = vv.ServiceName
 			}
-			files := map[string]string{
-				`./` + strings.ToLower(v.Dir.Controller) + `/` + format.Camel2Snake(vv.ControllerName) + `.handler.go`: tpl + `/controller.tpl`,
-				`./` + strings.ToLower(v.Dir.Migrate) + `/` + format.Camel2Snake(vv.ModelName) + `.migrate.go`:         tpl + `/migrate.tpl`,
-				`./` + strings.ToLower(v.Dir.Model) + `/` + format.Camel2Snake(vv.ModelName) + `.model.go`:             tpl + `/model.tpl`,
-				`./` + strings.ToLower(v.Dir.Repo) + `/` + format.Camel2Snake(vv.ModelName) + `.repo.go`:               tpl + `/repo.tpl`,
-				`./` + strings.ToLower(v.Dir.Service) + `/` + format.Camel2Snake(vv.ServiceName) + `.service.go`:       tpl + `/service.tpl`,
-				`./` + strings.ToLower(v.Dir.Router) + `/` + format.Camel2Snake(vv.ControllerName) + `.router.go`:      tpl + `/router.tpl`,
+			files := make(map[string]string)
+			for _, vvv := range v.Controller {
+				files[`./`+strings.ToLower(vvv.Dir)+`/`+format.Camel2Snake(vv.ControllerName)+`.controller.go`] = tpl + `/` + vvv.Tpl
 			}
+			for _, vvv := range v.Service {
+				files[`./`+strings.ToLower(vvv.Dir)+`/`+format.Camel2Snake(vv.ServiceName)+`.service.go`] = tpl + `/` + vvv.Tpl
+			}
+			for _, vvv := range v.Migrate {
+				files[`./`+strings.ToLower(vvv.Dir)+`/`+format.Camel2Snake(vv.ModelName)+`.migrate.go`] = tpl + `/` + vvv.Tpl
+			}
+			for _, vvv := range v.Repo {
+				files[`./`+strings.ToLower(vvv.Dir)+`/`+format.Camel2Snake(vv.ModelName)+`.repo.go`] = tpl + `/` + vvv.Tpl
+			}
+			for _, vvv := range v.Model {
+				files[`./`+strings.ToLower(vvv.Dir)+`/`+format.Camel2Snake(vv.ModelName)+`.model.go`] = tpl + `/` + vvv.Tpl
+			}
+			for _, vvv := range v.Router {
+				files[`./`+strings.ToLower(vvv.Dir)+`/`+format.Camel2Snake(vv.ControllerName)+`.router.go`] = tpl + `/` + vvv.Tpl
+			}
+			// files := map[string]string{
+			// 	`./` + strings.ToLower(v.Dir.Controller) + `/` + format.Camel2Snake(vv.ControllerName) + `.handler.go`: tpl + `/controller.tpl`,
+			// 	`./` + strings.ToLower(v.Dir.Migrate) + `/` + format.Camel2Snake(vv.ModelName) + `.migrate.go`:         tpl + `/migrate.tpl`,
+			// 	`./` + strings.ToLower(v.Dir.Model) + `/` + format.Camel2Snake(vv.ModelName) + `.model.go`:             tpl + `/model.tpl`,
+			// 	`./` + strings.ToLower(v.Dir.Repo) + `/` + format.Camel2Snake(vv.ModelName) + `.repo.go`:               tpl + `/repo.tpl`,
+			// 	`./` + strings.ToLower(v.Dir.Service) + `/` + format.Camel2Snake(vv.ServiceName) + `.service.go`:       tpl + `/service.tpl`,
+			// 	`./` + strings.ToLower(v.Dir.Router) + `/` + format.Camel2Snake(vv.ControllerName) + `.router.go`:      tpl + `/router.tpl`,
+			// }
 
 			tplAppData := map[string]any{
 				`ModuleName`:   vv.ModuleName,

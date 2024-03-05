@@ -83,9 +83,15 @@
 ### Patch Changes
 
 -    add new cmd "comer add-with-tpl"
--    
+
 ## 1.3.0
 
 ### Patch Changes
 
 -    add flag -v
+
+## 1.3.2
+
+### Patch Changes
+
+-    multi-dir-tpl support
