@@ -8,7 +8,7 @@
 
 ## Comer 是什么？
 
-Comer是一个用go语言写的RESTFul代码生成工具，能够生成基本的web api框架，同时支持app新增；其中包括gin 、gorm、redis、casbin、auth、captcha等
+Comer是一个用go语言写的RESTFul代码生成工具，能够生成基本的web api框架，同时支持app新增以及从自定义模板生成代码；其中包括gin 、gorm、redis、casbin、auth、captcha等
 
 ## 安装
 
@@ -28,14 +28,14 @@ comer new github.com/imoowi/comer-example
 ```sh
 $ comer new github.com/imoowi/comer-example
 
-Comer version  v1.2.6
+Comer version  v1.3.2
 
 _________
 \_   ___ \   ____    _____    ____  _______
 /    \  \/  /  _ \  /     \ _/ __ \ \_  __ \
 \     \____(  <_> )|  Y Y  \\  ___/  |  | \/
  \______  / \____/ |__|_|  / \___  > |__|
-                \/               \/      \/ v1.2.9, built with go1.20.2
+                \/               \/      \/ v1.3.2, built with go1.20.2
 dir [ github.com/imoowi/comer-example/apps ] created
 ...
 下一步，执行以下命令:
@@ -60,14 +60,14 @@ comer add -a=user -w='Oauth' -c=auth -s=user -m=user,role
 ```sh
 $ cd comer-example
 $ comer add -a=student
-Comer version  v1.2.3
+Comer version  v1.3.2
 
 _________
 \_   ___ \   ____    _____    ____  _______
 /    \  \/  /  _ \  /     \ _/ __ \ \_  __ \
 \     \____(  <_> )|  Y Y  \\  ___/  |  | \/
  \______  / \____/ |__|_|  / \___  > |__|
-                \/               \/      \/ v1.2.9, built with go1.20.2
+                \/               \/      \/ v1.3.2, built with go1.20.2
 dir [ ./apps ] existed
 dir [ ./apps/student/handlers ] created
 dir [ ./apps/student/migrates ] created
@@ -80,34 +80,73 @@ comer add end.
 - 3.1 在项目根目录下创建文件夹：".comer-templates"
 - 3.2 创建配置文件".comer-templates/setting.json5"
 ```json5
-[//多组
-    {
-        var: [//变量，可多组
-            {
-                module_name:"github.com/imoowi/examples/comer_add_with_tpl", //项目根目录下go.mod文件里的module
-                controller_name:"PostPlus",// 控制器名
-                service_name:"", // 服务名；如果为空，使用ControllerName
-                model_name: "", // 数据库模型名；如果为空，使用ServiceName
-                swagger_tags:"PostPlus(页面加)"
-            },
-            {
-                module_name:"github.com/imoowi/examples/comer_add_with_tpl", 
-                controller_name:"PostPlus2",
-                service_name:"", 
-                model_name: "", 
-                swagger_tags:"PostPlus2(页面加)"
-            },
-        ],
-        dir: {//目录
-            controller: "internal/controllers",// 控制器目录
-            migrate: "internal/db/migrates",// 数据迁移目录
-            model: "internal/models",// 模型目录
-            repo: "internal/models",// 数据资源目录
-            service: "internal/services",// 服务目录
-            router: "internal/app/monitor/router"// 路由目录
-        }
-    }
+[
+  {
+    var: [
+      {
+        module_name: "github.com/imoowi/examples/comer_add_with_tpl", //项目根目录下go.mod文件里的module
+        controller_name: "PostPlus", // 控制器名
+        service_name: "", // 服务名；如果为空，使用ControllerName
+        model_name: "", // 数据库模型名；如果为空，使用ServiceName
+        swagger_tags: "PostPlus(页面加)",
+      },
+      {
+        module_name: "github.com/imoowi/examples/comer_add_with_tpl",
+        controller_name: "PostPlus2",
+        service_name: "",
+        model_name: "",
+        swagger_tags: "PostPlus2(页面加)",
+      },
+    ],
+    // 控制器
+    controller: [
+      {
+        dir: "internal/controllers",
+        tpl: "controller.tpl",
+      },
+    ],
+    // 数据迁移
+    migrate: [
+      {
+        dir: "internal/db/migrates",
+        tpl: "migrate.tpl",
+      },
+    ],
+    // 模型
+    model: [
+      {
+        dir: "internal/models",
+        tpl: "model.tpl",
+      },
+    ],
+    // 数据资源
+    repo: [
+      {
+        dir: "internal/models",
+        tpl: "repo.tpl",
+      },
+    ],
+    // 服务
+    service: [
+      {
+        dir: "internal/services",
+        tpl: "service.tpl",
+      },
+    ],
+    // 路由
+    router: [
+      {
+        dir: "internal/app/monitor/router",
+        tpl: "router.tpl",
+      },
+      {
+        dir: "internal/app/designer/router",
+        tpl: "router2.tpl",
+      },
+    ],
+  },
 ]
+
 ```
 - 3.3 创建模板文件，详情请见:"example/comer_add_with_tpl"
 ```
@@ -126,14 +165,14 @@ $ tree .comer-templates/
 - 3.4 运行命令: "comer add-with-tpl"
 ```sh
 $ comer add-with-tpl
-Comer version  v1.2.9
+Comer version  v1.3.2
 
 _________
 \_   ___ \   ____    _____    ____  _______
 /    \  \/  /  _ \  /     \ _/ __ \ \_  __ \
 \     \____(  <_> )|  Y Y  \\  ___/  |  | \/
  \______  / \____/ |__|_|  / \___  > |__|
-                \/               \/      \/ v1.2.9, built with go1.20.2
+                \/               \/      \/ v1.3.2, built with go1.20.2
 comer-templates dir is:  .comer-templates
 dir [ internal/controllers ] created
 dir [ internal/services ] created
@@ -260,6 +299,7 @@ API document address http://localhost:8000/swagger/index.html
 $ tree
 .
 |-- README.md
+|-- .comer-templates
 |-- apps //应用集合
 |   |-- apps.go //多个应用自动加载文件
 |   |-- common //公共模块
@@ -333,8 +373,4 @@ $ tree
 |   `-- router.go //路由定义
 |-- runtime //运行时
 `-- utils //工具箱
-.
-.
-.
-36 directories, 77 files
 ```
