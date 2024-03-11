@@ -130,18 +130,21 @@ func (c *Comer) GenAppWithTpl(cmd *cobra.Command, args []string) {
 			// }
 
 			tplAppData := map[string]any{
-				`ModuleName`:   vv.ModuleName,
-				`moduleName`:   strings.ToLower(vv.ModuleName),
-				`HandlerName`:  format.FirstUpper(vv.ControllerName),
-				`lHandlerName`: format.FirstLower(vv.ControllerName),
-				`handlerName`:  strings.ToLower(vv.ControllerName),
-				// `handler_name`:      format.Camel2Dash(HandlerName),
+				`ModuleName`:        vv.ModuleName,
+				`moduleName`:        strings.ToLower(vv.ModuleName),
+				`HandlerName`:       format.FirstUpper(vv.ControllerName),
+				`lHandlerName`:      format.FirstLower(vv.ControllerName),
+				`handlerName`:       strings.ToLower(vv.ControllerName),
+				`handler_name`:      format.Camel2Dash(vv.ControllerName),
+				`handler-name`:      format.Camel2Dash(vv.ControllerName),
 				`handlerName2Dash`:  format.Camel2Dash(vv.ControllerName),
 				`handlerName2Snake`: format.Camel2Snake(vv.ControllerName),
 				`ServiceName`:       format.FirstUpper(vv.ServiceName),
 				`serviceName`:       strings.ToLower(vv.ServiceName),
 				`ModelName`:         format.FirstUpper(vv.ModelName),
 				`modelName`:         strings.ToLower(vv.ModelName),
+				`model_name`:        format.Camel2Snake(vv.ModelName),
+				`model-name`:        format.Camel2Dash(vv.ModelName),
 				`SwaggerTags`:       vv.SwaggerTags,
 			}
 			c.generateFiles(files, tplAppData)

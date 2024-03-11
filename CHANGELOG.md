@@ -95,3 +95,10 @@
 ### Patch Changes
 
 -    multi-dir-tpl support
+
+
+## 1.3.3
+
+### Patch Changes
+
+-    add tpl var
