@@ -101,13 +101,13 @@ func (c *Comer) initApp(cmd *cobra.Command, args []string) bool {
 			`./apps/` + strings.ToLower(appName) + `/services`,
 		},
 		files: map[string]string{
-			`./apps/apps.go`: tplUri + `templates/v1/apps/apps.tpl`,
-			`./apps/` + strings.ToLower(appName) + `/router.go`:                                                   tplUri + `templates/v1/apps/genapp/router.tpl`,
-			`./apps/` + strings.ToLower(appName) + `/handlers/` + format.Camel2Snake(HandlerName) + `.handler.go`: tplUri + `templates/v1/apps/genapp/handler.tpl`,
-			`./apps/` + strings.ToLower(appName) + `/migrates/` + format.Camel2Snake(ModelName) + `.migrate.go`:   tplUri + `templates/v1/apps/genapp/migrate.tpl`,
-			`./apps/` + strings.ToLower(appName) + `/models/` + format.Camel2Snake(ModelName) + `.model.go`:       tplUri + `templates/v1/apps/genapp/model.tpl`,
-			`./apps/` + strings.ToLower(appName) + `/repos/` + format.Camel2Snake(ModelName) + `.repo.go`:         tplUri + `templates/v1/apps/genapp/repo.tpl`,
-			`./apps/` + strings.ToLower(appName) + `/services/` + format.Camel2Snake(ServiceName) + `.service.go`: tplUri + `templates/v1/apps/genapp/service.tpl`,
+			`./apps/apps.go`: tplUri + `templates/v1/apps/apps.tmpl`,
+			`./apps/` + strings.ToLower(appName) + `/router.go`:                                                   tplUri + `templates/v1/apps/genapp/router.tmpl`,
+			`./apps/` + strings.ToLower(appName) + `/handlers/` + format.Camel2Snake(HandlerName) + `.handler.go`: tplUri + `templates/v1/apps/genapp/handler.tmpl`,
+			`./apps/` + strings.ToLower(appName) + `/migrates/` + format.Camel2Snake(ModelName) + `.migrate.go`:   tplUri + `templates/v1/apps/genapp/migrate.tmpl`,
+			`./apps/` + strings.ToLower(appName) + `/models/` + format.Camel2Snake(ModelName) + `.model.go`:       tplUri + `templates/v1/apps/genapp/model.tmpl`,
+			`./apps/` + strings.ToLower(appName) + `/repos/` + format.Camel2Snake(ModelName) + `.repo.go`:         tplUri + `templates/v1/apps/genapp/repo.tmpl`,
+			`./apps/` + strings.ToLower(appName) + `/services/` + format.Camel2Snake(ServiceName) + `.service.go`: tplUri + `templates/v1/apps/genapp/service.tmpl`,
 		},
 	}
 	c.tplAppData = map[string]any{
