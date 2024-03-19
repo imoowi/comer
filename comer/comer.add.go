@@ -16,16 +16,40 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func (c *Comer) GenApp(cmd *cobra.Command, args []string) {
-	if !c.initApp(cmd, args) {
+func (c *Comer) AddApp(cmd *cobra.Command, args []string) {
+	/*
+		if !c.initApp(cmd, args) {
+			return
+		}
+		//*/
+
+	tplVersion, err := cmd.Flags().GetString(`tplVersion`)
+	if err != nil {
+		fmt.Println(err.Error())
 		return
 	}
-	c.showLogo()
-	c.generateAppDir()
-	c.generateAppFiles()
-	c.addAppsDepend()
-	c.addAppRouterDepend()
-	c.showAppTips()
+
+	appName, _ := cmd.Flags().GetString(`app`)
+
+	if tplVersion == `1` || appName != `` {
+		if !c.initApp(cmd, args) {
+			return
+		}
+		c.showLogo()
+		c.generateAppDir()
+		c.generateAppFiles()
+		c.addAppsDepend()
+		c.addAppRouterDepend()
+		c.showAppTips()
+	} else {
+		if !c.initAppV2(cmd, args) {
+			return
+		}
+		c.showLogo()
+		c.generateAppDir()
+		c.generateAppFiles()
+		c.showAppTips()
+	}
 }
 
 func (c *Comer) generateAppDir() {
@@ -60,7 +84,7 @@ func (c *Comer) generateFiles(files map[string]string, tplData any) {
 }
 
 func (c *Comer) showAppTips() {
-	fmt.Println(`comer genapp end.`)
+	fmt.Println(`comer add app end.`)
 }
 
 func (c *Comer) addAppsDepend() {

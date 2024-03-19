@@ -4,6 +4,8 @@ Copyright © 2023 jun<simpleyuan@gmail.com>
 package comer
 
 import (
+	"fmt"
+
 	"github.com/spf13/cobra"
 )
 
@@ -31,9 +33,21 @@ type App struct {
 }
 
 func (c *Comer) Start(cmd *cobra.Command, args []string) {
-	if !c.init(cmd, args) {
+	tplVersion, err := cmd.Flags().GetString(`tplVersion`)
+	if err != nil {
+		fmt.Println(err.Error())
 		return
 	}
+	if tplVersion == `1` {
+		if !c.init(cmd, args) {
+			return
+		}
+	} else {
+		if !c.initV2(cmd, args) {
+			return
+		}
+	}
+
 	c.showLogo()
 	c.generateFrameworkDir()
 	c.generateFrameworkFiles()

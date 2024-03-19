@@ -18,7 +18,7 @@ var addCmd = &cobra.Command{
 	},
 	RunE: func(cmd *cobra.Command, args []string) error {
 		comerIns := comer.NewComer()
-		comerIns.GenApp(cmd, args)
+		comerIns.AddApp(cmd, args)
 		return nil
 	},
 }
@@ -40,11 +40,12 @@ func init() {
 	// addCmd.PersistentFlags().String("swaggerTags", "", "接口文档模块名")
 	addCmd.PersistentFlags().StringP(`swaggerTags`, `w`, ``, `接口文档模块名`)
 	// addCmd.PersistentFlags().String("handler", "", "处理器名")
-	addCmd.PersistentFlags().StringP(`handler`, `c`, ``, `处理器|控制器名`)
+	addCmd.PersistentFlags().StringP(`controller`, `c`, ``, `处理器|控制器名`)
 	// addCmd.PersistentFlags().String("service", "", "服务名")
 	addCmd.PersistentFlags().StringP(`service`, `s`, ``, `服务名`)
 	// addCmd.PersistentFlags().String("model", "", "模型名;多个模型名之间用英文半角逗号(,)分隔")
 	addCmd.PersistentFlags().StringP(`model`, `m`, ``, `模型名;多个模型名之间用英文半角逗号(,)分隔`)
 
 	addCmd.PersistentFlags().String(`tpl`, ``, `模板目录地址`)
+	addCmd.PersistentFlags().StringP(`tplVersion`, `v`, ``, `模板版本号`)
 }

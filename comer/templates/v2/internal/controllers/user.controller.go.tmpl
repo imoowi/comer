@@ -1,0 +1,93 @@
+package controllers
+
+import (
+	"net/http"
+
+	"github.com/gin-gonic/gin"
+	"github.com/imoowi/comer/interfaces"
+	"github.com/gin-gonic/gin/binding"
+	"github.com/imoowi/comer/utils/response"
+	"{{.moduleName}}/internal/models"
+	"{{.moduleName}}/internal/services"
+	"github.com/spf13/cast"
+)
+
+func UserPageList(c *gin.Context) {
+	var filter interfaces.IFilter = &models.UserFilter{}
+	err := c.ShouldBindQuery(&filter)
+	if err != nil {
+		response.Error(err.Error(), http.StatusBadRequest, c)
+		return
+	}
+	var mt interfaces.IModel = &models.User{}
+	res, err := services.User.PageList(c, &filter, &mt)
+	if err != nil {
+		response.Error(err.Error(), http.StatusBadRequest, c)
+		return
+	}
+	response.OK(res, c)
+}
+
+func UserOne(c *gin.Context) {
+	id := c.DefaultQuery(`id`, `0`)
+	var f interfaces.IFilter = &models.UserFilter{}
+	var mt interfaces.IModel = &models.User{}
+	res, err := services.User.One(c, &f, cast.ToUint(id), &mt)
+	if err != nil {
+		response.Error(err.Error(), http.StatusBadRequest, c)
+		return
+	}
+	response.OK(res, c)
+}
+func UserAdd(c *gin.Context) {
+	var addModel models.UserAdd
+	err := c.ShouldBindBodyWith(&addModel, binding.JSON)
+	if err != nil {
+		response.Error(err.Error(), http.StatusBadRequest, c)
+		return
+	}
+	res, err := services.User.Add(c, &addModel)
+	if err != nil {
+		response.Error(err.Error(), http.StatusBadRequest, c)
+		return
+	}
+	response.OK(res, c)
+}
+
+func UserUpdate(c *gin.Context) {
+	id := c.Param(`id`)
+	if id == `` {
+		response.Error(`pls input id`, http.StatusBadRequest, c)
+		return
+	}
+	var addModel interfaces.IModel = &models.User{}
+	err := c.ShouldBindBodyWith(&addModel, binding.JSON)
+	if err != nil {
+		response.Error(err.Error(), http.StatusBadRequest, c)
+		return
+	}
+	var f interfaces.IFilter = &models.UserFilter{}
+	var mt interfaces.IModel = &models.User{}
+	res, err := services.User.Update(c, &f, &addModel, cast.ToUint(id), &mt)
+	if err != nil {
+		response.Error(err.Error(), http.StatusBadRequest, c)
+		return
+	}
+	response.OK(res, c)
+}
+
+func UserDelete(c *gin.Context) {
+	id := c.Param(`id`)
+	if id == `` {
+		response.Error(`pls input id`, http.StatusBadRequest, c)
+		return
+	}
+	var f interfaces.IFilter = &models.UserFilter{}
+	var mt interfaces.IModel = &models.User{}
+	res, err := services.User.Delete(c, &f, cast.ToUint(id), &mt)
+	if err != nil {
+		response.Error(err.Error(), http.StatusBadRequest, c)
+		return
+	}
+	response.OK(res, c)
+}

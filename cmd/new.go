@@ -35,4 +35,5 @@ func init() {
 	// createCmd.MarkFlagRequired(`module`)
 	// createCmd.PersistentFlags().String(`path`, ``, `project root (项目所在目录)`)
 
+	rootCmd.PersistentFlags().StringP(`tplVersion`, `v`, ``, `模板版本号`)
 }

@@ -102,3 +102,10 @@
 ### Patch Changes
 
 -    add tpl var
+
+
+## 1.3.4
+
+### Patch Changes
+
+-    add tpl version 2
