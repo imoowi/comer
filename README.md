@@ -41,20 +41,20 @@ dir [ github.com/imoowi/comer-example/apps ] created
 下一步，执行以下命令:
 1、cd  github.com/imoowi/comer-example
 2、change file（comer-example/configs/settings-local.yml）mysql and redis config
-3、comer add -a=appName -c=handlerName -w=swaggerTagsName -s=serviceName -m=modelName1,modelName2,[...]
+3、comer add -c=controllerName -w=swaggerTagsName -s=serviceName -m=modelName1,modelName2,[...]
 4、go mod tidy
 5、swag init
 6、go run . server
 
 ```
 
-### 2、添加app
+### 2、添加控制器
 
 ```sh
 cd comer-example
-comer add -a=appName
+comer add -c=controllerName
 #或者
-comer add -a=user -w='Oauth' -c=auth -s=user -m=user,role
+comer add [-a=user] -w='Oauth' -c=auth -s=user -m=user,role
 ```
 例如：
 ```sh
@@ -69,7 +69,7 @@ _________
  \______  / \____/ |__|_|  / \___  > |__|
                 \/               \/      \/ v1.3.3, built with go1.20.2
 dir [ ./apps ] existed
-dir [ ./apps/student/handlers ] created
+dir [ ./apps/student/controllers ] created
 dir [ ./apps/student/migrates ] created
 ...
 comer add end.
@@ -180,13 +180,13 @@ dir [ internal/models ] created
 dir [ internal/models ] existed
 dir [ internal/db/migrates ] created
 dir [ internal/app/monitor/router ] created
-file [ ./internal/controllers/post_plus.handler.go ] created
+file [ ./internal/controllers/post_plus.controller.go ] created
 file [ ./internal/db/migrates/post_plus.migrate.go ] created
 file [ ./internal/models/post_plus.model.go ] created
 file [ ./internal/models/post_plus.repo.go ] created
 file [ ./internal/services/post_plus.service.go ] created
 file [ ./internal/app/monitor/router/post_plus.router.go ] created
-file [ ./internal/controllers/post_plus2.handler.go ] created
+file [ ./internal/controllers/post_plus2.controller.go ] created
 file [ ./internal/db/migrates/post_plus2.migrate.go ] created
 file [ ./internal/models/post_plus2.model.go ] created
 file [ ./internal/models/post_plus2.repo.go ] created
@@ -278,11 +278,11 @@ building...
 [GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
  - using env:   export GIN_MODE=release
  - using code:  gin.SetMode(gin.ReleaseMode)
-[GIN-debug] GET    /swagger/*any             --> github.com/swaggo/gin-swagger.CustomWrapHandler.func1 (6 handlers)
-[GIN-debug] POST   /api/auth-login           --> github.com/imoowi/comer-example/apps/user/handlers.AuthLogin (7 handlers)
-[GIN-debug] GET    /api/auth-logout          --> github.com/imoowi/comer-example/apps/user/handlers.AuthLogout (7 handlers)
-[GIN-debug] POST   /api/auth-chpwd           --> github.com/imoowi/comer-example/apps/user/handlers.AuthChgPwd (8 handlers)
-[GIN-debug] GET    /api/casbins/allapi       --> github.com/imoowi/comer-example/router.InitRouter.func1 (6 handlers)
+[GIN-debug] GET    /swagger/*any             --> github.com/swaggo/gin-swagger.CustomWrapHandler.func1 (6 controllers)
+[GIN-debug] POST   /api/auth-login           --> github.com/imoowi/comer-example/apps/user/controllers.AuthLogin (7 controllers)
+[GIN-debug] GET    /api/auth-logout          --> github.com/imoowi/comer-example/apps/user/controllers.AuthLogout (7 controllers)
+[GIN-debug] POST   /api/auth-chpwd           --> github.com/imoowi/comer-example/apps/user/controllers.AuthChgPwd (8 controllers)
+[GIN-debug] GET    /api/casbins/allapi       --> github.com/imoowi/comer-example/router.InitRouter.func1 (6 controllers)
 ...
 server port:  8000
 API document address http://localhost:8000/swagger/index.html
@@ -303,12 +303,12 @@ $ tree
 |-- apps //应用集合
 |   |-- apps.go //多个应用自动加载文件
 |   |-- common //公共模块
-|   |   |-- handlers //路由处理方
-|   |   |   `-- captcha.handler.go //默认的验证码
+|   |   |-- controllers //路由处理方
+|   |   |   `-- captcha.controller.go //默认的验证码
 |   |   `-- router.go //路由
 |   |-- student //通过 comer add -a=appName生成
-|   |   |-- handlers
-|   |   |   `-- student.handler.go
+|   |   |-- controllers
+|   |   |   `-- student.controller.go
 |   |   |-- migrates
 |   |   |   `-- student.migrate.go
 |   |   |-- models
@@ -321,8 +321,8 @@ $ tree
 |   |-- swagger //默认包含的swagger文档应用
 |   |   `-- router.go
 |   `-- user //默认包含用户应用
-|       |-- handlers
-|       |   `-- auth.handler.go //用户认证
+|       |-- controllers
+|       |   `-- auth.controller.go //用户认证
 |       |-- migrates //数据迁移文件，会自动生成
 |       |   |-- role.migrate.go
 |       |   |-- user.migrate.go
