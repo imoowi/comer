@@ -25,8 +25,8 @@ func New{{.ServiceName}}Service(r *repos.{{.ModelName}}Repo) *{{.ServiceName}}Se
 
 func init() {
 	RegisterServices(func() {
-		Student = New{{.ServiceName}}Service(repos.Student)
+		{{.ServiceName}} = New{{.ServiceName}}Service(repos.{{.ModelName}})
 		var mt interfaces.IModel = &models.{{.ModelName}}{}
-		Student.MT = &mt
+		{{.ServiceName}}.MT = &mt
 	})
 }
