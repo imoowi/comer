@@ -11,10 +11,10 @@ import (
 )
 
 func init() {
-	RegisterRoute(Routers)
+	RegisterRoute({{.ControllerName}}Routers)
 }
 
-func Routers(e *gin.Engine) {
+func {{.ControllerName}}Routers(e *gin.Engine) {
 	api := e.Group("/api")
 	api.Use(middlewares.JWTAuthMiddleware())
 	api.Use(middlewares.CasbinMiddleware())
