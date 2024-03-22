@@ -9,96 +9,81 @@ import (
 	"github.com/imoowi/comer/utils/response"
 )
 
-type Repo struct {
+type Repo[T interfaces.IModel] struct {
 	DB *components.MysqlODM
 }
 
-func NewRepo(db *components.MysqlODM) *Repo {
-	return &Repo{
+func NewRepo[T interfaces.IModel](db *components.MysqlODM) *Repo[T] {
+	return &Repo[T]{
 		DB: db,
 	}
 }
-func (r *Repo) PageList(c *gin.Context, q *interfaces.IFilter, modelType *interfaces.IModel) (res *response.PageList, err error) {
+func (r *Repo[T]) PageList(c *gin.Context, f *interfaces.IFilter) (res *response.PageListT[T], err error) {
 	db := r.DB.Client
-	db = (*q).BuildPageListFilter(c, db)
-	offset := ((*q).GetPage() - 1) * (*q).GetPageSize()
-	db = db.Model(modelType).Offset(int(offset)).Limit(int((*q).GetPageSize()))
-	objs := make([]map[string]any, 0)
+	db = (*f).BuildPageListFilter(c, db)
+	offset := ((*f).GetPage() - 1) * (*f).GetPageSize()
+	db = db.Model(new(T)).Offset(int(offset)).Limit(int((*f).GetPageSize()))
+	objs := make([]T, 0)
 	err = db.Find(&objs).Error
-	//	if errors.Is(err, gorm.ErrRecordNotFound) {
-	//		return
-	//	}
-
 	var count int64
 	db.Offset(-1).Limit(-1).Count(&count)
 
-	res = &response.PageList{
+	res = &response.PageListT[T]{
 		List:  objs,
-		Pages: response.MakePages(count, (*q).GetPage(), (*q).GetPageSize()),
+		Pages: response.MakePages(count, (*f).GetPage(), (*f).GetPageSize()),
 	}
 
 	return
 }
 
-func (r *Repo) One(c *gin.Context, q *interfaces.IFilter, id uint, modelType *interfaces.IModel) (res *interfaces.IModel, err error) {
+func (r *Repo[T]) One(c *gin.Context, f *interfaces.IFilter, id uint) (res T, err error) {
 	db := r.DB.Client
-	db = (*q).BuildOneFilter(c, db)
-	err = db.Model(modelType).Where(`id=?`, id).First(&modelType).Error
-	// if errors.Is(err, gorm.ErrRecordNotFound) {
-	// 	return
-	// }
-	res = modelType
+	db = (*f).BuildOneFilter(c, db)
+	err = db.Model(new(T)).Where(`id=?`, id).First(&res).Error
 	return
 }
-func (r *Repo) OneByName(c *gin.Context, q *interfaces.IFilter, name string, modelType *interfaces.IModel) (res *interfaces.IModel, err error) {
+func (r *Repo[T]) OneByName(c *gin.Context, f *interfaces.IFilter, name string) (res T, err error) {
 	db := r.DB.Client
-	db = (*q).BuildOneByNameFilter(c, db)
-	var obj *interfaces.IModel = modelType
-
-	err = db.Model(modelType).First(obj).Error
-	// if errors.Is(err, gorm.ErrRecordNotFound) {
-	// 	return
-	// }
-	res = obj
+	db = (*f).BuildOneByNameFilter(c, db)
+	err = db.Model(new(T)).First(&res).Error
 	return
 }
-func (r *Repo) Add(c *gin.Context, q *interfaces.IFilter, model *interfaces.IModel, modelType *interfaces.IModel) (newId uint, err error) {
+func (r *Repo[T]) Add(c *gin.Context, f *interfaces.IFilter, model T) (newId uint, err error) {
 	db := r.DB.Client
-	db = (*q).BuildAddFilter(c, db)
-	var _model interfaces.IModel = *model
-	db = db.Model(modelType).Create(_model)
+	db = (*f).BuildAddFilter(c, db)
+	db = db.Create(model)
 	err = db.Error
-	newId = (*model).GetID()
+	newId = model.GetID()
 	return
 }
-func (r *Repo) Update(c *gin.Context, q *interfaces.IFilter, model *interfaces.IModel, id uint, modelType *interfaces.IModel) (updated bool, err error) {
+func (r *Repo[T]) Update(c *gin.Context, f *interfaces.IFilter, model T, id uint) (updated bool, err error) {
 	if id <= 0 {
 		updated = false
 		err = errors.New(`pls input id`)
 		return
 	}
 	db := r.DB.Client
-	db = (*q).BuildUpdateFilter(c, db)
-	(*model).SetId(id)
-	err = db.Model(modelType).Omit(`created_at`).Where(`id=?`, id).Save(model).Error
+	db = (*f).BuildUpdateFilter(c, db)
+	model.SetId(id)
+	err = db.Model(new(T)).Omit(`created_at`).Where(`id=?`, id).Save(model).Error
 	if err == nil {
 		updated = true
 	}
 	return
 }
-func (r *Repo) Delete(c *gin.Context, q *interfaces.IFilter, id uint, modelType *interfaces.IModel) (deleted bool, err error) {
+func (r *Repo[T]) Delete(c *gin.Context, f *interfaces.IFilter, id uint) (deleted bool, err error) {
 	if id <= 0 {
 		deleted = false
 		err = errors.New(`pls input id`)
 		return
 	}
 	db := r.DB.Client
-	db = (*q).BuildDelFilter(c, db)
-	model, err := r.One(c, q, id, modelType)
+	db = (*f).BuildDelFilter(c, db)
+	model, err := r.One(c, f, id)
 	if err != nil {
 		return
 	}
-	err = db.Model(modelType).Where(`id=?`, id).Delete(&model).Error
+	err = db.Model(new(T)).Where(`id=?`, id).Delete(&model).Error
 	if err == nil {
 		deleted = true
 	}

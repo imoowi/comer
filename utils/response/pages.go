@@ -16,6 +16,10 @@ type PageList struct {
 	Pages Pages `json:"pages"` //分页数据
 	List  any   `json:"data"`  //返回数据
 }
+type PageListT[T any] struct {
+	Pages Pages `json:"pages"` //分页数据
+	List  []T   `json:"data"`  //返回数据
+}
 
 func MakePages(count int64, curPage int64, pageSize int64) (pages Pages) {
 	pages.Count = count
