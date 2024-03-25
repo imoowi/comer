@@ -43,13 +43,12 @@ func (r *Repo[T]) One(c *gin.Context, id uint) (res T, err error) {
 }
 func (r *Repo[T]) OneByName(c *gin.Context, name string) (res T, err error) {
 	db := r.DB.Client
-	err = db.Model(new(T)).First(&res).Error
+	err = db.Model(new(T)).Where(`name=?`, name).First(&res).Error
 	return
 }
 func (r *Repo[T]) Add(c *gin.Context, model T) (newId uint, err error) {
 	db := r.DB.Client
-	db = db.Create(model)
-	err = db.Error
+	err = db.Create(model).Error
 	newId = model.GetID()
 	return
 }
