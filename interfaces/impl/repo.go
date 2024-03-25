@@ -36,50 +36,48 @@ func (r *Repo[T]) PageList(c *gin.Context, f *interfaces.IFilter) (res *response
 	return
 }
 
-func (r *Repo[T]) One(c *gin.Context, f *interfaces.IFilter, id uint) (res T, err error) {
+func (r *Repo[T]) One(c *gin.Context, id uint) (res T, err error) {
 	db := r.DB.Client
-	db = (*f).BuildOneFilter(c, db)
 	err = db.Model(new(T)).Where(`id=?`, id).First(&res).Error
 	return
 }
-func (r *Repo[T]) OneByName(c *gin.Context, f *interfaces.IFilter, name string) (res T, err error) {
+func (r *Repo[T]) OneByName(c *gin.Context, name string) (res T, err error) {
 	db := r.DB.Client
-	db = (*f).BuildOneByNameFilter(c, db)
 	err = db.Model(new(T)).First(&res).Error
 	return
 }
-func (r *Repo[T]) Add(c *gin.Context, f *interfaces.IFilter, model T) (newId uint, err error) {
+func (r *Repo[T]) Add(c *gin.Context, model T) (newId uint, err error) {
 	db := r.DB.Client
-	db = (*f).BuildAddFilter(c, db)
 	db = db.Create(model)
 	err = db.Error
 	newId = model.GetID()
 	return
 }
-func (r *Repo[T]) Update(c *gin.Context, f *interfaces.IFilter, model T, id uint) (updated bool, err error) {
+func (r *Repo[T]) Update(c *gin.Context, updateFields map[string]any, id uint) (updated bool, err error) {
 	if id <= 0 {
 		updated = false
 		err = errors.New(`pls input id`)
 		return
 	}
+	_, err = r.One(c, id)
+	if err != nil {
+		return
+	}
 	db := r.DB.Client
-	db = (*f).BuildUpdateFilter(c, db)
-	model.SetId(id)
-	err = db.Model(new(T)).Omit(`created_at`).Where(`id=?`, id).Save(model).Error
+	err = db.Model(new(T)).Omit(`created_at`).Where(`id=?`, id).Updates(updateFields).Error
 	if err == nil {
 		updated = true
 	}
 	return
 }
-func (r *Repo[T]) Delete(c *gin.Context, f *interfaces.IFilter, id uint) (deleted bool, err error) {
+func (r *Repo[T]) Delete(c *gin.Context, id uint) (deleted bool, err error) {
 	if id <= 0 {
 		deleted = false
 		err = errors.New(`pls input id`)
 		return
 	}
 	db := r.DB.Client
-	db = (*f).BuildDelFilter(c, db)
-	model, err := r.One(c, f, id)
+	model, err := r.One(c, id)
 	if err != nil {
 		return
 	}

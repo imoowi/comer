@@ -11,18 +11,19 @@ import (
 	"{{.moduleName}}/internal/models"
  	"github.com/imoowi/comer/interfaces/impl"
 	"{{.moduleName}}/internal/global"
+	"{{.moduleName}}/internal/models"
 )
 
 var UserRole *UserRoleRepo
 
 type UserRoleRepo struct {
-	impl.Repo
+	impl.Repo[*models.UserRole]
 }
 
 func NewUserRoleRepo() {
-	db:=global.MysqlDb
+	db := global.MysqlDb
 	UserRole = &UserRoleRepo{
-		Repo: *impl.NewRepo(db),
+		Repo: *impl.NewRepo[*models.UserRole](db),
 	}
 }
 

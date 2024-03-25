@@ -13,9 +13,4 @@ type IFilter interface {
 	GetSearchKey() string
 	SetSearchKey(searchKey string)
 	BuildPageListFilter(c *gin.Context, db *gorm.DB) *gorm.DB
-	BuildOneFilter(c *gin.Context, db *gorm.DB) *gorm.DB
-	BuildOneByNameFilter(c *gin.Context, db *gorm.DB) *gorm.DB
-	BuildAddFilter(c *gin.Context, db *gorm.DB) *gorm.DB
-	BuildUpdateFilter(c *gin.Context, db *gorm.DB) *gorm.DB
-	BuildDelFilter(c *gin.Context, db *gorm.DB) *gorm.DB
 }

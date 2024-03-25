@@ -13,5 +13,5 @@ func init() {
 	RegisterMigrate(do{{.ModelName}}Migrate)
 }
 func do{{.ModelName}}Migrate() {
-	global.MysqlDb.Client.Set("gorm:table_options", "ENGINE=InnoDB,COMMENT='角色表'").AutoMigrate(&models.{{.ModelName}}{})
+	global.MysqlDb.Client.Set("gorm:table_options", "ENGINE=InnoDB,COMMENT='{{.modelName}}表'").AutoMigrate(&models.{{.ModelName}}{})
 }

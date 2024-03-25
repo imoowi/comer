@@ -6,19 +6,20 @@ package repos
 
 import (
 	"{{.moduleName}}/internal/global"
+	"{{.moduleName}}/internal/models"
 	"github.com/imoowi/comer/interfaces/impl"
 )
 
 var {{.ModelName}} *{{.ModelName}}Repo
 
 type {{.ModelName}}Repo struct {
-	impl.Repo
+	impl.Repo[*models.{{.ModelName}}]
 }
 
 func New{{.ModelName}}Repo() {
 	db:=global.MysqlDb
 	{{.ModelName}} = &{{.ModelName}}Repo{
-		Repo: *impl.NewRepo(db),
+		Repo: *impl.NewRepo[*models.{{.ModelName}}](db),
 	}
 }
 

@@ -1,11 +1,10 @@
 package middlewares
 
 import (
+	"github.com/gin-gonic/gin"
 	"{{.moduleName}}/internal/global"
 	"{{.moduleName}}/internal/models"
 	"{{.moduleName}}/internal/services"
-	"github.com/imoowi/comer/interfaces"
-	"github.com/gin-gonic/gin"
 	"github.com/spf13/cast"
 )
 
@@ -44,16 +43,14 @@ func UserLogMiddleware() gin.HandlerFunc {
 				case `DELETE`:
 					action = `删除`
 				}
-				var userlog interfaces.IModel = &models.UserLog{
+				userlog := &models.UserLog{
 					UserID:     uid,
 					LogType:    global.USER_LOG_TYPE_ADD,
 					ResType:    user_log_res_type.(global.RES_TYPE),
 					LogContent: `用户【` + c.GetString(`username`) + `】` + action + `了` + user_log_res_type_string + `【` + cast.ToString(user_log_obj_id) + `】`,
 					IP:         c.ClientIP(),
 				}
-				var fu interfaces.IFilter = &models.UserLogFilter{}
-				var ulmt interfaces.IModel = &models.UserLog{}
-				services.UserLog.Add(c, &fu, &userlog, &ulmt)
+				services.UserLog.Add(c, userlog)
 			}
 			c.Next()
 		}

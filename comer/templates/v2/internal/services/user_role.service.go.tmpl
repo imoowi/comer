@@ -8,27 +8,24 @@ import (
 	"github.com/gin-gonic/gin"
 	"{{.moduleName}}/internal/models"
 	"{{.moduleName}}/internal/repos"
-	"github.com/imoowi/comer/interfaces"
 	"github.com/imoowi/comer/interfaces/impl"
 )
 
 var UserRole *UserRoleService
 
 type UserRoleService struct {
-	impl.Service
+	impl.Service[*models.UserRole]
 }
 
 func NewUserRoleService(r *repos.UserRoleRepo) *UserRoleService {
 	return &UserRoleService{
-		Service: *impl.NewService(r),
+		Service: *impl.NewService[*models.UserRole](r),
 	}
 }
 
 func init() {
 	RegisterServices(func() {
 		UserRole = NewUserRoleService(repos.UserRole)
-		var mt interfaces.IModel = &models.UserRole{}
-		UserRole.MT = &mt
 	})
 }
 

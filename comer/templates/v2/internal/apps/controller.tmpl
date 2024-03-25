@@ -23,7 +23,7 @@ import (
 // @Produce	application/json
 // @Param	Authorization	header		string				true	"Bearer 用户令牌"
 // @Param   {object}             query                 models.{{.ModelName}}Filter  false "query参数"
-// @Success 200                               {object} response.PageList "成功"
+// @Success 200                        {object} response.PageListT[models.{{.ModelName}}] "成功"
 // @Failure 400                        "请求错误"
 // @Failure 401                        "token验证失败"
 // @Failure 500                         "内部错误"
@@ -46,8 +46,7 @@ func {{.ControllerName}}PageList(c *gin.Context) {
 		response.Error(`每一页不能超过1000条记录`, http.StatusBadRequest,c)
 		return
 	}
-	var mt interfaces.IModel = &models.{{.ModelName}}{}
-	result, err := services.{{.ServiceName}}.PageList(c, &filter, &mt)
+	result, err := services.{{.ServiceName}}.PageList(c, &filter)
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			response.Error(err.Error(), http.StatusNotFound,c)
@@ -65,7 +64,7 @@ func {{.ControllerName}}PageList(c *gin.Context) {
 // @Produce	application/json
 // @Param		Authorization	header	string	true	"Bearer 用户令牌"
 // @Param		id				path	int		true	"id"
-// @Success	200
+// @Success	200 						{object} models.{{.ModelName}} "成功"
 // @Failure 400                        "请求错误"
 // @Failure 401                        "token验证失败"
 // @Failure 500                         "内部错误"
@@ -77,9 +76,7 @@ func {{.ControllerName}}One(c *gin.Context) {
 		return
 	}
 
-	var f interfaces.IFilter = &models.{{.ModelName}}Filter{}
-	var mt interfaces.IModel = &models.{{.ModelName}}{}
-	one, err := services.{{.ServiceName}}.One(c, &f, cast.ToUint(id),&mt)
+	one, err := services.{{.ServiceName}}.One(c, cast.ToUint(id))
 	if err != nil {
 		response.Error(err.Error(), http.StatusBadRequest,c)
 		return
@@ -92,22 +89,20 @@ func {{.ControllerName}}One(c *gin.Context) {
 // @Accept		application/json
 // @Produce	application/json
 // @Param		Authorization	header	string	true	"Bearer 用户令牌"
-// @Param {object} body  models.{{.ModelName}} true "body"
+// @Param 		{object} body  models.{{.ModelName}} true "body"
 // @Success	200
 // @Failure 400                        "请求错误"
 // @Failure 401                        "token验证失败"
 // @Failure 500                         "内部错误"
 // @Router		/api/{{.controllerName2Dash}}s [post]
 func {{.ControllerName}}Add(c *gin.Context) {
-	var {{.modelName}} interfaces.IModel = &models.{{.ModelName}}{}
-	err := c.ShouldBindBodyWith(&{{.modelName}},binding.JSON)
+	model := &models.{{.ModelName}}{}
+	err := c.ShouldBindBodyWith(&model,binding.JSON)
 	if err != nil {
 		response.Error(err.Error(), http.StatusBadRequest,c)
 		return
 	}
-	var f interfaces.IFilter = &models.{{.ModelName}}Filter{}
-	var mt interfaces.IModel = &models.{{.ModelName}}{}
-	newId, err := services.{{.ServiceName}}.Add(c, &f, &{{.modelName}}, &mt)
+	newId, err := services.{{.ServiceName}}.Add(c,  model)
 	if err != nil {
 		response.Error(err.Error(), http.StatusBadRequest,c)
 		return
@@ -121,7 +116,7 @@ func {{.ControllerName}}Add(c *gin.Context) {
 // @Produce	application/json
 // @Param		Authorization	header	string	true	"Bearer 用户令牌"
 // @Param		id				path	int		true	"id"
-// @Param {object} body  models.{{.ModelName}} true "body"
+// @Param 		{object} body  models.{{.ModelName}} true "body"
 // @Success	200
 // @Failure 400                        "请求错误"
 // @Failure 401                        "token验证失败"
@@ -133,16 +128,18 @@ func {{.ControllerName}}Update(c *gin.Context) {
 		response.Error(`pls input id`, http.StatusBadRequest,c)
 		return
 	}
-	var {{.modelName}} interfaces.IModel = &models.{{.ModelName}}{}
-	err := c.ShouldBindBodyWith(&{{.modelName}},binding.JSON)
+	model := make(map[string]any)
+	err := c.ShouldBindBodyWith(&model,binding.JSON)
 	if err != nil {
 		response.Error(err.Error(), http.StatusBadRequest,c)
 		return
 	}
-	var f interfaces.IFilter = &models.{{.ModelName}}Filter{}
-	var mt interfaces.IModel = &models.{{.ModelName}}{}
-	updated, err := services.{{.ServiceName}}.Update(c, &f, &{{.modelName}}, cast.ToUint(id), &mt)
+	updated, err := services.{{.ServiceName}}.Update(c, model, cast.ToUint(id))
 	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			response.Error(err.Error(), http.StatusNotFound, c)
+			return
+		}
 		response.Error(err.Error(), http.StatusBadRequest,c)
 		return
 	}
@@ -166,10 +163,12 @@ func {{.ControllerName}}Del(c *gin.Context) {
 		response.Error(`pls input id`, http.StatusBadRequest,c)
 		return
 	}
-	var f interfaces.IFilter = &models.{{.ModelName}}Filter{}
-	var mt interfaces.IModel = &models.{{.ModelName}}{}
-	deleted, err := services.{{.ServiceName}}.Delete(c, &f, cast.ToUint(id), &mt)
+	deleted, err := services.{{.ServiceName}}.Delete(c, cast.ToUint(id))
 	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			response.Error(err.Error(), http.StatusNotFound, c)
+			return
+		}
 		response.Error(err.Error(), http.StatusBadRequest,c)
 		return
 	}

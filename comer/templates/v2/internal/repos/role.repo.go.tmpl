@@ -8,21 +8,21 @@ package repos
 import (
 	"github.com/imoowi/comer/interfaces/impl"
 	"{{.moduleName}}/internal/global"
+	"{{.moduleName}}/internal/models"
 )
 
 var Role *RoleRepo
 
 type RoleRepo struct {
-	impl.Repo
+	impl.Repo[*models.Role]
 }
 
 func NewRoleRepo() {
-	db:=global.MysqlDb
+	db := global.MysqlDb
 	Role = &RoleRepo{
-		Repo: *impl.NewRepo(db),
+		Repo: *impl.NewRepo[*models.Role](db),
 	}
 }
-
 
 func init() {
 	RegisterRepos(NewRoleRepo)

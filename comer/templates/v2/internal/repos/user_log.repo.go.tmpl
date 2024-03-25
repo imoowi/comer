@@ -8,18 +8,19 @@ package repos
 import (
 	"github.com/imoowi/comer/interfaces/impl"
 	"{{.moduleName}}/internal/global"
+	"{{.moduleName}}/internal/models"
 )
 
 var UserLog *UserLogRepo
 
 type UserLogRepo struct {
-	impl.Repo
+	impl.Repo[*models.UserLog]
 }
 
 func NewUserLogRepo() {
-	db:=global.MysqlDb
+	db := global.MysqlDb
 	UserLog = &UserLogRepo{
-		Repo: *impl.NewRepo(db),
+		Repo: *impl.NewRepo[*models.UserLog](db),
 	}
 }
 

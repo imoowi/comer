@@ -6,7 +6,6 @@ package services
 
 import (
 	"github.com/imoowi/comer/interfaces/impl"
-	"github.com/imoowi/comer/interfaces"
 	"{{.ModuleName}}/internal/models"
 	"{{.ModuleName}}/internal/repos"
 )
@@ -14,19 +13,17 @@ import (
 var {{.ServiceName}} *{{.ServiceName}}Service
 
 type {{.ServiceName}}Service struct {
-	impl.Service
+	impl.Service[*models.{{.ModelName}}]
 }
 
 func New{{.ServiceName}}Service(r *repos.{{.ModelName}}Repo) *{{.ServiceName}}Service {
 	return &{{.ServiceName}}Service{
-		Service: *impl.NewService(r),
+		Service: *impl.NewService[*models.{{.ModelName}}](r),
 	}
 }
 
 func init() {
 	RegisterServices(func() {
 		{{.ServiceName}} = New{{.ServiceName}}Service(repos.{{.ModelName}})
-		var mt interfaces.IModel = &models.{{.ModelName}}{}
-		{{.ServiceName}}.MT = &mt
 	})
 }

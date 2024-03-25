@@ -10,7 +10,6 @@ import (
 	"time"
 
 	"github.com/imoowi/comer/utils/response"
-	"github.com/imoowi/comer/interfaces"
 	"{{.moduleName}}/internal/global"
 	token "{{.moduleName}}/internal/middlewares/token"
 	"{{.moduleName}}/internal/models"
@@ -55,8 +54,7 @@ func JWTAuthMiddleware() func(c *gin.Context) {
 			return
 		}
 		//根据admin_id查询用户是否存在
-		var f interfaces.IFilter = &models.UserFilter{}
-		user, err := services.User.One(c, &f, mc.UserId, services.User.MT)
+		user, err := services.User.One(c, mc.UserId)
 		if err != nil {
 			response.Error(err.Error(), http.StatusUnauthorized, c)
 			c.Abort()

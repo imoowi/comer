@@ -22,5 +22,4 @@ func AuthRouters(e *gin.Engine) {
 		api.POST(`/auth-chpwd`, middlewares.VcodeMiddleware(), middlewares.JWTAuthMiddleware(), controllers.AuthChgPwd)
 	}
 
-	//!import:do-not-delete-this-line,不要删除此行，主要用于代码生成器
 }

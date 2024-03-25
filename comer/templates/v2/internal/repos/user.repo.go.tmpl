@@ -12,26 +12,25 @@ import (
 	"github.com/imoowi/comer/utils/password"
 	"{{.moduleName}}/internal/models"
 	"{{.moduleName}}/internal/global"
-	"github.com/imoowi/comer/interfaces"
 	"github.com/imoowi/comer/interfaces/impl"
 )
-
 
 var User *UserRepo
 
 type UserRepo struct {
-	impl.Repo
+	impl.Repo[*models.User]
 }
 
 func NewUserRepo() {
-	db:=global.MysqlDb
+	db := global.MysqlDb
 	User = &UserRepo{
-		Repo: *impl.NewRepo(db),
+		Repo: *impl.NewRepo[*models.User](db),
 	}
 }
 func init() {
 	RegisterRepos(NewUserRepo)
 }
+
 func (r *UserRepo) OneByUsername(c *gin.Context, username string) (user *models.User, err error) {
 	db := r.DB.Client
 	err = db.Where(`username=?`, username).First(&user).Error
@@ -54,9 +53,7 @@ func (r *UserRepo) Login(c *gin.Context, login *models.UserLogin) (*models.User,
 }
 
 func (r *UserRepo) ChgPwd(c *gin.Context, userChgPwd *models.UserChgPwd) (ok bool, err error) {
-	var mt interfaces.IModel = &models.User{}
-	var q interfaces.IFilter = &models.UserFilter{}
-	_user, err := r.One(c, &q, userChgPwd.UserId, &mt)
+	_user, err := r.One(c, userChgPwd.UserId)
 	if err != nil {
 		return
 	}
