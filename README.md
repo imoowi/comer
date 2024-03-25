@@ -8,7 +8,7 @@
 
 ## Comer 是什么？
 
-Comer是一个用go语言写的RESTFul代码生成工具，能够生成基本的web api框架，同时支持app新增以及从自定义模板生成代码；其中包括gin 、gorm、redis、casbin、auth、captcha等
+Comer，一个用go语言写的快速生成代码的脚手架，能够生成基本的web api框架，同时支持单个控制器、服务、模型以及从自定义模板生成代码；其中融合了gin 、gorm、redis、casbin、auth、captcha等框架和模块
 
 ## 安装
 
@@ -28,14 +28,14 @@ comer new github.com/imoowi/comer-example
 ```sh
 $ comer new github.com/imoowi/comer-example
 
-Comer version  v1.3.4
+Comer version  v1.3.5
 
 _________
 \_   ___ \   ____    _____    ____  _______
 /    \  \/  /  _ \  /     \ _/ __ \ \_  __ \
 \     \____(  <_> )|  Y Y  \\  ___/  |  | \/
  \______  / \____/ |__|_|  / \___  > |__|
-                \/               \/      \/ v1.3.4, built with go1.20.2
+                \/               \/      \/ v1.3.5, built with go1.20.2
 dir [ github.com/imoowi/comer-example/apps ] created
 ...
 下一步，执行以下命令:
@@ -59,21 +59,30 @@ comer add [-a=user] -w='Oauth' -c=auth -s=user -m=user,role
 例如：
 ```sh
 $ cd comer-example
-$ comer add -a=student
-Comer version  v1.3.4
+$ comer add -c=right
+Comer version  v1.3.5
 
 _________
 \_   ___ \   ____    _____    ____  _______
 /    \  \/  /  _ \  /     \ _/ __ \ \_  __ \
 \     \____(  <_> )|  Y Y  \\  ___/  |  | \/
  \______  / \____/ |__|_|  / \___  > |__|
-                \/               \/      \/ v1.3.4, built with go1.20.2
-dir [ ./apps ] existed
-dir [ ./apps/student/controllers ] created
-dir [ ./apps/student/migrates ] created
-...
-comer add end.
-
+                \/               \/      \/ v1.3.5, built with go1.20.2
+dir [ ./internal ] existed
+dir [ ./internal/controllers ] existed
+dir [ ./internal/migrates ] existed
+dir [ ./internal/models ] existed
+dir [ ./internal/repos ] existed
+dir [ ./internal/router ] existed
+dir [ ./internal/services ] existed
+file [ ./internal/migrates/right.migrate.go ] created
+file [ ./internal/models/right.model.go ] created
+file [ ./internal/models/right.filter.go ] created
+file [ ./internal/repos/right.repo.go ] created
+file [ ./internal/services/right.service.go ] created
+file [ ./internal/router/right.router.go ] created
+file [ ./internal/controllers/right.controller.go ] created
+comer add app end.
 ```
 
 ### 3、通过自定义模板添加
@@ -165,14 +174,14 @@ $ tree .comer-templates/
 - 3.4 运行命令: "comer add-with-tpl"
 ```sh
 $ comer add-with-tpl
-Comer version  v1.3.4
+Comer version  v1.3.5
 
 _________
 \_   ___ \   ____    _____    ____  _______
 /    \  \/  /  _ \  /     \ _/ __ \ \_  __ \
 \     \____(  <_> )|  Y Y  \\  ___/  |  | \/
  \______  / \____/ |__|_|  / \___  > |__|
-                \/               \/      \/ v1.3.4, built with go1.20.2
+                \/               \/      \/ v1.3.5, built with go1.20.2
 comer-templates dir is:  .comer-templates
 dir [ internal/controllers ] created
 dir [ internal/services ] created
@@ -295,6 +304,84 @@ API document address http://localhost:8000/swagger/index.html
 ![](assets/comer-swagger2.png)
 
 ## 目录结构
+- version 2
+```sh
+$ tree
+.
+|-- Dockerfile 
+|-- Makefile
+|-- README.md
+|-- cmd //入口
+|   |-- init.go //初始化系统
+|   |-- migrate.go //数据迁移
+|   |-- root.go 
+|   `-- server.go //web server
+|-- configs //配置文件
+|   |-- casbin.conf
+|   `-- settings-local.yml 
+|-- docker-compose.yml
+|-- docs //swagger生成的api文档目录
+|   |-- init.go
+|-- go.mod
+|-- go.sum
+|-- internal
+|   |-- controllers //控制器
+|   |   |-- auth.controller.go
+|   |   |-- captcha.controller.go
+|   |   |-- event.controller.go
+|   |   `-- user.controller.go
+|   |-- global //全局变量
+|   |   |-- cache.go
+|   |   |-- casbin.go
+|   |   |-- config.go
+|   |   |-- global.go
+|   |   |-- global.userlog.go
+|   |   |-- log.go
+|   |   |-- mysql.go
+|   |   `-- redis.go
+|   |-- middlewares //中间件
+|   |   |-- CasbinMiddleware.go //权限
+|   |   |-- CrosMiddleware.go //跨域
+|   |   |-- JWTAuthMiddleware.go //jwt
+|   |   |-- LoggerMiddleware.go //日志
+|   |   |-- RateLimitMiddleware.go //频率限制
+|   |   |-- RequestIdMiddleware.go //请求id
+|   |   |-- UserlogMiddleware.go //用户日志
+|   |   |-- VcodeMiddleware.go //验证码
+|   |   |-- middleware.go 
+|   |   `-- token
+|   |       `-- jwttoken.go
+|   |-- migrates //数据迁移
+|   |   |-- init.go
+|   |   |-- role.migrate.go
+|   |   |-- user.migrate.go
+|   |   |-- user_log.migrate.go
+|   |   `-- user_role.migrate.go
+|   |-- models //模型
+|   |   |-- role.filter.go
+|   |   |-- role.model.go
+|   |   |-- user.filter.go
+|   |   |-- user.model.go
+|   |   |-- user_log.filter.go
+|   |   |-- user_log.model.go
+|   |   |-- user_role.filter.go
+|   |   `-- user_role.model.go
+|   |-- repos //数据提供者
+|   |   |-- init.go
+|   |-- router //路由定义
+|   |   |-- auth.router.go
+|   |   |-- common.router.go
+|   |   |-- init.go
+|   `-- services //服务层
+|       |-- init.go
+|-- main.go
+|-- runtime
+|-- start_server_in_docker.sh
+`-- test
+    `-- login.go
+```
+
+- version 1 (old version)
 ```sh
 $ tree
 .
