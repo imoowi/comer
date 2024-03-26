@@ -5,7 +5,7 @@ tmp_dir = "runtime"
 [build]
   args_bin = ["server", "-c", "configs/settings-local.yml"]
   bin = "runtime\\main.air.exe"
-    cmd = "swag init --parseDependency && go mod tidy && go run . migrate && go run . init && go build -o runtime/main.air.exe  ."
+  cmd = "go mod tidy && swag init --parseDependency && go run . migrate && go run . init && go build -o runtime/main.air.exe  ."
   delay = 1000
   exclude_dir = ["assets", "tmp", "vendor", "testdata", "docs", "logs", "runtime","test"]
   exclude_file = []

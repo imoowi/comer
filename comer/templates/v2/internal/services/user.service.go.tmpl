@@ -62,7 +62,7 @@ func (s *UserService) Add(c *gin.Context, _model *models.UserAdd) (newId uint, e
 			Salt:   salt,
 		},
 	}
-	newId, err = s.Service.Add(c, &f, newUser)
+	newId, err = s.Service.Add(c, newUser)
 	if newId > 0 {
 		// 插入用户和角色关系
 		userrole := &models.UserRole{UserID: newId, RoleId: _model.RoleId}

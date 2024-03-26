@@ -53,11 +53,10 @@ func (r *UserRepo) Login(c *gin.Context, login *models.UserLogin) (*models.User,
 }
 
 func (r *UserRepo) ChgPwd(c *gin.Context, userChgPwd *models.UserChgPwd) (ok bool, err error) {
-	_user, err := r.One(c, userChgPwd.UserId)
+	user, err := r.One(c, userChgPwd.UserId)
 	if err != nil {
 		return
 	}
-	user := (*_user).(*models.User)
 	if user.GetID() <= 0 {
 		err = errors.New(`用户不存在`)
 		return
