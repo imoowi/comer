@@ -5,6 +5,7 @@ import (
 	"github.com/imoowi/comer/utils/response"
 )
 
+// 服务层接口
 type IService[T IModel] interface {
 
 	// 分页查询

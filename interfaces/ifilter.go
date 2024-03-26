@@ -5,6 +5,7 @@ import (
 	"gorm.io/gorm"
 )
 
+// 过滤器接口
 type IFilter interface {
 	GetPage() int64
 	SetPage(page int64)

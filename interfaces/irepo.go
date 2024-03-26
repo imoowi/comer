@@ -5,6 +5,7 @@ import (
 	"github.com/imoowi/comer/utils/response"
 )
 
+// 数据资源接口
 type IRepo[T IModel] interface {
 	// 分页查询
 	PageList(c *gin.Context, query *IFilter) (res *response.PageListT[T], err error)

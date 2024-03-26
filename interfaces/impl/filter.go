@@ -6,6 +6,7 @@ import (
 	"gorm.io/gorm"
 )
 
+// 过滤器接口实现
 type Filter struct {
 	request.PageList
 }
@@ -32,23 +33,7 @@ func (f *Filter) SetSearchKey(searchKey string) {
 	f.SearchKey = searchKey
 }
 
+// 分页查询过滤器构建方法
 func (f *Filter) BuildPageListFilter(c *gin.Context, db *gorm.DB) *gorm.DB {
-	return db
-}
-
-func (f *Filter) BuildOneFilter(c *gin.Context, db *gorm.DB) *gorm.DB {
-	return db
-}
-
-func (f *Filter) BuildOneByNameFilter(c *gin.Context, db *gorm.DB) *gorm.DB {
-	return db
-}
-func (f *Filter) BuildAddFilter(c *gin.Context, db *gorm.DB) *gorm.DB {
-	return db
-}
-func (f *Filter) BuildUpdateFilter(c *gin.Context, db *gorm.DB) *gorm.DB {
-	return db
-}
-func (f *Filter) BuildDelFilter(c *gin.Context, db *gorm.DB) *gorm.DB {
 	return db
 }

@@ -9,15 +9,19 @@ import (
 	"github.com/imoowi/comer/utils/response"
 )
 
+// 数据资源接口实现
 type Repo[T interfaces.IModel] struct {
 	DB *components.MysqlODM
 }
 
+// 新建一个数据资源
 func NewRepo[T interfaces.IModel](db *components.MysqlODM) *Repo[T] {
 	return &Repo[T]{
 		DB: db,
 	}
 }
+
+// 分页查询数据
 func (r *Repo[T]) PageList(c *gin.Context, f *interfaces.IFilter) (res *response.PageListT[T], err error) {
 	db := r.DB.Client
 	db = (*f).BuildPageListFilter(c, db)
@@ -36,22 +40,29 @@ func (r *Repo[T]) PageList(c *gin.Context, f *interfaces.IFilter) (res *response
 	return
 }
 
+// 根据id查询一条记录
 func (r *Repo[T]) One(c *gin.Context, id uint) (res T, err error) {
 	db := r.DB.Client
 	err = db.Model(new(T)).Where(`id=?`, id).First(&res).Error
 	return
 }
+
+// 根据名字查询一条记录
 func (r *Repo[T]) OneByName(c *gin.Context, name string) (res T, err error) {
 	db := r.DB.Client
 	err = db.Model(new(T)).Where(`name=?`, name).First(&res).Error
 	return
 }
+
+// 新建资源
 func (r *Repo[T]) Add(c *gin.Context, model T) (newId uint, err error) {
 	db := r.DB.Client
 	err = db.Create(model).Error
 	newId = model.GetID()
 	return
 }
+
+// 通过id更新资源，只更新updateFields里有的字段
 func (r *Repo[T]) Update(c *gin.Context, updateFields map[string]any, id uint) (updated bool, err error) {
 	if id <= 0 {
 		updated = false
@@ -69,6 +80,8 @@ func (r *Repo[T]) Update(c *gin.Context, updateFields map[string]any, id uint) (
 	}
 	return
 }
+
+// 根据id删除资源
 func (r *Repo[T]) Delete(c *gin.Context, id uint) (deleted bool, err error) {
 	if id <= 0 {
 		deleted = false
