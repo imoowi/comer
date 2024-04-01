@@ -78,6 +78,10 @@ func {{.ControllerName}}One(c *gin.Context) {
 
 	one, err := services.{{.ServiceName}}.One(c, cast.ToUint(id))
 	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			response.Error(err.Error(), http.StatusNotFound,c)
+			return
+		}
 		response.Error(err.Error(), http.StatusBadRequest,c)
 		return
 	}
