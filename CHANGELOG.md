@@ -128,3 +128,10 @@
 ### Patch Changes
 
 -    fix tpl
+
+
+## 1.3.6
+
+### Patch Changes
+
+-    add validators

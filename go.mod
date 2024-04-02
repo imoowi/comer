@@ -3,10 +3,10 @@ module github.com/imoowi/comer
 go 1.20
 
 require (
+	github.com/bmizerany/assert v0.0.0-20160611221934-b7ed37b82869
 	github.com/gin-gonic/gin v1.9.1
 	github.com/go-playground/validator/v10 v10.17.0
 	github.com/go-redis/redis/v8 v8.11.5
-	github.com/jinzhu/copier v0.4.0
 	github.com/lestrrat-go/file-rotatelogs v2.4.0+incompatible
 	github.com/mojocn/base64Captcha v1.3.6
 	github.com/rifflock/lfshook v0.0.0-20180920164130-b9218ef580f5
@@ -35,6 +35,8 @@ require (
 	github.com/jonboulle/clockwork v0.4.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/klauspost/cpuid/v2 v2.2.4 // indirect
+	github.com/kr/pretty v0.3.1 // indirect
+	github.com/kr/text v0.2.0 // indirect
 	github.com/leodido/go-urn v1.2.4 // indirect
 	github.com/lestrrat-go/strftime v1.0.6 // indirect
 	github.com/mattn/go-isatty v0.0.19 // indirect
@@ -45,6 +47,7 @@ require (
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/richardlehane/mscfb v1.0.4 // indirect
 	github.com/richardlehane/msoleps v1.0.3 // indirect
+	github.com/rogpeppe/go-internal v1.9.0 // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	github.com/ugorji/go/codec v1.2.11 // indirect
 	github.com/xuri/efp v0.0.0-20230802181842-ad255f2331ca // indirect

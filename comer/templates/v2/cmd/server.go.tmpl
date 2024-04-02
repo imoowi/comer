@@ -13,6 +13,7 @@ import (
 	"os/signal"
 	"time"
 
+	"github.com/imoowi/comer/validators"
 	"{{.moduleName}}/internal/global"
 	"{{.moduleName}}/internal/repos"
 	"{{.moduleName}}/internal/router"
@@ -69,6 +70,8 @@ func startServer() {
 	repos.InitRepos()
 	// 初始化服务层
 	services.InitServices()
+	// 初始化校验器
+	validators.InitValidators()
 	// 初始化路由
 	r := router.InitRouter()
 
