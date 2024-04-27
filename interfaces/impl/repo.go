@@ -30,7 +30,7 @@ func (r *Repo[T]) PageList(c *gin.Context, f *interfaces.IFilter) (res *response
 	objs := make([]T, 0)
 	err = db.Find(&objs).Error
 	var count int64
-	db.Offset(-1).Limit(-1).Count(&count)
+	db.Offset(-1).Limit(-1).Select("count(id)").Count(&count)
 
 	res = &response.PageListT[T]{
 		List:  objs,
@@ -52,7 +52,7 @@ func (r *Repo[T]) PageListWithSelectOption(c *gin.Context, f *interfaces.IFilter
 	objs := make([]T, 0)
 	err = db.Find(&objs).Error
 	var count int64
-	db.Offset(-1).Limit(-1).Count(&count)
+	db.Offset(-1).Limit(-1).Select("count(id)").Count(&count)
 
 	res = &response.PageListT[T]{
 		List:  objs,
