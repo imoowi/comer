@@ -24,16 +24,34 @@ func (s *Service[T]) PageList(c *gin.Context, filter *interfaces.IFilter) (res *
 	return repo.PageList(c, filter)
 }
 
+// 分页查询
+func (s *Service[T]) PageListWithSelectOption(c *gin.Context, filter *interfaces.IFilter, selectOpt []string) (res *response.PageListT[T], err error) {
+	repo := *s.Repo
+	return repo.PageListWithSelectOption(c, filter, selectOpt)
+}
+
 // 查一条，根据id
 func (s *Service[T]) One(c *gin.Context, id uint) (res T, err error) {
 	repo := *s.Repo
 	return repo.One(c, id)
 }
 
+// 查一条，根据id
+func (s *Service[T]) OneWithSelectOption(c *gin.Context, id uint, selectOpt []string) (res T, err error) {
+	repo := *s.Repo
+	return repo.OneWithSelectOption(c, id, selectOpt)
+}
+
 // 查一条，根据名字
 func (s *Service[T]) OneByName(c *gin.Context, name string) (res T, err error) {
 	repo := *s.Repo
 	return repo.OneByName(c, name)
+}
+
+// 查一条，根据名字
+func (s *Service[T]) OneByNameWithSelectOption(c *gin.Context, name string, selectOpt []string) (res T, err error) {
+	repo := *s.Repo
+	return repo.OneByNameWithSelectOption(c, name, selectOpt)
 }
 
 // 新建资源

@@ -40,6 +40,28 @@ func (r *Repo[T]) PageList(c *gin.Context, f *interfaces.IFilter) (res *response
 	return
 }
 
+// 分页查询数据
+func (r *Repo[T]) PageListWithSelectOption(c *gin.Context, f *interfaces.IFilter, selectOpt []string) (res *response.PageListT[T], err error) {
+	db := r.DB.Client
+	db = (*f).BuildPageListFilter(c, db)
+	offset := ((*f).GetPage() - 1) * (*f).GetPageSize()
+	db = db.Model(new(T)).Offset(int(offset)).Limit(int((*f).GetPageSize()))
+	if len(selectOpt) > 0 {
+		db = db.Select(selectOpt)
+	}
+	objs := make([]T, 0)
+	err = db.Find(&objs).Error
+	var count int64
+	db.Offset(-1).Limit(-1).Count(&count)
+
+	res = &response.PageListT[T]{
+		List:  objs,
+		Pages: response.MakePages(count, (*f).GetPage(), (*f).GetPageSize()),
+	}
+
+	return
+}
+
 // 根据id查询一条记录
 func (r *Repo[T]) One(c *gin.Context, id uint) (res T, err error) {
 	db := r.DB.Client
@@ -47,10 +69,32 @@ func (r *Repo[T]) One(c *gin.Context, id uint) (res T, err error) {
 	return
 }
 
+// 根据id查询一条记录
+func (r *Repo[T]) OneWithSelectOption(c *gin.Context, id uint, selectOpt []string) (res T, err error) {
+	db := r.DB.Client
+	db = db.Model(new(T)).Where(`id=?`, id)
+	if len(selectOpt) > 0 {
+		db = db.Select(selectOpt)
+	}
+	err = db.First(&res).Error
+	return
+}
+
 // 根据名字查询一条记录
 func (r *Repo[T]) OneByName(c *gin.Context, name string) (res T, err error) {
 	db := r.DB.Client
 	err = db.Model(new(T)).Where(`name=?`, name).First(&res).Error
+	return
+}
+
+// 根据名字查询一条记录
+func (r *Repo[T]) OneByNameWithSelectOption(c *gin.Context, name string, selectOpt []string) (res T, err error) {
+	db := r.DB.Client
+	db = db.Model(new(T)).Where(`name=?`, name)
+	if len(selectOpt) > 0 {
+		db = db.Select(selectOpt)
+	}
+	err = db.First(&res).Error
 	return
 }
 

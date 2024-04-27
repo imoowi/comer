@@ -9,10 +9,16 @@ import (
 type IRepo[T IModel] interface {
 	// 分页查询
 	PageList(c *gin.Context, query *IFilter) (res *response.PageListT[T], err error)
+	// 分页查询
+	PageListWithSelectOption(c *gin.Context, query *IFilter, selectOpt []string) (res *response.PageListT[T], err error)
 	// 查询一个
 	One(c *gin.Context, id uint) (res T, err error)
+	// 查询一个
+	OneWithSelectOption(c *gin.Context, id uint, selectOpt []string) (res T, err error)
 	// 根据名称查询
 	OneByName(c *gin.Context, name string) (res T, err error)
+	// 根据名称查询
+	OneByNameWithSelectOption(c *gin.Context, name string, selectOpt []string) (res T, err error)
 	// 添加
 	Add(c *gin.Context, model T) (newId uint, err error)
 	// 更新,传什么就更新什么
