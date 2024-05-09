@@ -135,3 +135,7 @@
 ### Patch Changes
 
 -    add validators
+
+## 1.3.7
+### Patch Changes
+-    add MemCacheT
