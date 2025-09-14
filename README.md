@@ -28,14 +28,14 @@ comer new github.com/imoowi/comer-example
 ```sh
 $ comer new github.com/imoowi/comer-example
 
-Comer version  v1.3.5
+Comer version  v1.3.8
 
 _________
 \_   ___ \   ____    _____    ____  _______
 /    \  \/  /  _ \  /     \ _/ __ \ \_  __ \
 \     \____(  <_> )|  Y Y  \\  ___/  |  | \/
  \______  / \____/ |__|_|  / \___  > |__|
-                \/               \/      \/ v1.3.5, built with go1.20.2
+                \/               \/      \/ v1.3.8, built with go1.20.2
 dir [ github.com/imoowi/comer-example/apps ] created
 ...
 下一步，执行以下命令:
@@ -60,14 +60,14 @@ comer add [-a=user] -w='Oauth' -c=auth -s=user -m=user,role
 ```sh
 $ cd comer-example
 $ comer add -c=right
-Comer version  v1.3.5
+Comer version  v1.3.8
 
 _________
 \_   ___ \   ____    _____    ____  _______
 /    \  \/  /  _ \  /     \ _/ __ \ \_  __ \
 \     \____(  <_> )|  Y Y  \\  ___/  |  | \/
  \______  / \____/ |__|_|  / \___  > |__|
-                \/               \/      \/ v1.3.5, built with go1.20.2
+                \/               \/      \/ v1.3.8, built with go1.20.2
 dir [ ./internal ] existed
 dir [ ./internal/controllers ] existed
 dir [ ./internal/migrates ] existed
@@ -174,14 +174,14 @@ $ tree .comer-templates/
 - 3.4 运行命令: "comer add-with-tpl"
 ```sh
 $ comer add-with-tpl
-Comer version  v1.3.5
+Comer version  v1.3.8
 
 _________
 \_   ___ \   ____    _____    ____  _______
 /    \  \/  /  _ \  /     \ _/ __ \ \_  __ \
 \     \____(  <_> )|  Y Y  \\  ___/  |  | \/
  \______  / \____/ |__|_|  / \___  > |__|
-                \/               \/      \/ v1.3.5, built with go1.20.2
+                \/               \/      \/ v1.3.8, built with go1.20.2
 comer-templates dir is:  .comer-templates
 dir [ internal/controllers ] created
 dir [ internal/services ] created
