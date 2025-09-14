@@ -10,6 +10,7 @@ import (
 )
 
 const letters = `abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ`
+const numbers = `12345678900123456789`
 
 func MakeSn(prefix string) string {
 	now := time.Now()
@@ -24,6 +25,14 @@ func MakeRandStr(n int) string {
 	b := make([]byte, n)
 	for i := range b {
 		b[i] = letters[rand.Intn(len(letters))]
+	}
+	return string(b)
+}
+
+func MakeRandNumber(n int) string {
+	b := make([]byte, n)
+	for i := range b {
+		b[i] = numbers[rand.Intn(len(numbers))]
 	}
 	return string(b)
 }
