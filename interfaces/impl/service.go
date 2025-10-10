@@ -62,6 +62,9 @@ func (s *Service[T]) Add(c *gin.Context, model T) (newId uint, err error) {
 
 // 更新资源
 func (s *Service[T]) Update(c *gin.Context, updateFields map[string]any, id uint) (updated bool, err error) {
+	delete(updateFields, `created_at`)
+	delete(updateFields, `updated_at`)
+	delete(updateFields, `deleted_at`)
 	repo := *s.Repo
 	return repo.Update(c, updateFields, id)
 }
