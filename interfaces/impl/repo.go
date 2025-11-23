@@ -4,26 +4,26 @@ import (
 	"errors"
 
 	"github.com/gin-gonic/gin"
-	"github.com/imoowi/comer/components"
 	"github.com/imoowi/comer/interfaces"
 	"github.com/imoowi/comer/utils/response"
+	"gorm.io/gorm"
 )
 
 // 数据资源接口实现
 type Repo[T interfaces.IModel] struct {
-	DB *components.MysqlODM
+	db *gorm.DB
 }
 
 // 新建一个数据资源
-func NewRepo[T interfaces.IModel](db *components.MysqlODM) *Repo[T] {
+func NewRepo[T interfaces.IModel](db *gorm.DB) *Repo[T] {
 	return &Repo[T]{
-		DB: db,
+		db: db,
 	}
 }
 
 // 分页查询数据
 func (r *Repo[T]) PageList(c *gin.Context, f *interfaces.IFilter) (res *response.PageListT[T], err error) {
-	db := r.DB.Client
+	db := r.db
 	db = (*f).BuildPageListFilter(c, db)
 	offset := ((*f).GetPage() - 1) * (*f).GetPageSize()
 	db = db.Model(new(T)).Offset(int(offset)).Limit(int((*f).GetPageSize()))
@@ -42,7 +42,7 @@ func (r *Repo[T]) PageList(c *gin.Context, f *interfaces.IFilter) (res *response
 
 // 分页查询数据
 func (r *Repo[T]) PageListWithSelectOption(c *gin.Context, f *interfaces.IFilter, selectOpt []string) (res *response.PageListT[T], err error) {
-	db := r.DB.Client
+	db := r.db
 	db = (*f).BuildPageListFilter(c, db)
 	offset := ((*f).GetPage() - 1) * (*f).GetPageSize()
 	db = db.Model(new(T)).Offset(int(offset)).Limit(int((*f).GetPageSize()))
@@ -64,14 +64,14 @@ func (r *Repo[T]) PageListWithSelectOption(c *gin.Context, f *interfaces.IFilter
 
 // 根据id查询一条记录
 func (r *Repo[T]) One(c *gin.Context, id uint) (res T, err error) {
-	db := r.DB.Client
+	db := r.db
 	err = db.Model(new(T)).Where(`id=?`, id).First(&res).Error
 	return
 }
 
 // 根据id查询一条记录
 func (r *Repo[T]) OneWithSelectOption(c *gin.Context, id uint, selectOpt []string) (res T, err error) {
-	db := r.DB.Client
+	db := r.db
 	db = db.Model(new(T)).Where(`id=?`, id)
 	if len(selectOpt) > 0 {
 		db = db.Select(selectOpt)
@@ -82,14 +82,14 @@ func (r *Repo[T]) OneWithSelectOption(c *gin.Context, id uint, selectOpt []strin
 
 // 根据名字查询一条记录
 func (r *Repo[T]) OneByName(c *gin.Context, name string) (res T, err error) {
-	db := r.DB.Client
+	db := r.db
 	err = db.Model(new(T)).Where(`name=?`, name).First(&res).Error
 	return
 }
 
 // 根据名字查询一条记录
 func (r *Repo[T]) OneByNameWithSelectOption(c *gin.Context, name string, selectOpt []string) (res T, err error) {
-	db := r.DB.Client
+	db := r.db
 	db = db.Model(new(T)).Where(`name=?`, name)
 	if len(selectOpt) > 0 {
 		db = db.Select(selectOpt)
@@ -100,7 +100,7 @@ func (r *Repo[T]) OneByNameWithSelectOption(c *gin.Context, name string, selectO
 
 // 新建资源
 func (r *Repo[T]) Add(c *gin.Context, model T) (newId uint, err error) {
-	db := r.DB.Client
+	db := r.db
 	err = db.Create(model).Error
 	newId = model.GetID()
 	return
@@ -117,7 +117,7 @@ func (r *Repo[T]) Update(c *gin.Context, updateFields map[string]any, id uint) (
 	if err != nil {
 		return
 	}
-	db := r.DB.Client
+	db := r.db
 	err = db.Model(new(T)).Omit(`created_at`).Where(`id=?`, id).Updates(updateFields).Error
 	if err == nil {
 		updated = true
@@ -132,7 +132,7 @@ func (r *Repo[T]) Delete(c *gin.Context, id uint) (deleted bool, err error) {
 		err = errors.New(`pls input id`)
 		return
 	}
-	db := r.DB.Client
+	db := r.db
 	model, err := r.One(c, id)
 	if err != nil {
 		return
