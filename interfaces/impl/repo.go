@@ -113,12 +113,12 @@ func (r *Repo[T]) Update(c *gin.Context, updateFields map[string]any, id uint) (
 		err = errors.New(`pls input id`)
 		return
 	}
-	_, err = r.One(c, id)
+	_model, err = r.One(c, id)
 	if err != nil {
 		return
 	}
 	db := r.db
-	err = db.Model(new(T)).Omit(`created_at`).Where(`id=?`, id).Updates(updateFields).Error
+	err = db.Model(_model).Omit(`created_at`).Where(`id=?`, id).Updates(updateFields).Error
 	if err == nil {
 		updated = true
 	}
