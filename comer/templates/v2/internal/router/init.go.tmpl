@@ -29,7 +29,7 @@ func InitRouter() *gin.Engine {
 		for _, v := range routers {
 			allapi = append(allapi, map[string]string{"method": v.Method, "path": v.Path})
 		}
-		response.OK(allapi, ctx)
+		response.OK(ctx,allapi)
 	})
 	return r
 }

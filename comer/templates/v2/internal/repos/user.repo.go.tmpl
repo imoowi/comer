@@ -22,7 +22,7 @@ type UserRepo struct {
 }
 
 func NewUserRepo() {
-	db := global.MysqlDb
+	db := global.MysqlDb.Client
 	User = &UserRepo{
 		Repo: *impl.NewRepo[*models.User](db),
 	}
