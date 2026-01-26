@@ -22,16 +22,16 @@ jwt:
   timeout: 2000h0m0s # token 过期时间 格式：0h0m0s
   refresh_token_timeout: 0h5m0s # token 过期时间减去的时间，用于刷新token
 mysql:
-  dsn: root:123456@tcp(192.168.40.185:3306)/{{.dbName}}?charset=utf8&parseTime=True&loc=Local&timeout=1000ms
-  casbin: root:123456@tcp(192.168.40.185:3306)/{{.dbName}}
+  dsn: root:123456@tcp(localhost:3306)/{{.dbName}}?charset=utf8&parseTime=True&loc=Local&timeout=10000ms
+  casbin: root:123456@tcp(localhost:3306)/{{.dbName}}
 # influxdb:
-#   addr: http://192.168.40.185:8086
+#   addr: http://localhost:8086
 #   token: [token string]
 #   org: [orgnization name]
 #   bucket: [bucket name]
 #   testSwitchOn: false
 redis:
-  addr: 192.168.40.185:6379
+  addr: localhost:6379
   password: "123456"
   db: 0
 cache:
