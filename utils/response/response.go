@@ -20,12 +20,12 @@ type ResponseList struct {
 	ListData any   `json:"data"`  //返回数据
 }
 
-func OK(data interface{}, c *gin.Context) {
+func OK(c *gin.Context, data interface{}) {
 	c.JSON(http.StatusOK, data)
 	c.Next()
 }
 
-func Error(msg interface{}, code int, c *gin.Context) {
+func Error(c *gin.Context, msg interface{}, code int) {
 	c.JSON(code, &ErrMsg{
 		Message: msg,
 	})

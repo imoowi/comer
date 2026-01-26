@@ -21,17 +21,17 @@ import (
 // @Failure	400	"请求错误"
 // @Failure	401	"token验证失败"
 // @Failure	500	"内部错误"
-// @Router		/api/common/captcha [get]
+// @Router		/api/user/common/captcha [get]
 func Captcha(c *gin.Context) {
 	driverType := c.DefaultQuery(`type`, `digit`)
 	id, b64s, err := components.GenCaptcha(driverType)
 	if err != nil {
-		response.Error(err.Error(), http.StatusBadRequest, c)
+		response.Error(c, err.Error(), http.StatusBadRequest)
 		return
 	}
 	captchaMap := map[string]any{
 		`captcha_id`:   id,
 		`captcha_code`: b64s,
 	}
-	response.OK(captchaMap, c)
+	response.OK(c, captchaMap)
 }

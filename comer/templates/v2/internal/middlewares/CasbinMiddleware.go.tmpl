@@ -21,7 +21,7 @@ func CasbinMiddleware() gin.HandlerFunc {
 		username := c.GetString("username")
 		if username == `` {
 			// fmt.Println(`c.Get("username") is: `, username)
-			response.Error(`need login ...`, http.StatusUnauthorized, c)
+			response.Error(c, `need login ...`, http.StatusUnauthorized)
 			c.Abort()
 			return
 		}
@@ -30,7 +30,7 @@ func CasbinMiddleware() gin.HandlerFunc {
 		// roleIds := services.User.UserRoleIds(c, userId)
 		var roleIds []uint
 		if len(roleIds) <= 0 {
-			response.Error(`need give role ...`, http.StatusUnauthorized, c)
+			response.Error(c, `need give role ...`, http.StatusUnauthorized)	
 			c.Abort()
 			return
 		}
@@ -54,7 +54,7 @@ func CasbinMiddleware() gin.HandlerFunc {
 			break
 		}
 		if !canAccess {
-			response.Error(`您没有访问的权限`, http.StatusForbidden, c)
+			response.Error(c, `您没有访问的权限`, http.StatusForbidden)
 			c.Abort()
 			return
 		}
@@ -64,14 +64,14 @@ func CasbinMiddleware() gin.HandlerFunc {
 			ok2, err2 := e.Enforce(username, c.Request.URL.Path, c.Request.Method)
 			if err2 != nil {
 				fmt.Println(`casbin:`, err.Error())
-				response.Error(`您没有访问的权限3`, http.StatusBadRequest, c)
+				response.Error(c, `您没有访问的权限3`, http.StatusBadRequest)
 				c.Abort()
 				return
 			}
 
 			if !ok2 {
 				fmt.Println(`ok is:`, ok2)
-				response.Error(`您没有访问的权限4`, http.StatusBadRequest, c)
+				response.Error(c, `您没有访问的权限4`, http.StatusBadRequest)
 				c.Abort()
 				return
 			}

@@ -52,10 +52,10 @@ func setupRouter() *gin.Engine {
 		postData := PostData{}
 		err := ctx.ShouldBindJSON(&postData)
 		if err != nil {
-			response.Error(err.Error(), http.StatusBadRequest, ctx)
+			response.Error(ctx, err.Error(), http.StatusBadRequest)
 			return
 		}
-		response.OK(true, ctx)
+		response.OK(ctx, true)
 	})
 	return r
 }

@@ -24,21 +24,21 @@ import (
 // @Failure	400	{object}	string	"请求错误"
 // @Failure	401	{object}	string	"token验证失败"
 // @Failure	500	{object}	string	"内部错误"
-// @Router		/api/auth-login [post]
+// @Router		/api/user/auth-login [post]
 func AuthLogin(c *gin.Context) {
 	var userLogin *models.UserLogin
 	err := c.ShouldBindBodyWith(&userLogin, binding.JSON)
 	if err != nil {
-		response.Error(err.Error(), http.StatusBadRequest, c)
+		response.Error(c, err.Error(), http.StatusBadRequest)
 		return
 	}
 	user, err := services.User.Login(c, userLogin)
 	if err != nil {
-		response.Error(err.Error(), http.StatusBadRequest, c)
+		response.Error(c, err.Error(), http.StatusBadRequest)
 		return
 	}
 	if user == nil || user.ID <= 0 {
-		response.Error(`record not found`, http.StatusBadRequest, c)
+		response.Error(c, `record not found`, http.StatusBadRequest)
 		return
 	}
 	// 生成Token
@@ -46,7 +46,7 @@ func AuthLogin(c *gin.Context) {
 
 	user.Passwd = ``
 	user.Salt = ``
-	response.OK(gin.H{"token": tokenString, "info": user}, c)
+	response.OK(c,gin.H{"token": tokenString, "info": user})
 }
 
 // @Summary	退出
@@ -58,15 +58,15 @@ func AuthLogin(c *gin.Context) {
 // @Failure	400	{object}	string	"请求错误"
 // @Failure	401	{object}	string	"token验证失败"
 // @Failure	500	{object}	string	"内部错误"
-// @Router		/api/auth-logout [get]
+// @Router		/api/user/auth-logout [get]
 func AuthLogout(c *gin.Context) {
 	authHeader := c.Request.Header.Get("Authorization")
 	if authHeader == "" {
-		response.Error("请求头中auth为空", http.StatusUnauthorized, c)
+		response.Error(c, "请求头中auth为空", http.StatusUnauthorized)
 		return
 	}
 	ok := services.User.Logout(c, authHeader)
-	response.OK(ok, c)
+	response.OK(c, ok)
 }
 
 // @Summary	改密
@@ -79,21 +79,21 @@ func AuthLogout(c *gin.Context) {
 // @Failure	400	{object}	string	"请求错误"
 // @Failure	401	{object}	string	"token验证失败"
 // @Failure	500	{object}	string	"内部错误"
-// @Router		/api/auth-chpwd [post]
+// @Router		/api/user/auth-chpwd [post]
 func AuthChgPwd(c *gin.Context) {
 	var userChgPwd *models.UserChgPwd
 	err := c.ShouldBindBodyWith(&userChgPwd, binding.JSON)
 	if err != nil {
-		response.Error(err.Error(), http.StatusBadRequest, c)
+		response.Error(c, err.Error(), http.StatusBadRequest)
 		return
 	}
 	newJwtToken, err := services.User.ChgPwd(c, userChgPwd)
 	if err != nil {
-		response.Error(err.Error(), http.StatusBadRequest, c)
+		response.Error(c, err.Error(), http.StatusBadRequest)
 		return
 	}
 	if newJwtToken != `` {
 		c.Header(`token`, newJwtToken)
 	}
-	response.OK(newJwtToken, c)
+	response.OK(c, newJwtToken)
 }

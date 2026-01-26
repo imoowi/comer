@@ -22,12 +22,12 @@ func VcodeMiddleware() func(c *gin.Context) {
 		var postVcode *components.POSTVcode
 		err := c.ShouldBindBodyWith(&postVcode, binding.JSON)
 		if err != nil {
-			response.Error(err.Error(), http.StatusBadRequest, c)
+			response.Error(c, err.Error(), http.StatusBadRequest)
 			c.Abort()
 			return
 		}
 		if !components.VerifyCaptcha(postVcode.Id, postVcode.Vcode) {
-			response.Error(`验证码验证失败`, http.StatusUnauthorized, c)
+			response.Error(c, `验证码验证失败`, http.StatusUnauthorized)
 			c.Abort()
 			return
 		}
