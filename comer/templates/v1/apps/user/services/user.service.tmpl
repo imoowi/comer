@@ -185,7 +185,7 @@ func (s *UserService) ChgPwd(c *gin.Context, userChgPwd *models.UserChgPwd) (new
 	return
 }
 
-const JwtTokenBlackListSetKey = `lynkros-monitor:jwt:token:blacklist`
+const JwtTokenBlackListSetKey = `comer-project:jwt:token:blacklist`
 
 func (s *UserService) IsLogouted(c *gin.Context, token string) bool {
 	// ok, _ := global.Redis.SIsMember(c, JwtTokenBlackListSetKey, token).Result()
