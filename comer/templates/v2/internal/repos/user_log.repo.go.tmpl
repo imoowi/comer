@@ -18,7 +18,7 @@ type UserLogRepo struct {
 }
 
 func NewUserLogRepo() {
-	db := global.MysqlDb
+	db := global.MysqlDb.Client
 	UserLog = &UserLogRepo{
 		Repo: *impl.NewRepo[*models.UserLog](db),
 	}

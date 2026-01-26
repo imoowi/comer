@@ -18,7 +18,7 @@ type RoleRepo struct {
 }
 
 func NewRoleRepo() {
-	db := global.MysqlDb
+	db := global.MysqlDb.Client
 	Role = &RoleRepo{
 		Repo: *impl.NewRepo[*models.Role](db),
 	}

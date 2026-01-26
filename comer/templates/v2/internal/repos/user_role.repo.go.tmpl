@@ -20,7 +20,7 @@ type UserRoleRepo struct {
 }
 
 func NewUserRoleRepo() {
-	db := global.MysqlDb
+	db := global.MysqlDb.Client
 	UserRole = &UserRoleRepo{
 		Repo: *impl.NewRepo[*models.UserRole](db),
 	}
@@ -36,7 +36,7 @@ func (r *UserRoleRepo) DeleteByUid(c *gin.Context, uid uint) (deleted bool, err 
 		err = errors.New(`pls input user_id`)
 		return
 	}
-	db := r.DB.Client
+	db := r.DB
 	err = db.Where(`user_id=?`, uid).Delete(&models.UserRole{}).Error
 	if err == nil {
 		deleted = true
@@ -45,7 +45,7 @@ func (r *UserRoleRepo) DeleteByUid(c *gin.Context, uid uint) (deleted bool, err 
 }
 
 func (r *UserRoleRepo) AllByUserId(c *gin.Context, userId uint) (userrole []*models.UserRole, err error) {
-	db := r.DB.Client
+	db := r.DB
 	err = db.Where(`user_id=?`, userId).Find(&userrole).Error
 	return
 }

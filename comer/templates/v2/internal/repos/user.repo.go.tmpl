@@ -32,7 +32,7 @@ func init() {
 }
 
 func (r *UserRepo) OneByUsername(c *gin.Context, username string) (user *models.User, err error) {
-	db := r.DB.Client
+	db := r.DB
 	err = db.Where(`username=?`, username).First(&user).Error
 	return
 }
@@ -71,7 +71,7 @@ func (r *UserRepo) ChgPwd(c *gin.Context, userChgPwd *models.UserChgPwd) (ok boo
 	}
 	user.Salt = maker.MakeRandStr(6)
 	user.Passwd = password.GeneratePassword(userChgPwd.NewPwd + user.Salt)
-	db := r.DB.Client
+	db := r.DB
 	err = db.Omit(`created_at`).Save(&user).Error
 	if err != nil {
 		ok = false
