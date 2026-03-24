@@ -10,7 +10,7 @@ import (
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
-	"{{.moduleName}}/internal/global"
+	"github.com/spf13/viper"
 )
 
 type TokenClaims struct {
@@ -20,9 +20,9 @@ type TokenClaims struct {
 }
 
 func GenToken(username string, userId uint) (string, error) {
-	settingSecret := global.Config.GetString("jwt.secret")
+	settingSecret := viper.GetString("jwt.secret")
 	var MySecret = []byte(settingSecret)
-	TokenExpireDuration := global.Config.GetDuration("jwt.timeout")
+	TokenExpireDuration := viper.GetDuration("jwt.timeout")
 	// TokenExpireDuration := time.Hour * 2
 	fmt.Println(`TokenExpireDuration is:`, TokenExpireDuration)
 	// 创建一个我们自己的声明
@@ -41,7 +41,7 @@ func GenToken(username string, userId uint) (string, error) {
 }
 
 func ParseToken(tokenString string) (*TokenClaims, error) {
-	var MySecret = []byte(global.Config.GetString("jwt.secret"))
+	var MySecret = []byte(viper.GetString("jwt.secret"))
 	// 解析token
 	token, err := jwt.ParseWithClaims(tokenString, &TokenClaims{}, func(token *jwt.Token) (i interface{}, err error) {
 		return MySecret, nil

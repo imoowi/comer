@@ -32,30 +32,28 @@ func {{.ControllerName}}PageList(c *gin.Context) {
 	var filter interfaces.IFilter = &models.{{.ModelName}}Filter{}
 	err := c.ShouldBindQuery(&filter)
 	if err != nil {
-		response.Error(err.Error(), http.StatusBadRequest,c)
+		response.Error(c, err.Error(), http.StatusBadRequest)
 		return
 	}
 	
-	if 0 >= filter.GetPage(){ //如果不传Page，默认为1
-		filter.SetPage(1)
-	}
-	if 0 >= filter.GetPageSize(){ //如果不传PageSize，默认取20条
-		filter.SetPageSize(20)
-	}
+	page := c.DefaultQuery(`page`, `1`)
+	filter.SetPage(cast.ToInt64(page))
+	pageSize := c.DefaultQuery(`pageSize`, `20`)
+	filter.SetPageSize(cast.ToInt64(pageSize))
 	if filter.GetPageSize() > 1000 {
-		response.Error(`每一页不能超过1000条记录`, http.StatusBadRequest,c)
+		response.Error(c, `每一页不能超过1000条记录`, http.StatusBadRequest)
 		return
 	}
 	result, err := services.{{.ServiceName}}.PageList(c, &filter)
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			response.Error(err.Error(), http.StatusNotFound,c)
+			response.Error(c, err.Error(), http.StatusNotFound)
 			return
 		}
-		response.Error(err.Error(), http.StatusBadRequest,c)
+		response.Error(c, err.Error(), http.StatusBadRequest)
 		return
 	}
-	response.OK(result,c)
+	response.OK(c,result)
 }
 
 // @Summary	详情(one)
@@ -79,13 +77,13 @@ func {{.ControllerName}}One(c *gin.Context) {
 	one, err := services.{{.ServiceName}}.One(c, cast.ToUint(id))
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			response.Error(err.Error(), http.StatusNotFound,c)
+			response.Error(c, err.Error(), http.StatusNotFound)
 			return
 		}
-		response.Error(err.Error(), http.StatusBadRequest,c)
+		response.Error(c, err.Error(), http.StatusBadRequest)
 		return
 	}
-	response.OK(one,c)
+	response.OK(c,one)
 }
 
 // @Summary	新增(add)
@@ -103,15 +101,15 @@ func {{.ControllerName}}Add(c *gin.Context) {
 	model := &models.{{.ModelName}}{}
 	err := c.ShouldBindBodyWith(&model,binding.JSON)
 	if err != nil {
-		response.Error(err.Error(), http.StatusBadRequest,c)
+		response.Error(c, err.Error(), http.StatusBadRequest)
 		return
 	}
 	newId, err := services.{{.ServiceName}}.Add(c,  model)
 	if err != nil {
-		response.Error(err.Error(), http.StatusBadRequest,c)
+		response.Error(c, err.Error(), http.StatusBadRequest)
 		return
 	}
-	response.OK(newId,c)
+	response.OK(c,newId)
 }
 
 // @Summary	更新(update)
@@ -135,19 +133,19 @@ func {{.ControllerName}}Update(c *gin.Context) {
 	model := make(map[string]any)
 	err := c.ShouldBindBodyWith(&model,binding.JSON)
 	if err != nil {
-		response.Error(err.Error(), http.StatusBadRequest,c)
+		response.Error(c, err.Error(), http.StatusBadRequest)
 		return
 	}
 	updated, err := services.{{.ServiceName}}.Update(c, model, cast.ToUint(id))
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			response.Error(err.Error(), http.StatusNotFound, c)
+			response.Error(c, err.Error(), http.StatusNotFound,)
 			return
 		}
-		response.Error(err.Error(), http.StatusBadRequest,c)
+		response.Error(c, err.Error(), http.StatusBadRequest)
 		return
 	}
-	response.OK(updated,c)
+	response.OK(c,updated)
 }
 
 // @Summary	删除(delete)
@@ -170,11 +168,11 @@ func {{.ControllerName}}Del(c *gin.Context) {
 	deleted, err := services.{{.ServiceName}}.Delete(c, cast.ToUint(id))
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			response.Error(err.Error(), http.StatusNotFound, c)
+			response.Error(c, err.Error(), http.StatusNotFound,)
 			return
 		}
-		response.Error(err.Error(), http.StatusBadRequest,c)
+		response.Error(c, err.Error(), http.StatusBadRequest)
 		return
 	}
-	response.OK(deleted,c)
+	response.OK(c,deleted)
 }

@@ -8,13 +8,15 @@ import (
 	"context"
 	"strings"
 	"time"
+
 	"github.com/imoowi/comer/utils/format"
-	"github.com/sirupsen/logrus"
 	"github.com/spf13/cast"
+	"github.com/spf13/viper"
+	"go.uber.org/zap"
 )
 
 func getCachePrefix() string {
-	return Config.GetString(`settings.cache.prefix`) + ":"
+	return viper.GetString(`settings.cache.prefix`) + ":"
 }
 func GetCache(key string) (data string, err error) {
 	cacheKey := getCachePrefix() + key
@@ -37,15 +39,15 @@ func SetCache(key string, data interface{}, duration time.Duration) bool {
 func GetCacheBatch(keys ...string) (map[string]string, error) {
 	keys = format.UniqueSliceString(keys)
 	keysFormat := make([]string, len(keys))
+	fields := make([]zap.Field, 0)
 	for idx, key := range keys {
 		keysFormat[idx] = getCachePrefix() + key
+		fields = append(fields, zap.String(cast.ToString(idx), key))
 	}
 
 	res, err := Redis.MGet(context.Background(), keysFormat...).Result()
 	if err != nil {
-		Log.Logger.WithFields(logrus.Fields{
-			"keys": keys,
-		}).Errorf("get cache batch error: %s\n", err)
+		zap.L().Error(err.Error(), fields...)
 		return nil, nil
 	}
 	cachePrefix := getCachePrefix()

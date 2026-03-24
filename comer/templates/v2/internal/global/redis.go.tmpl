@@ -4,11 +4,12 @@ Copyright © 2023 jun<simpleyuan@gmail.com>
 */
 package global
 
-import (
-	"log"
 
-	"github.com/go-redis/redis/v8"
-	"github.com/imoowi/comer/components"
+import (
+	"github.com/redis/go-redis/v9"
+	"github.com/spf13/cast"
+	"github.com/spf13/viper"
+	"go.uber.org/zap"
 )
 
 // 全局Redis客户端
@@ -16,13 +17,23 @@ var Redis *redis.Client
 
 // 初始化redis
 func initRedis() {
-	// 获取logger相关的配置信息
-	config := Config.Sub("redis")
-	var redisConfig *components.RedisConfig
-	err := config.Unmarshal(&redisConfig)
-	if err != nil {
-		log.Fatal(err)
+	addr := viper.GetString("redis.addr")
+	if addr == "" {
+		panic("请在配置文件里配置【redis.addr")
 	}
-	redisClient := components.NewRedisClient(redisConfig)
-	Redis = redisClient
+	pass := viper.GetString("redis.password")
+	if pass == "" {
+		panic("请在配置文件里配置【redis.password")
+	}
+	db := viper.GetString("redis.db")
+	if db == "" {
+		panic("请在配置文件里配置【redis.db")
+	}
+	Redis = redis.NewClient(&redis.Options{
+		Addr:     addr,
+		Password: pass,
+		DB:       cast.ToInt(db),
+		PoolSize: 10,
+	})
+	zap.L().Info("Redis连接地址:", zap.String("addr", addr))
 }
