@@ -9,14 +9,13 @@ import (
 	"time"
 
 	"github.com/imoowi/comer/utils/response"
-	"{{.moduleName}}/internal/global"
-
+	"github.com/spf13/viper"
 	"github.com/gin-gonic/gin"
 	"github.com/juju/ratelimit"
 )
 
 func RateLimitMiddleware() gin.HandlerFunc {
-	bucket := ratelimit.NewBucketWithQuantum(time.Second, global.Config.GetInt64(`ratelimit.cap`), global.Config.GetInt64(`ratelimit.quantum`))
+	bucket := ratelimit.NewBucketWithQuantum(time.Second, viper.GetInt64(`ratelimit.cap`), viper.GetInt64(`ratelimit.quantum`))
 	return func(c *gin.Context) {
 		if bucket.TakeAvailable(1) < 1 {
 			response.Error(c, `rate limit ...`, http.StatusForbidden)

@@ -15,12 +15,14 @@ import (
 
 	"github.com/imoowi/comer/validators"
 	"{{.moduleName}}/internal/global"
+	"{{.moduleName}}/internal/migrates"
 	"{{.moduleName}}/internal/repos"
 	"{{.moduleName}}/internal/router"
 	"{{.moduleName}}/internal/services"
 
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 // serverCmd represents the server command
@@ -45,8 +47,8 @@ func setUp() {
 	initServerConfig()
 }
 func initServerConfig() {
-	global.Config.SetDefault("server.host", "0.0.0.0")
-	global.Config.SetDefault("server.port", 8000)
+	viper.SetDefault("server.host", "0.0.0.0")
+	viper.SetDefault("server.port", 8000)
 }
 
 func run() error {
@@ -55,7 +57,7 @@ func run() error {
 }
 
 func startServer() {
-	mode := global.Config.GetString("application.mode")
+	mode := viper.GetString("application.mode")
 	switch mode {
 	case "dev":
 		gin.SetMode(gin.DebugMode)
@@ -66,6 +68,8 @@ func startServer() {
 	}
 
 	global.Bootstrap()
+	// 初始化数据迁移
+	migrates.InitMigrate()
 	// 初始化数据资源
 	repos.InitRepos()
 	// 初始化服务层
@@ -75,13 +79,13 @@ func startServer() {
 	// 初始化路由
 	r := router.InitRouter()
 
-	port := global.Config.GetUint16("server.port")
-	host := global.Config.GetString("server.host")
+	port := viper.GetUint16("server.port")
+	host := viper.GetString("server.host")
 	s := &http.Server{
 		Addr:           fmt.Sprintf(`%s:%d`, host, port),
 		Handler:        r,
-		ReadTimeout:    time.Duration(global.Config.GetInt("server.readtimeout")) * time.Second,
-		WriteTimeout:   time.Duration(global.Config.GetInt("server.writertimeout")) * time.Second,
+		ReadTimeout:    time.Duration(viper.GetInt("server.readtimeout")) * time.Second,
+		WriteTimeout:   time.Duration(viper.GetInt("server.writertimeout")) * time.Second,
 		MaxHeaderBytes: 1 << 20,
 	}
 	go func() {

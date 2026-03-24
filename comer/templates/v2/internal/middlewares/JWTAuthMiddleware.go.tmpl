@@ -10,10 +10,9 @@ import (
 	"time"
 
 	"github.com/imoowi/comer/utils/response"
-	"{{.moduleName}}/internal/global"
 	token "{{.moduleName}}/internal/middlewares/token"
 	"{{.moduleName}}/internal/services"
-
+	"github.com/spf13/viper"
 	"github.com/gin-gonic/gin"
 )
 
@@ -66,7 +65,7 @@ func JWTAuthMiddleware() func(c *gin.Context) {
 		}
 		// 判断token是否即将过期
 		//refreshTokenTimeout := viper.GetDuration("settings.jwt.refresh_token_timeout")
-		refreshTokenTimeout := global.Config.GetDuration("settings.jwt.refresh_token_timeout")
+		refreshTokenTimeout := viper.GetDuration("settings.jwt.refresh_token_timeout")
 		refreshTokenTimeoutSeconds := refreshTokenTimeout.Seconds()
 		invalidTimeout := mc.StandardClaims.ExpiresAt - int64(refreshTokenTimeoutSeconds)
 		timeNow := time.Now().Unix()

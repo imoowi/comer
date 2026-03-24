@@ -19,7 +19,7 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositorie
 RUN apk update && apk add tzdata
 
 RUN go install github.com/swaggo/swag/cmd/swag@v1.8.10 && swag init
-RUN CGO_ENABLED=0 GOOS=linux go build -p 1 -ldflags="-w -s" -a -installsuffix cgo -o {{.moduleProjectName}} .
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -p 1 -ldflags="-w -s" -a -installsuffix cgo -o {{.moduleProjectName}} .
 
 FROM alpine:latest
 
@@ -35,10 +35,10 @@ COPY --from=builder /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 EXPOSE 8000
 
 #数据迁移
-RUN /{{.moduleProjectName}} migrate -c /configs/settings-local.yml
+# RUN /{{.moduleProjectName}} migrate -c /configs/settings-local.yml
 
 #初始化数据库
-RUN /{{.moduleProjectName}} init -c /configs/settings-local.yml
+# RUN /{{.moduleProjectName}} init -c /configs/settings-local.yml
 
 #CMD 运行容器时执行的shell环境
 CMD ["/{{.moduleProjectName}}","server","-c", "/configs/settings-local.yml"]
