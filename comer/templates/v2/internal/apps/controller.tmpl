@@ -70,7 +70,7 @@ func {{.ControllerName}}PageList(c *gin.Context) {
 func {{.ControllerName}}One(c *gin.Context) {
 	id := c.Param(`id`)
 	if id == `` {
-		response.Error(`pls input id`, http.StatusBadRequest,c)
+		response.Error(c,`pls input id`, http.StatusBadRequest)
 		return
 	}
 
@@ -127,7 +127,7 @@ func {{.ControllerName}}Add(c *gin.Context) {
 func {{.ControllerName}}Update(c *gin.Context) {
 	id := c.Param(`id`)
 	if id == `` {
-		response.Error(`pls input id`, http.StatusBadRequest,c)
+		response.Error(c,`pls input id`, http.StatusBadRequest)
 		return
 	}
 	model := make(map[string]any)
@@ -162,7 +162,7 @@ func {{.ControllerName}}Update(c *gin.Context) {
 func {{.ControllerName}}Del(c *gin.Context) {
 	id := c.Param(`id`)
 	if id == `` {
-		response.Error(`pls input id`, http.StatusBadRequest,c)
+		response.Error(c,`pls input id`, http.StatusBadRequest)
 		return
 	}
 	deleted, err := services.{{.ServiceName}}.Delete(c, cast.ToUint(id))
