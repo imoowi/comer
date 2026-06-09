@@ -17,7 +17,7 @@ type {{.ModelName}}Repo struct {
 }
 
 func New{{.ModelName}}Repo() {
-	db:=global.MysqlDb
+	db:=global.MysqlDb.Client
 	{{.ModelName}} = &{{.ModelName}}Repo{
 		Repo: *impl.NewRepo[*models.{{.ModelName}}](db),
 	}
