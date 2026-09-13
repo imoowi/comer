@@ -8,44 +8,24 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// addCmd represents the generate command
+// addCmd 添加一个应用/控制器
 var addCmd = &cobra.Command{
 	Use:          "add",
 	Short:        "Add an app",
 	Example:      "comer add -a=app01 -c=handler01 -w='app01' -s=service01 -m=model01",
 	SilenceUsage: true,
-	PreRun: func(cmd *cobra.Command, args []string) {
-	},
 	RunE: func(cmd *cobra.Command, args []string) error {
-		comerIns := comer.NewComer()
-		comerIns.AddApp(cmd, args)
-		return nil
+		return comer.NewComer().AddApp(cmd, args)
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(addCmd)
 
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// addCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// addCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
-	// addCmd.PersistentFlags().String("app", "", "模块名")
 	addCmd.PersistentFlags().StringP(`app`, `a`, ``, `模块名`)
-	// addCmd.PersistentFlags().String("swaggerTags", "", "接口文档模块名")
 	addCmd.PersistentFlags().StringP(`swaggerTags`, `w`, ``, `接口文档模块名`)
-	// addCmd.PersistentFlags().String("handler", "", "处理器名")
 	addCmd.PersistentFlags().StringP(`controller`, `c`, ``, `处理器|控制器名`)
-	// addCmd.PersistentFlags().String("service", "", "服务名")
 	addCmd.PersistentFlags().StringP(`service`, `s`, ``, `服务名`)
-	// addCmd.PersistentFlags().String("model", "", "模型名;多个模型名之间用英文半角逗号(,)分隔")
 	addCmd.PersistentFlags().StringP(`model`, `m`, ``, `模型名;多个模型名之间用英文半角逗号(,)分隔`)
-
 	addCmd.PersistentFlags().String(`tpl`, ``, `模板目录地址`)
-	addCmd.PersistentFlags().StringP(`tplVersion`, `v`, ``, `模板版本号`)
 }

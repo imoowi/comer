@@ -4,92 +4,43 @@ Copyright © 2023 jun<simpleyuan@gmail.com>
 package comer
 
 import (
-	"bufio"
 	"fmt"
-	"io"
-	"log"
-	"os"
 	"strings"
 
 	"github.com/imoowi/comer/utils/format"
 	"github.com/spf13/cobra"
 )
 
-func (c *Comer) initApp(cmd *cobra.Command, args []string) bool {
-
+func (c *Comer) initApp(cmd *cobra.Command, args []string) error {
 	appName, err := cmd.Flags().GetString(`app`)
 	if err != nil {
-		fmt.Println(err.Error())
-		return false
+		return err
 	}
 	if appName == `` {
-		fmt.Println(`pls input app, e.g. -a=student (请输入app,例如 -a=student)`)
-		return false
+		return fmt.Errorf(`pls input app, e.g. -a=student (请输入app,例如 -a=student)`)
 	}
-	moduleFile := `go.mod`
-	_, gErr := os.Stat(moduleFile)
-	if os.IsNotExist(gErr) {
-		log.Println(`项目根目录下没有 go.mod 文件`)
-		return false
-	}
-	/*
-		data, err := ioutil.ReadFile(moduleFile)
-		if err != nil {
-			log.Println(err.Error())
-			return false
-		}
-		lines := strings.Split(string(data), "\n")
-		ModuleName := strings.Replace(lines[0], "module ", "", -1)
-		//*/
-	file, err := os.OpenFile(moduleFile, os.O_RDWR, 0544)
+	moduleName, err := readModuleName()
 	if err != nil {
-		fmt.Printf("File open failed! err: %v\n", err)
-		return false
+		return err
 	}
-	reader := bufio.NewReader(file)
-	_moduleName := ``
-	for {
-		line, err := reader.ReadString('\n') // 依次读一行
-		if err == io.EOF {
-			break
-		}
-		if err != nil {
-			fmt.Printf("File raed failed! err: %v\n", err)
-			return false
-		}
-		if strings.Contains(line, `module`) {
-			_moduleName = line
-			break
-		}
+
+	swaggerTags, _ := cmd.Flags().GetString(`swaggerTags`)
+	if swaggerTags == `` {
+		swaggerTags = appName
 	}
-	file.Close()
-	// fmt.Printf(`module=%v`, _moduleName)
-	ModuleName := strings.Replace(_moduleName, "module ", "", -1)
-	ModuleName = strings.Replace(ModuleName, "\r", "", -1)
-	ModuleName = strings.Replace(ModuleName, "\n", "", -1)
-	ModuleName = strings.Replace(ModuleName, "\n\r", "", -1)
-	ModuleName = strings.Replace(ModuleName, "\r\n", "", -1)
-	// fmt.Printf(`ModuleName=%v`, ModuleName)
-	SwaggerTags, _ := cmd.Flags().GetString(`swaggerTags`)
-	if SwaggerTags == `` {
-		SwaggerTags = appName
+	handlerName, _ := cmd.Flags().GetString(`controller`)
+	if handlerName == `` {
+		handlerName = appName
 	}
-	// fmt.Println(`SwaggerTags=`, SwaggerTags)
-	HandlerName, _ := cmd.Flags().GetString(`handler`)
-	if HandlerName == `` {
-		HandlerName = appName
+	serviceName, _ := cmd.Flags().GetString(`service`)
+	if serviceName == `` {
+		serviceName = handlerName
 	}
-	// fmt.Println(`HandlerName=`, HandlerName)
-	ServiceName, _ := cmd.Flags().GetString(`service`)
-	if ServiceName == `` {
-		ServiceName = HandlerName
+	modelName, _ := cmd.Flags().GetString(`model`)
+	if modelName == `` {
+		modelName = serviceName
 	}
-	// fmt.Println(`ServiceName=`, ServiceName)
-	ModelName, _ := cmd.Flags().GetString(`model`)
-	if ModelName == `` {
-		ModelName = ServiceName
-	}
-	// fmt.Println(`ModelName=`, ModelName)
+
 	tplUri := ``
 	c.App = &App{
 		dirs: []string{
@@ -103,32 +54,13 @@ func (c *Comer) initApp(cmd *cobra.Command, args []string) bool {
 		files: map[string]string{
 			`./apps/apps.go`: tplUri + `templates/v1/apps/apps.tmpl`,
 			`./apps/` + strings.ToLower(appName) + `/router.go`:                                                   tplUri + `templates/v1/apps/genapp/router.tmpl`,
-			`./apps/` + strings.ToLower(appName) + `/handlers/` + format.Camel2Snake(HandlerName) + `.handler.go`: tplUri + `templates/v1/apps/genapp/handler.tmpl`,
-			`./apps/` + strings.ToLower(appName) + `/migrates/` + format.Camel2Snake(ModelName) + `.migrate.go`:   tplUri + `templates/v1/apps/genapp/migrate.tmpl`,
-			`./apps/` + strings.ToLower(appName) + `/models/` + format.Camel2Snake(ModelName) + `.model.go`:       tplUri + `templates/v1/apps/genapp/model.tmpl`,
-			`./apps/` + strings.ToLower(appName) + `/repos/` + format.Camel2Snake(ModelName) + `.repo.go`:         tplUri + `templates/v1/apps/genapp/repo.tmpl`,
-			`./apps/` + strings.ToLower(appName) + `/services/` + format.Camel2Snake(ServiceName) + `.service.go`: tplUri + `templates/v1/apps/genapp/service.tmpl`,
+			`./apps/` + strings.ToLower(appName) + `/handlers/` + format.Camel2Snake(handlerName) + `.handler.go`: tplUri + `templates/v1/apps/genapp/handler.tmpl`,
+			`./apps/` + strings.ToLower(appName) + `/migrates/` + format.Camel2Snake(modelName) + `.migrate.go`:   tplUri + `templates/v1/apps/genapp/migrate.tmpl`,
+			`./apps/` + strings.ToLower(appName) + `/models/` + format.Camel2Snake(modelName) + `.model.go`:       tplUri + `templates/v1/apps/genapp/model.tmpl`,
+			`./apps/` + strings.ToLower(appName) + `/repos/` + format.Camel2Snake(modelName) + `.repo.go`:         tplUri + `templates/v1/apps/genapp/repo.tmpl`,
+			`./apps/` + strings.ToLower(appName) + `/services/` + format.Camel2Snake(serviceName) + `.service.go`: tplUri + `templates/v1/apps/genapp/service.tmpl`,
 		},
 	}
-	c.tplAppData = map[string]any{
-		`ModuleName`:        ModuleName,
-		`moduleName`:        strings.ToLower(ModuleName),
-		`AppName`:           format.FirstUpper(appName),
-		`appName`:           strings.ToLower(appName),
-		`HandlerName`:       format.FirstUpper(HandlerName),
-		`lHandlerName`:      format.FirstLower(HandlerName),
-		`handlerName`:       strings.ToLower(HandlerName),
-		`handler_name`:      format.Camel2Snake(HandlerName),
-		`handler-name`:      format.Camel2Dash(HandlerName),
-		`handlerName2Dash`:  format.Camel2Dash(HandlerName),
-		`handlerName2Snake`: format.Camel2Snake(HandlerName),
-		`ServiceName`:       format.FirstUpper(ServiceName),
-		`serviceName`:       strings.ToLower(ServiceName),
-		`ModelName`:         format.FirstUpper(ModelName),
-		`modelName`:         strings.ToLower(ModelName),
-		`model_name`:        format.Camel2Snake(ModelName),
-		`model-name`:        format.Camel2Dash(ModelName),
-		`SwaggerTags`:       SwaggerTags,
-	}
-	return true
+	c.tplAppData = buildAppTplData(moduleName, appName, handlerName, serviceName, modelName, swaggerTags)
+	return nil
 }

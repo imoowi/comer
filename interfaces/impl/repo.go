@@ -23,24 +23,10 @@ func NewRepo[T interfaces.IModel](db *gorm.DB) *Repo[T] {
 
 // 分页查询数据
 func (r *Repo[T]) PageList(c *gin.Context, f *interfaces.IFilter) (res *response.PageListT[T], err error) {
-	db := r.DB
-	db = (*f).BuildPageListFilter(c, db)
-	offset := ((*f).GetPage() - 1) * (*f).GetPageSize()
-	db = db.Model(new(T)).Offset(int(offset)).Limit(int((*f).GetPageSize()))
-	objs := make([]T, 0)
-	err = db.Find(&objs).Error
-	var count int64
-	db.Offset(-1).Limit(-1).Select("count(id)").Count(&count)
-
-	res = &response.PageListT[T]{
-		List:  objs,
-		Pages: response.MakePages(count, (*f).GetPage(), (*f).GetPageSize()),
-	}
-
-	return
+	return r.PageListWithSelectOption(c, f, nil)
 }
 
-// 分页查询数据
+// 分页查询数据（支持指定查询字段）
 func (r *Repo[T]) PageListWithSelectOption(c *gin.Context, f *interfaces.IFilter, selectOpt []string) (res *response.PageListT[T], err error) {
 	db := r.DB
 	db = (*f).BuildPageListFilter(c, db)
@@ -64,12 +50,10 @@ func (r *Repo[T]) PageListWithSelectOption(c *gin.Context, f *interfaces.IFilter
 
 // 根据id查询一条记录
 func (r *Repo[T]) One(c *gin.Context, id uint) (res T, err error) {
-	db := r.DB
-	err = db.Model(new(T)).Where(`id=?`, id).First(&res).Error
-	return
+	return r.OneWithSelectOption(c, id, nil)
 }
 
-// 根据id查询一条记录
+// 根据id查询一条记录（支持指定查询字段）
 func (r *Repo[T]) OneWithSelectOption(c *gin.Context, id uint, selectOpt []string) (res T, err error) {
 	db := r.DB
 	db = db.Model(new(T)).Where(`id=?`, id)
@@ -82,12 +66,10 @@ func (r *Repo[T]) OneWithSelectOption(c *gin.Context, id uint, selectOpt []strin
 
 // 根据名字查询一条记录
 func (r *Repo[T]) OneByName(c *gin.Context, name string) (res T, err error) {
-	db := r.DB
-	err = db.Model(new(T)).Where(`name=?`, name).First(&res).Error
-	return
+	return r.OneByNameWithSelectOption(c, name, nil)
 }
 
-// 根据名字查询一条记录
+// 根据名字查询一条记录（支持指定查询字段）
 func (r *Repo[T]) OneByNameWithSelectOption(c *gin.Context, name string, selectOpt []string) (res T, err error) {
 	db := r.DB
 	db = db.Model(new(T)).Where(`name=?`, name)
@@ -108,9 +90,7 @@ func (r *Repo[T]) Add(c *gin.Context, model T) (newId uint, err error) {
 
 // 通过id更新资源，只更新updateFields里有的字段
 func (r *Repo[T]) Update(c *gin.Context, updateFields map[string]any, id uint) (updated bool, err error) {
-	if id <= 0 {
-		updated = false
-		err = errors.New(`pls input id`)
+	if err = validateID(id); err != nil {
 		return
 	}
 	_model, err := r.One(c, id)
@@ -127,9 +107,7 @@ func (r *Repo[T]) Update(c *gin.Context, updateFields map[string]any, id uint) (
 
 // 根据id删除资源
 func (r *Repo[T]) Delete(c *gin.Context, id uint) (deleted bool, err error) {
-	if id <= 0 {
-		deleted = false
-		err = errors.New(`pls input id`)
+	if err = validateID(id); err != nil {
 		return
 	}
 	db := r.DB
@@ -142,4 +120,12 @@ func (r *Repo[T]) Delete(c *gin.Context, id uint) (deleted bool, err error) {
 		deleted = true
 	}
 	return
+}
+
+// validateID 校验 id 是否合法（大于 0）
+func validateID(id uint) error {
+	if id <= 0 {
+		return errors.New(`pls input id`)
+	}
+	return nil
 }
