@@ -98,6 +98,46 @@ file [ ./internal/controllers/right.controller.go ] created
 comer add app end.
 ```
 
+### 2.1 Define Model Fields / 定义模型字段
+
+Define custom fields for the model (v2 layout only). Without `-f`, the generated model has a single `name` field.
+
+为模型定义自定义字段（仅 v2 布局）。不加 `-f` 时，生成的模型只有一个 `name` 字段。
+
+```sh
+comer add -c=post -f=title:string:100 -f=content:text -f=status:int -f=created_at:datetime
+```
+
+Field format: `name:type[:size][:comment]`. Supported types:
+
+字段格式：`name:type[:size][:comment]`。支持的类型：
+
+| type 类型 | Go 类型 | GORM 类型 |
+|---|---|---|
+| string | string | varchar(size)（默认 30 / default 30） |
+| text | string | text |
+| int | int | int |
+| int64 / bigint | int64 | bigint |
+| float64 / decimal / float | float64 | decimal(10,2) |
+| bool | bool | tinyint(1) |
+| datetime | time.Time | datetime |
+| date | time.Time | date |
+
+Or put fields in a file (one per line, `#` for comments) and pass it with `--fieldConfig`:
+
+也可以把字段写进文件（一行一个，`#` 为注释），用 `--fieldConfig` 传入：
+
+```
+# post.fields
+title:string:100:标题
+content:text
+status:int
+```
+
+```sh
+comer add -c=post --fieldConfig=post.fields
+```
+
 ### 3. Add via Custom Templates / 通过自定义模板添加
 
 Add an app using custom templates:

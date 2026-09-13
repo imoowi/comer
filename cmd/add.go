@@ -27,5 +27,7 @@ func init() {
 	addCmd.PersistentFlags().StringP(`controller`, `c`, ``, `处理器|控制器名`)
 	addCmd.PersistentFlags().StringP(`service`, `s`, ``, `服务名`)
 	addCmd.PersistentFlags().StringP(`model`, `m`, ``, `模型名;多个模型名之间用英文半角逗号(,)分隔`)
+	addCmd.PersistentFlags().StringSliceP(`field`, `f`, nil, `模型字段 name:type[:size][:comment]，可重复`)
+	addCmd.PersistentFlags().String(`fieldConfig`, ``, `模型字段配置文件，一行一个 name:type[:size][:comment]`)
 	addCmd.PersistentFlags().String(`tpl`, ``, `模板目录地址`)
 }
