@@ -59,5 +59,13 @@ func (c *Comer) initAppV2(cmd *cobra.Command, args []string) error {
 		},
 	}
 	c.tplAppData = buildAppTplData(moduleName, controllerName, controllerName, serviceName, modelName, swaggerTags)
+
+	fields, err := resolveFields(cmd)
+	if err != nil {
+		return err
+	}
+	c.tplAppData[`Fields`] = fields
+	c.tplAppData[`SearchColumn`] = firstStringColumn(fields)
+	c.tplAppData[`HasTime`] = hasTimeField(fields)
 	return nil
 }

@@ -6,10 +6,19 @@ package models
 
 import (
 	"github.com/imoowi/comer/components"
+{{- if .HasTime}}
+	"time"
+{{- end}}
 )
 
-type {{.ModelName}}Base struct{
+type {{.ModelName}}Base struct {
+{{- if .Fields}}
+{{- range .Fields}}
+	{{.Name}} {{.GoType}} `{{.Tag}}`
+{{- end}}
+{{- else}}
 	Name  string     `json:"name" form:"name" gorm:"column:name;type:varchar(30);not null;comment:名" `
+{{- end}}
 }
 
 // {{.ModelName}}表

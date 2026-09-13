@@ -13,7 +13,7 @@ type {{.ModelName}}Filter struct {
 
 func (f *{{.ModelName}}Filter) BuildPageListFilter(c *gin.Context, db *gorm.DB) *gorm.DB {
 	if f.GetSearchKey() != `` {
-		db = db.Where(`name LIKE ?`, `%`+f.GetSearchKey()+`%`)
+		db = db.Where(`{{.SearchColumn}} LIKE ?`, `%`+f.GetSearchKey()+`%`)
 	}
 	return f.Filter.BuildPageListFilter(c, db)
 }
