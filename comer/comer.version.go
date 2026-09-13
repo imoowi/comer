@@ -3,17 +3,15 @@ Copyright © 2023 jun<simpleyuan@gmail.com>
 */
 package comer
 
-import (
-	"fmt"
-	"runtime"
-)
+import "runtime"
+
+const version = `v1.3.18`
 
 func (c *Comer) goVersion() string {
 	return runtime.Version()
 }
 
+// Version 返回版本号。
 func (c *Comer) Version() string {
-	c.version = `v1.3.18`
-	fmt.Println(`Comer version `, c.version)
-	return c.version
+	return version
 }

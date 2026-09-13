@@ -42,7 +42,7 @@ func Intersect(slice1, slice2 []string) []string {
 }
 
 // 差集
-func Dirrerence(slice1, slice2 []string) []string {
+func Difference(slice1, slice2 []string) []string {
 	m := make(map[string]int)
 	nn := make([]string, 0)
 	inter := Intersect(slice1, slice2)
@@ -57,6 +57,13 @@ func Dirrerence(slice1, slice2 []string) []string {
 		}
 	}
 	return nn
+}
+
+// Dirrerence 是 Difference 的历史拼写别名，保留以兼容旧模板。
+//
+// Deprecated: 使用 Difference。
+func Dirrerence(slice1, slice2 []string) []string {
+	return Difference(slice1, slice2)
 }
 
 func IsInArray(val interface{}, array interface{}) (exists bool, index int) {
