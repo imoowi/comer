@@ -1,4 +1,3 @@
-
 # Comer
 
 [![Go](https://github.com/imoowi/comer/actions/workflows/release-tag.yml/badge.svg)](https://github.com/imoowi/comer/actions?query=workflow%3ACI)
@@ -6,23 +5,31 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/imoowi/comer)](https://goreportcard.com/report/github.com/imoowi/comer)
 [![codecov](https://codecov.io/gh/imoowi/comer/branch/main/graph/badge.svg)](https://codecov.io/gh/imoowi/comer)
 
-## Comer 是什么？
+## What is Comer / Comer 是什么？
+
+Comer is a fast code scaffolding tool written in Go. It generates a basic web API framework, and also supports generating a single controller, service, or model, as well as generating code from custom templates. It integrates frameworks and modules including gin, gorm, redis, casbin, auth, and captcha.
 
 Comer，一个用go语言写的快速生成代码的脚手架，能够生成基本的web api框架，同时支持单个控制器、服务、模型以及从自定义模板生成代码；其中融合了gin 、gorm、redis、casbin、auth、captcha等框架和模块
 
-## 安装
+## Installation / 安装
 
 ```go
 go install github.com/imoowi/comer@latest
 ```
 
-## 使用
+## Usage / 使用
 
-### 1、创建项目
+### 1. Create a Project / 创建项目
+
+Create a new project:
+
+创建项目：
 
 ```sh
 comer new github.com/imoowi/comer-example 
 ```
+As follows:
+
 如下:
 
 ```sh
@@ -48,7 +55,11 @@ dir [ github.com/imoowi/comer-example/apps ] created
 
 ```
 
-### 2、添加控制器
+### 2. Add a Controller / 添加控制器
+
+Add a controller:
+
+添加控制器：
 
 ```sh
 cd comer-example
@@ -56,6 +67,8 @@ comer add -c=controllerName
 #或者
 comer add [-a=user] -w='Oauth' -c=auth -s=user -m=user,role
 ```
+For example:
+
 例如：
 ```sh
 $ cd comer-example
@@ -85,18 +98,23 @@ file [ ./internal/controllers/right.controller.go ] created
 comer add app end.
 ```
 
-### 3、通过自定义模板添加
-- 3.1 在项目根目录下创建文件夹：".comer-templates"
-- 3.2 创建配置文件".comer-templates/setting.json5"
+### 3. Add via Custom Templates / 通过自定义模板添加
+
+Add an app using custom templates:
+
+通过自定义模板添加：
+
+- 3.1 Create a `.comer-templates` folder in the project root. / 在项目根目录下创建文件夹：".comer-templates"
+- 3.2 Create the config file `.comer-templates/setting.json5`. / 创建配置文件".comer-templates/setting.json5"
 ```json5
 [
   {
     var: [
       {
-        module_name: "github.com/imoowi/examples/comer_add_with_tpl", //项目根目录下go.mod文件里的module
-        controller_name: "PostPlus", // 控制器名
-        service_name: "", // 服务名；如果为空，使用ControllerName
-        model_name: "", // 数据库模型名；如果为空，使用ServiceName
+        module_name: "github.com/imoowi/examples/comer_add_with_tpl", //项目根目录下go.mod文件里的module (module name in go.mod)
+        controller_name: "PostPlus", // 控制器名 (controller name)
+        service_name: "", // 服务名；如果为空，使用ControllerName (service name; defaults to ControllerName)
+        model_name: "", // 数据库模型名；如果为空，使用ServiceName (model name; defaults to ServiceName)
         swagger_tags: "PostPlus(页面加)",
       },
       {
@@ -107,42 +125,42 @@ comer add app end.
         swagger_tags: "PostPlus2(页面加)",
       },
     ],
-    // 控制器
+    // 控制器 (controller)
     controller: [
       {
         dir: "internal/controllers",
         tpl: "controller.tpl",
       },
     ],
-    // 数据迁移
+    // 数据迁移 (migration)
     migrate: [
       {
         dir: "internal/db/migrates",
         tpl: "migrate.tpl",
       },
     ],
-    // 模型
+    // 模型 (model)
     model: [
       {
         dir: "internal/models",
         tpl: "model.tpl",
       },
     ],
-    // 数据资源
+    // 数据资源 (repository)
     repo: [
       {
         dir: "internal/models",
         tpl: "repo.tpl",
       },
     ],
-    // 服务
+    // 服务 (service)
     service: [
       {
         dir: "internal/services",
         tpl: "service.tpl",
       },
     ],
-    // 路由
+    // 路由 (router)
     router: [
       {
         dir: "internal/app/monitor/router",
@@ -157,7 +175,7 @@ comer add app end.
 ]
 
 ```
-- 3.3 创建模板文件，详情请见:"example/comer_add_with_tpl"
+- 3.3 Create the template files; see `example/comer_add_with_tpl`. / 创建模板文件，详情请见:"example/comer_add_with_tpl"
 ```
 $ tree .comer-templates/
 .comer-templates/
@@ -171,7 +189,7 @@ $ tree .comer-templates/
 
 0 directories, 7 files
 ```
-- 3.4 运行命令: "comer add-with-tpl"
+- 3.4 Run the command `comer add-with-tpl`. / 运行命令: "comer add-with-tpl"
 ```sh
 $ comer add-with-tpl
 Comer version  v1.3.8
@@ -203,7 +221,11 @@ file [ ./internal/services/post_plus2.service.go ] created
 file [ ./internal/app/monitor/router/post_plus2.router.go ] created
 ```
 
-### 4、生成swagger文档
+### 4. Generate Swagger Docs / 生成swagger文档
+
+Generate Swagger documentation:
+
+生成swagger文档：
 
 ```sh
 #依赖swago, go install github.com/swaggo/swag/cmd/swag@latest
@@ -211,33 +233,37 @@ swag init
 ```
 
 
-### 5、修改数据库配置
+### 5. Configure the Database / 修改数据库配置
+
+Modify the database configuration:
+
+修改数据库配置：
 
 ```yml
 #vim ./configs/settings-local.yml
-application: # dev开发环境 test测试环境 prod线上环境
+application: # dev开发环境(dev) test测试环境(test) prod线上环境(prod)
   mode: dev
-  name: comerProject # 服务名称
+  name: comerProject # 服务名称 (service name)
 server:
-  host: 0.0.0.0 # 服务器ip，默认使用 0.0.0.0
-  port: 8000 # 服务端口号
-  readtimeout: 60 # 读超时时间
-  writertimeout: 60 # 写超时时间
+  host: 0.0.0.0 # 服务器ip，默认使用 0.0.0.0 (server IP, defaults to 0.0.0.0)
+  port: 8000 # 服务端口号 (server port)
+  readtimeout: 60 # 读超时时间 (read timeout)
+  writertimeout: 60 # 写超时时间 (write timeout)
 logger:
-  path: runtime/logs/log # 日志存放路径
-  stdout: "" # 日志输出，file：文件，default：命令行，其他：命令行
-  level: trace # 日志等级, trace, debug, info, warn, error, fatal
-  maxAge: 168h # 日志最长保存时间，7天, ns、us、ms、s、m、h
-  rotationTime: 24h # 日志切割级别
+  path: runtime/logs/log # 日志存放路径 (log directory)
+  stdout: "" # 日志输出，file：文件，default：命令行，其他：命令行 (log output: file=file, default=stdout, other=stdout)
+  level: trace # 日志等级, trace, debug, info, warn, error, fatal (log level: trace, debug, info, warn, error, fatal)
+  maxAge: 168h # 日志最长保存时间，7天, ns、us、ms、s、m、h (max log retention, e.g. 7 days; units: ns/us/ms/s/m/h)
+  rotationTime: 24h # 日志切割级别 (log rotation interval)
 ratelimit:
-  # 每秒放多少个令牌
+  # 每秒放多少个令牌 (tokens added per second)
   cap: 1000
-  # 每秒取多少个令牌
+  # 每秒取多少个令牌 (tokens consumed per second)
   quantum: 1000
 jwt:
-  secret: comerProject-admin # token 密钥，生产环境时及的修改
-  timeout: 2000h0m0s # token 过期时间 格式：0h0m0s
-  refresh_token_timeout: 0h5m0s # token 过期时间减去的时间，用于刷新token
+  secret: comerProject-admin # token 密钥，生产环境时及的修改 (JWT secret; change it in production)
+  timeout: 2000h0m0s # token 过期时间 格式：0h0m0s (token expiry, format 0h0m0s)
+  refresh_token_timeout: 0h5m0s # token 过期时间减去的时间，用于刷新token (time subtracted from expiry, used to refresh the token)
 mysql:
   dsn: root:password@tcp(127.0.0.1:3306)/comer_project?charset=utf8&parseTime=True&loc=Local&timeout=1000ms
   casbin: root:password@tcp(127.0.0.1:3306)/comer_project
@@ -251,17 +277,29 @@ cache:
 
 ```
 
-### 6、数据迁移:生成基本的数据库表
+### 6. Data Migration: Create Tables / 数据迁移:生成基本的数据库表
+
+Migrate to generate the basic database tables:
+
+数据迁移，生成基本的数据库表：
 
 ```sh
 go run . migrate
 ```
-### 7、初始化数据库
+### 7. Initialize the Database / 初始化数据库
+
+Initialize the database:
+
+初始化数据库：
 
 ```sh
 go run . init
 ```
-### 8、运行项目
+### 8. Run the Project / 运行项目
+
+Run the project:
+
+运行项目：
 
 ```sh
 #依赖air, go install github.com/cosmtrek/air@latest
@@ -270,6 +308,8 @@ air
 go mod tidy
 go run . server
 ```
+For example:
+
 例如：
 ```sh
 $ air
@@ -298,39 +338,45 @@ API document address http://localhost:8000/swagger/index.html
 
 ```
 
-### 9、访问接口文件：
+### 9. Access the API Docs / 访问接口文件：
+
+Access the API docs at:
+
+访问接口文件：
+
 [http://localhost:8000/swagger/index.html](http://localhost:8000/swagger/index.html)
 ![](assets/comer-swagger.png)
 ![](assets/comer-swagger2.png)
 
-## 目录结构
-- version 2
+## Directory Structure / 目录结构
+
+- Version 2 / 版本2
 ```sh
 $ tree
 .
 |-- Dockerfile 
 |-- Makefile
 |-- README.md
-|-- cmd //入口
-|   |-- init.go //初始化系统
-|   |-- migrate.go //数据迁移
+|-- cmd //入口 (entry)
+|   |-- init.go //初始化系统 (system init)
+|   |-- migrate.go //数据迁移 (migration)
 |   |-- root.go 
 |   `-- server.go //web server
-|-- configs //配置文件
+|-- configs //配置文件 (config)
 |   |-- casbin.conf
 |   `-- settings-local.yml 
 |-- docker-compose.yml
-|-- docs //swagger生成的api文档目录
+|-- docs //swagger生成的api文档目录 (generated swagger API docs)
 |   |-- init.go
 |-- go.mod
 |-- go.sum
 |-- internal
-|   |-- controllers //控制器
+|   |-- controllers //控制器 (controllers)
 |   |   |-- auth.controller.go
 |   |   |-- captcha.controller.go
 |   |   |-- event.controller.go
 |   |   `-- user.controller.go
-|   |-- global //全局变量
+|   |-- global //全局变量 (global variables)
 |   |   |-- cache.go
 |   |   |-- casbin.go
 |   |   |-- config.go
@@ -339,25 +385,25 @@ $ tree
 |   |   |-- log.go
 |   |   |-- mysql.go
 |   |   `-- redis.go
-|   |-- middlewares //中间件
-|   |   |-- CasbinMiddleware.go //权限
-|   |   |-- CrosMiddleware.go //跨域
+|   |-- middlewares //中间件 (middlewares)
+|   |   |-- CasbinMiddleware.go //权限 (permission)
+|   |   |-- CrosMiddleware.go //跨域 (CORS)
 |   |   |-- JWTAuthMiddleware.go //jwt
-|   |   |-- LoggerMiddleware.go //日志
-|   |   |-- RateLimitMiddleware.go //频率限制
-|   |   |-- RequestIdMiddleware.go //请求id
-|   |   |-- UserlogMiddleware.go //用户日志
-|   |   |-- VcodeMiddleware.go //验证码
+|   |   |-- LoggerMiddleware.go //日志 (logging)
+|   |   |-- RateLimitMiddleware.go //频率限制 (rate limit)
+|   |   |-- RequestIdMiddleware.go //请求id (request id)
+|   |   |-- UserlogMiddleware.go //用户日志 (user log)
+|   |   |-- VcodeMiddleware.go //验证码 (captcha)
 |   |   |-- middleware.go 
 |   |   `-- token
 |   |       `-- jwttoken.go
-|   |-- migrates //数据迁移
+|   |-- migrates //数据迁移 (migration)
 |   |   |-- init.go
 |   |   |-- role.migrate.go
 |   |   |-- user.migrate.go
 |   |   |-- user_log.migrate.go
 |   |   `-- user_role.migrate.go
-|   |-- models //模型
+|   |-- models //模型 (models)
 |   |   |-- role.filter.go
 |   |   |-- role.model.go
 |   |   |-- user.filter.go
@@ -366,13 +412,13 @@ $ tree
 |   |   |-- user_log.model.go
 |   |   |-- user_role.filter.go
 |   |   `-- user_role.model.go
-|   |-- repos //数据提供者
+|   |-- repos //数据提供者 (repositories)
 |   |   |-- init.go
-|   |-- router //路由定义
+|   |-- router //路由定义 (routing)
 |   |   |-- auth.router.go
 |   |   |-- common.router.go
 |   |   |-- init.go
-|   `-- services //服务层
+|   `-- services //服务层 (services)
 |       |-- init.go
 |-- main.go
 |-- runtime
@@ -381,19 +427,19 @@ $ tree
     `-- login.go
 ```
 
-- version 1 (old version)
+- Version 1 (legacy) / 版本1（旧版）
 ```sh
 $ tree
 .
 |-- README.md
 |-- .comer-templates
-|-- apps //应用集合
-|   |-- apps.go //多个应用自动加载文件
-|   |-- common //公共模块
-|   |   |-- controllers //路由处理方
-|   |   |   `-- captcha.controller.go //默认的验证码
-|   |   `-- router.go //路由
-|   |-- student //通过 comer add -a=appName生成
+|-- apps //应用集合 (apps)
+|   |-- apps.go //多个应用自动加载文件 (auto-loads all apps)
+|   |-- common //公共模块 (common module)
+|   |   |-- controllers //路由处理方 (controllers)
+|   |   |   `-- captcha.controller.go //默认的验证码 (default captcha)
+|   |   `-- router.go //路由 (routing)
+|   |-- student //通过 comer add -a=appName生成 (generated by `comer add -a=appName`)
 |   |   |-- controllers
 |   |   |   `-- student.controller.go
 |   |   |-- migrates
@@ -405,59 +451,59 @@ $ tree
 |   |   |-- router.go
 |   |   `-- services
 |   |       `-- student.service.go
-|   |-- swagger //默认包含的swagger文档应用
+|   |-- swagger //默认包含的swagger文档应用 (bundled swagger docs app)
 |   |   `-- router.go
-|   `-- user //默认包含用户应用
+|   `-- user //默认包含用户应用 (bundled user app)
 |       |-- controllers
-|       |   `-- auth.controller.go //用户认证
-|       |-- migrates //数据迁移文件，会自动生成
+|       |   `-- auth.controller.go //用户认证 (auth)
+|       |-- migrates //数据迁移文件，会自动生成 (auto-generated migrations)
 |       |   |-- role.migrate.go
 |       |   |-- user.migrate.go
 |       |   |-- userlog.migrate.go
 |       |   `-- userrole.migrate.go
-|       |-- models //数据表对应的model，自动生成，表结构通过结构体修改，禁止直接修改数据库里表的结构
-|       |   |-- role.model.go //角色
-|       |   |-- user.model.go //用户
-|       |   |-- userlog.model.go //用户记录
-|       |   `-- userrole.model.go //用户角色关系
-|       |-- repos //数据提供方
-|       |-- router.go //路由
-|       `-- services //服务提供方
-|-- cmd //由Cobra命令生成
-|   |-- init.go //系统初始化
-|   |-- migrate.go //数据迁移
-|   |-- root.go //主入口
-|   `-- server.go api服务
-|-- components //组件
+|       |-- models //数据表对应的model，自动生成，表结构通过结构体修改，禁止直接修改数据库里表的结构 (models mapped to tables; modify the schema via the struct, never edit the DB directly)
+|       |   |-- role.model.go //角色 (role)
+|       |   |-- user.model.go //用户 (user)
+|       |   |-- userlog.model.go //用户记录 (user log)
+|       |   `-- userrole.model.go //用户角色关系 (user-role relation)
+|       |-- repos //数据提供方 (repositories)
+|       |-- router.go //路由 (routing)
+|       `-- services //服务提供方 (services)
+|-- cmd //由Cobra命令生成 (generated by Cobra)
+|   |-- init.go //系统初始化 (system init)
+|   |-- migrate.go //数据迁移 (migration)
+|   |-- root.go //主入口 (main entry)
+|   `-- server.go api服务 (API server)
+|-- components //组件 (components)
 |   |-- captcha.go
 |   |-- mysql.go
 |   `-- redis.go
-|-- configs //配置目录
+|-- configs //配置目录 (config)
 |   |-- casbin.conf
 |   `-- settings-local.yml
-|-- docs //swagger生成的apidoc
+|-- docs //swagger生成的apidoc (generated swagger API docs)
 |   |-- docs.go
 |   |-- swagger.json
 |   `-- swagger.yaml
-|-- global //全局文件
+|-- global //全局文件 (global)
 |   |-- cache.go
     ...
 |   `-- redis.go
 |-- go.mod
 |-- go.sum
-|-- main.go //程序主入口
-|-- middlewares //中间件
-|   |-- CasbinMiddleware.go //权限控制
-|   |-- CrosMiddleware.go //跨域访问
-|   |-- JWTAuthMiddleware.go //JWT认证
-|   |-- LoggerMiddleware.go //日志
-|   |-- RateLimitMiddleware.go //访问频率控制
-|   |-- VcodeMiddleware.go //验证码中间件
+|-- main.go //程序主入口 (main entry)
+|-- middlewares //中间件 (middlewares)
+|   |-- CasbinMiddleware.go //权限控制 (permission)
+|   |-- CrosMiddleware.go //跨域访问 (CORS)
+|   |-- JWTAuthMiddleware.go //JWT认证 (JWT auth)
+|   |-- LoggerMiddleware.go //日志 (logging)
+|   |-- RateLimitMiddleware.go //访问频率控制 (rate limit)
+|   |-- VcodeMiddleware.go //验证码中间件 (captcha middleware)
 |   |-- middleware.go
 |   `-- token //jwttoken
 |       `-- jwttoken.go
 |-- router
-|   `-- router.go //路由定义
-|-- runtime //运行时
-`-- utils //工具箱
+|   `-- router.go //路由定义 (routing)
+|-- runtime //运行时 (runtime)
+`-- utils //工具箱 (utilities)
 ```
