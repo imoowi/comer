@@ -117,3 +117,18 @@ func TestInsertBeforeSentinel(t *testing.T) {
 		t.Fatalf("expected error for missing sentinel")
 	}
 }
+
+func TestWriteFileAtomic(t *testing.T) {
+	dir := t.TempDir()
+	f := filepath.Join(dir, "out.txt")
+	if err := writeFileAtomic(f, []byte("hello")); err != nil {
+		t.Fatal(err)
+	}
+	data, err := os.ReadFile(f)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if string(data) != "hello" {
+		t.Errorf("writeFileAtomic wrote %q, want %q", string(data), "hello")
+	}
+}

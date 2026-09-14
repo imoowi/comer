@@ -51,3 +51,34 @@ func TestCamel2Snake(t *testing.T) {
 	}
 	fmt.Println(d)
 }
+
+func TestHex2Dec(t *testing.T) {
+	cases := map[string]int{
+		"0x10": 16,
+		"0Xff": 255,
+		"a":    10,
+		"10":   16,
+	}
+	for in, want := range cases {
+		if got := Hex2Dec(in); got != want {
+			t.Errorf("Hex2Dec(%q) = %d, want %d", in, got, want)
+		}
+	}
+}
+
+func TestUniqueSliceString(t *testing.T) {
+	got := UniqueSliceString([]string{"a", "b", "a", "c", "b"})
+	if len(got) != 3 {
+		t.Fatalf("UniqueSliceString length = %d, want 3: %v", len(got), got)
+	}
+	// 去重结果顺序不确定，按集合断言
+	set := map[string]bool{}
+	for _, s := range got {
+		set[s] = true
+	}
+	for _, want := range []string{"a", "b", "c"} {
+		if !set[want] {
+			t.Errorf("UniqueSliceString missing %q: %v", want, got)
+		}
+	}
+}

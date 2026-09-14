@@ -154,3 +154,55 @@ func TestHasJSONField(t *testing.T) {
 		t.Errorf("hasJSONField(nil) should be false")
 	}
 }
+
+func TestTextType(t *testing.T) {
+	cases := map[string]string{
+		"":       "text",
+		"tiny":   "tinytext",
+		"medium": "mediumtext",
+		"long":   "longtext",
+		"other":  "text",
+	}
+	for in, want := range cases {
+		if got := textType(in); got != want {
+			t.Errorf("textType(%q) = %q, want %q", in, got, want)
+		}
+	}
+}
+
+func TestDecimalPrecisionScale(t *testing.T) {
+	cases := map[string]string{
+		"":     "10,2",
+		"10,4": "10,4",
+		"10.4": "10,4",
+		"10":   "10,2",
+	}
+	for in, want := range cases {
+		if got := decimalPrecisionScale(in); got != want {
+			t.Errorf("decimalPrecisionScale(%q) = %q, want %q", in, got, want)
+		}
+	}
+}
+
+func TestParseModelFields(t *testing.T) {
+	fields, err := parseModelFields([]string{"", "title:string:100", "status:int"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(fields) != 2 {
+		t.Fatalf("parseModelFields len = %d, want 2", len(fields))
+	}
+	if fields[0].Name != "Title" || fields[1].Name != "Status" {
+		t.Errorf("unexpected fields: %+v", fields)
+	}
+	if _, err := parseModelFields([]string{"bad"}); err == nil {
+		t.Fatal("expected error for bad spec")
+	}
+}
+
+func TestSupportedTypes(t *testing.T) {
+	s := supportedTypes()
+	if !strings.Contains(s, "string") || !strings.Contains(s, "json") {
+		t.Errorf("supportedTypes = %q", s)
+	}
+}

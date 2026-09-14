@@ -18,3 +18,16 @@ func TestMakeRandStr(t *testing.T) {
 		t.Errorf(`MakeRandStr test failed`)
 	}
 }
+
+func TestMakeRandNumber(t *testing.T) {
+	str := MakeRandNumber(10)
+	if len(str) != 10 {
+		t.Errorf("MakeRandNumber(10) length = %d, want 10", len(str))
+	}
+	for _, c := range str {
+		if c < '0' || c > '9' {
+			t.Errorf("MakeRandNumber contains non-digit: %q", c)
+			break
+		}
+	}
+}

@@ -57,3 +57,27 @@ func contains(s []string, v string) (int, bool) {
 	}
 	return -1, false
 }
+
+func TestIsInArray(t *testing.T) {
+	if exists, idx := IsInArray("b", []string{"a", "b", "c"}); !exists || idx != 1 {
+		t.Errorf("IsInArray found case: exists=%v idx=%d", exists, idx)
+	}
+	if exists, idx := IsInArray("z", []string{"a", "b"}); exists || idx != -1 {
+		t.Errorf("IsInArray not-found case: exists=%v idx=%d", exists, idx)
+	}
+	if exists, idx := IsInArray(2, []int{1, 2, 3}); !exists || idx != 1 {
+		t.Errorf("IsInArray int-slice case: exists=%v idx=%d", exists, idx)
+	}
+	// 非 slice 类型返回 (false, -1)
+	if exists, idx := IsInArray(1, "not-a-slice"); exists || idx != -1 {
+		t.Errorf("IsInArray non-slice case: exists=%v idx=%d", exists, idx)
+	}
+}
+
+func TestRemoveEmptyString(t *testing.T) {
+	got := RemoveEmptyString([]string{" a ", "", "  ", "b", "c"})
+	want := []string{"a", "b", "c"}
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("RemoveEmptyString = %v, want %v", got, want)
+	}
+}
