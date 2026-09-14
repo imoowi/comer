@@ -5,7 +5,7 @@ package comer
 
 import "runtime"
 
-const version = `v1.3.18`
+const version = `v1.3.19`
 
 func (c *Comer) goVersion() string {
 	return runtime.Version()

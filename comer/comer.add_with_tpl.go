@@ -41,6 +41,10 @@ func (c *Comer) GenAppWithTpl(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return err
 	}
+	dryRun, err := cmd.Flags().GetBool(`dry-run`)
+	if err != nil {
+		return err
+	}
 	fmt.Println(`comer-templates dir is: `, tpl)
 	setting := tpl + `/setting.json5`
 	if !myfile.IsFileExist(setting) {
@@ -55,27 +59,32 @@ func (c *Comer) GenAppWithTpl(cmd *cobra.Command, args []string) error {
 		return fmt.Errorf(`[Parse .comer-templates/setting.json5 failed] %w`, err)
 	}
 
+	fields, err := resolveFields(cmd)
+	if err != nil {
+		return err
+	}
+	searchColumn, _ := cmd.Flags().GetString(`searchColumn`)
+	if searchColumn == `` {
+		searchColumn = firstStringColumn(fields)
+	}
+
 	for _, v := range tplSetting {
-		dirs := make([]string, 0)
-		for _, vv := range v.Controller {
-			dirs = append(dirs, vv.Dir)
+		if len(v.Vars) == 0 {
+			return fmt.Errorf(`[setting.json5 每个配置项至少需要一个 var]`)
 		}
-		for _, vv := range v.Service {
-			dirs = append(dirs, vv.Dir)
+		dirs, err := appTplDirs(v)
+		if err != nil {
+			return err
 		}
-		for _, vv := range v.Model {
-			dirs = append(dirs, vv.Dir)
+		if err := validateTplFiles(tpl, v); err != nil {
+			return err
 		}
-		for _, vv := range v.Repo {
-			dirs = append(dirs, vv.Dir)
-		}
-		for _, vv := range v.Migrate {
-			dirs = append(dirs, vv.Dir)
-		}
-		for _, vv := range v.Router {
-			dirs = append(dirs, vv.Dir)
-		}
-		if err = c.generateDirs(dirs); err != nil {
+
+		if dryRun {
+			for _, d := range dirs {
+				fmt.Printf("would create dir %s\n", d)
+			}
+		} else if err = c.generateDirs(dirs); err != nil {
 			return err
 		}
 
@@ -86,31 +95,90 @@ func (c *Comer) GenAppWithTpl(cmd *cobra.Command, args []string) error {
 			if vv.ModelName == `` {
 				vv.ModelName = vv.ServiceName
 			}
-			files := make(map[string]string)
-			for _, vvv := range v.Controller {
-				files[`./`+strings.ToLower(vvv.Dir)+`/`+format.Camel2Snake(vv.ControllerName)+`.controller.go`] = tpl + `/` + vvv.Tpl
-			}
-			for _, vvv := range v.Service {
-				files[`./`+strings.ToLower(vvv.Dir)+`/`+format.Camel2Snake(vv.ServiceName)+`.service.go`] = tpl + `/` + vvv.Tpl
-			}
-			for _, vvv := range v.Migrate {
-				files[`./`+strings.ToLower(vvv.Dir)+`/`+format.Camel2Snake(vv.ModelName)+`.migrate.go`] = tpl + `/` + vvv.Tpl
-			}
-			for _, vvv := range v.Repo {
-				files[`./`+strings.ToLower(vvv.Dir)+`/`+format.Camel2Snake(vv.ModelName)+`.repo.go`] = tpl + `/` + vvv.Tpl
-			}
-			for _, vvv := range v.Model {
-				files[`./`+strings.ToLower(vvv.Dir)+`/`+format.Camel2Snake(vv.ModelName)+`.model.go`] = tpl + `/` + vvv.Tpl
-			}
-			for _, vvv := range v.Router {
-				files[`./`+strings.ToLower(vvv.Dir)+`/`+format.Camel2Snake(vv.ControllerName)+`.router.go`] = tpl + `/` + vvv.Tpl
-			}
-
+			files := appTplFiles(tpl, v, vv)
 			tplAppData := buildAppTplData(vv.ModuleName, vv.ControllerName, vv.ControllerName, vv.ServiceName, vv.ModelName, vv.SwaggerTags)
+			tplAppData[`Fields`] = fields
+			tplAppData[`SearchColumn`] = searchColumn
+			tplAppData[`HasTime`] = hasTimeField(fields)
+			tplAppData[`HasJSON`] = hasJSONField(fields)
+
+			if dryRun {
+				for f := range files {
+					fmt.Printf("would create file %s\n", f)
+				}
+				continue
+			}
 			if err = c.generateFiles(files, tplAppData); err != nil {
 				return err
 			}
 		}
 	}
 	return nil
+}
+
+// allDirAndTpl 收集 TplSetting 下所有 DirAndTpl。
+func allDirAndTpl(v TplSetting) []DirAndTpl {
+	out := make([]DirAndTpl, 0, len(v.Controller)+len(v.Service)+len(v.Repo)+len(v.Model)+len(v.Migrate)+len(v.Router))
+	out = append(out, v.Controller...)
+	out = append(out, v.Service...)
+	out = append(out, v.Repo...)
+	out = append(out, v.Model...)
+	out = append(out, v.Migrate...)
+	out = append(out, v.Router...)
+	return out
+}
+
+// appTplDirs 收集需要创建的目录（去空、去重）。
+func appTplDirs(v TplSetting) ([]string, error) {
+	seen := map[string]bool{}
+	var dirs []string
+	for _, d := range allDirAndTpl(v) {
+		dir := strings.TrimSpace(d.Dir)
+		if dir == `` {
+			return nil, fmt.Errorf(`[setting.json5 中存在空 dir]`)
+		}
+		if !seen[dir] {
+			seen[dir] = true
+			dirs = append(dirs, dir)
+		}
+	}
+	return dirs, nil
+}
+
+// validateTplFiles 校验所有引用的模板文件存在。
+func validateTplFiles(tpl string, v TplSetting) error {
+	var missing []string
+	for _, d := range allDirAndTpl(v) {
+		if d.Tpl != `` && !myfile.IsFileExist(tpl+`/`+d.Tpl) {
+			missing = append(missing, d.Tpl)
+		}
+	}
+	if len(missing) > 0 {
+		return fmt.Errorf(`[模板文件不存在: %s]`, strings.Join(missing, `, `))
+	}
+	return nil
+}
+
+// appTplFiles 构建某个 var 对应的文件路径到模板路径映射。
+func appTplFiles(tpl string, v TplSetting, vv TplVar) map[string]string {
+	files := make(map[string]string)
+	for _, vvv := range v.Controller {
+		files[`./`+strings.ToLower(vvv.Dir)+`/`+format.Camel2Snake(vv.ControllerName)+`.controller.go`] = tpl + `/` + vvv.Tpl
+	}
+	for _, vvv := range v.Service {
+		files[`./`+strings.ToLower(vvv.Dir)+`/`+format.Camel2Snake(vv.ServiceName)+`.service.go`] = tpl + `/` + vvv.Tpl
+	}
+	for _, vvv := range v.Migrate {
+		files[`./`+strings.ToLower(vvv.Dir)+`/`+format.Camel2Snake(vv.ModelName)+`.migrate.go`] = tpl + `/` + vvv.Tpl
+	}
+	for _, vvv := range v.Repo {
+		files[`./`+strings.ToLower(vvv.Dir)+`/`+format.Camel2Snake(vv.ModelName)+`.repo.go`] = tpl + `/` + vvv.Tpl
+	}
+	for _, vvv := range v.Model {
+		files[`./`+strings.ToLower(vvv.Dir)+`/`+format.Camel2Snake(vv.ModelName)+`.model.go`] = tpl + `/` + vvv.Tpl
+	}
+	for _, vvv := range v.Router {
+		files[`./`+strings.ToLower(vvv.Dir)+`/`+format.Camel2Snake(vv.ControllerName)+`.router.go`] = tpl + `/` + vvv.Tpl
+	}
+	return files
 }

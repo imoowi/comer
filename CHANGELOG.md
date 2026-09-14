@@ -144,3 +144,20 @@
 ### Patch Changes
 -    fix tpl
 
+## 1.3.17
+### Patch Changes
+-    fix tpl bug
+
+## 1.3.18
+### Patch Changes
+-    fix controller tpl
+
+## 1.3.19
+### Patch Changes
+
+-    extend model fields: new types (uint/uint8/uint16/uint32/uint64/float32/time/json/slice), per-type size, `:validate` binding tag, `--searchColumn`
+-    add `comer remove` command (reverse of `comer add`, v2 layout only)
+-    `add-with-tpl`: drop dead `--tpl`, add `--dry-run`, validation and model-field support
+-    `comer new --config`: override db_name/exe_name/swagger via JSON5
+-    runtime library: repo/service transaction+batch+restore, filter clamp, MemCacheT TTL+Flush, captcha driverType + Redis store
+

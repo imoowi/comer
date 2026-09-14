@@ -106,6 +106,6 @@ func (c *Comer) init(cmd *cobra.Command, args []string) error {
 			c.path + `/test/login.go`:                           tplUri + `templates/v1/test/login.tmpl`,
 		},
 	}
-	c.tplData = buildFrameworkTplData(moduleName, projectName)
+	c.tplData = buildFrameworkTplData(moduleName, projectName, nil)
 	return nil
 }

@@ -43,12 +43,40 @@ func splitModuleName(moduleName string) string {
 }
 
 // buildFrameworkTplData 构建生成项目框架时的模板数据（v1/v2 共用）。
-func buildFrameworkTplData(moduleName, projectName string) map[string]any {
+// cfg 非空时用其覆盖 dbName/exeName/swagger 默认值。
+func buildFrameworkTplData(moduleName, projectName string, cfg *FrameworkConfig) map[string]any {
+	dbName := `comer_project`
+	exeName := projectName
+	swaggerTitle := `Comer API`
+	swaggerVersion := `1.0`
+	swaggerDescription := `This is a comer-example server.`
+
+	if cfg != nil {
+		if cfg.DBName != `` {
+			dbName = cfg.DBName
+		}
+		if cfg.ExeName != `` {
+			exeName = cfg.ExeName
+		}
+		if cfg.Swagger.Title != `` {
+			swaggerTitle = cfg.Swagger.Title
+		}
+		if cfg.Swagger.Version != `` {
+			swaggerVersion = cfg.Swagger.Version
+		}
+		if cfg.Swagger.Description != `` {
+			swaggerDescription = cfg.Swagger.Description
+		}
+	}
+
 	return map[string]any{
 		`moduleName`:        moduleName,
-		`dbName`:            `comer_project`,
-		`exeName`:           projectName,
+		`dbName`:            dbName,
+		`exeName`:           exeName,
 		`moduleProjectName`: projectName,
+		`swaggerTitle`:       swaggerTitle,
+		`swaggerVersion`:     swaggerVersion,
+		`swaggerDescription`: swaggerDescription,
 	}
 }
 

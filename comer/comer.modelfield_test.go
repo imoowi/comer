@@ -22,6 +22,17 @@ func TestParseModelField(t *testing.T) {
 		{`is_active:bool`, `IsActive`, `bool`, `type:tinyint(1)`},
 		{`created_at:datetime`, `CreatedAt`, `time.Time`, `type:datetime`},
 		{`birthday:date`, `Birthday`, `time.Time`, `type:date`},
+		{`age:uint`, `Age`, `uint`, `type:int unsigned`},
+		{`level:uint8`, `Level`, `uint8`, `type:tinyint unsigned`},
+		{`num:uint16`, `Num`, `uint16`, `type:smallint unsigned`},
+		{`big:uint64`, `Big`, `uint64`, `type:bigint unsigned`},
+		{`score:float32`, `Score`, `float32`, `type:float`},
+		{`amount:decimal:10,4`, `Amount`, `float64`, `type:decimal(10,4)`},
+		{`rate:decimal:10.4`, `Rate`, `float64`, `type:decimal(10,4)`},
+		{`meta:json`, `Meta`, `json.RawMessage`, `type:json`},
+		{`tags:slice`, `Tags`, `[]string`, `type:json`},
+		{`created:time`, `Created`, `time.Time`, `type:datetime`},
+		{`body:text:long`, `Body`, `string`, `type:longtext`},
 	}
 	for _, c := range cases {
 		f, err := parseModelField(c.spec)
@@ -113,5 +124,33 @@ func TestFirstStringColumnAndHasTime(t *testing.T) {
 	}
 	if hasTimeField(nil) {
 		t.Errorf("hasTimeField(nil) should be false")
+	}
+}
+
+func TestParseModelFieldBinding(t *testing.T) {
+	f, err := parseModelField(`title:string:100:标题:required,min=2`)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if f.BindTag != `required,min=2` {
+		t.Errorf("BindTag = %q, want %q", f.BindTag, `required,min=2`)
+	}
+	if !strings.Contains(f.Tag, `type:varchar(100)`) {
+		t.Errorf("Tag missing varchar(100): %q", f.Tag)
+	}
+	if f2, _ := parseModelField(`title:string:100:标题`); f2.BindTag != `` {
+		t.Errorf("BindTag should be empty without validate, got %q", f2.BindTag)
+	}
+}
+
+func TestHasJSONField(t *testing.T) {
+	if !hasJSONField([]ModelField{{GoType: `json.RawMessage`}}) {
+		t.Errorf("hasJSONField should be true for json.RawMessage")
+	}
+	if hasJSONField([]ModelField{{GoType: `[]string`}}) {
+		t.Errorf("hasJSONField should be false for []string only")
+	}
+	if hasJSONField(nil) {
+		t.Errorf("hasJSONField(nil) should be false")
 	}
 }

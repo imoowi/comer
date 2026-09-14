@@ -20,4 +20,5 @@ var createCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(createCmd)
+	createCmd.PersistentFlags().String(`config`, ``, `配置文件（JSON5，可覆盖 db_name/exe_name/swagger）`)
 }

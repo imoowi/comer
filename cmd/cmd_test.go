@@ -6,6 +6,9 @@ import (
 	"path/filepath"
 	"strings"
 	"testing"
+
+	"github.com/spf13/cobra"
+	"github.com/spf13/pflag"
 )
 
 func executeCommand(args ...string) (string, error) {
@@ -14,7 +17,21 @@ func executeCommand(args ...string) (string, error) {
 	rootCmd.SetErr(buf)
 	rootCmd.SetArgs(args)
 	err := rootCmd.Execute()
+	resetFlags(rootCmd)
 	return buf.String(), err
+}
+
+// resetFlags 递归重置命令及其子命令中已设置的 flag 到默认值，避免测试间状态泄漏。
+func resetFlags(cmd *cobra.Command) {
+	cmd.Flags().VisitAll(func(f *pflag.Flag) {
+		if f.Changed {
+			_ = f.Value.Set(f.DefValue)
+			f.Changed = false
+		}
+	})
+	for _, sub := range cmd.Commands() {
+		resetFlags(sub)
+	}
 }
 
 // chdirTemp 切换到临时目录并返回恢复函数。
@@ -122,5 +139,79 @@ func TestAddV1InjectionIdempotent(t *testing.T) {
 	appsGo, _ = os.ReadFile("apps/apps.go")
 	if got := strings.Count(string(appsGo), `apps/student`); got != 1 {
 		t.Fatalf("expected still 1 student import after idempotent add, got %d", got)
+	}
+}
+
+func TestRemoveV2(t *testing.T) {
+	dir, restore := chdirTemp(t)
+	defer restore()
+
+	if _, err := executeCommand("new", "github.com/imoowi/example"); err != nil {
+		t.Fatalf("new failed: %v", err)
+	}
+	base := filepath.Join(dir, "github.com", "imoowi", "example")
+	if err := os.Chdir(base); err != nil {
+		t.Fatalf("chdir into project: %v", err)
+	}
+
+	if _, err := executeCommand("add", "-c=post", "-s=post", "-m=post"); err != nil {
+		t.Fatalf("add failed: %v", err)
+	}
+	controllerPath := filepath.Join("internal", "controllers", "post.controller.go")
+	if _, err := os.Stat(controllerPath); err != nil {
+		t.Fatalf("post.controller.go not created: %v", err)
+	}
+
+	// dry-run：只打印、不删除
+	if _, err := executeCommand("remove", "-c=post", "--dry-run"); err != nil {
+		t.Fatalf("remove dry-run failed: %v", err)
+	}
+	if _, err := os.Stat(controllerPath); err != nil {
+		t.Fatalf("dry-run should not delete files: %v", err)
+	}
+
+	// 真删
+	if _, err := executeCommand("remove", "-c=post"); err != nil {
+		t.Fatalf("remove failed: %v", err)
+	}
+	if _, err := os.Stat(controllerPath); !os.IsNotExist(err) {
+		t.Fatalf("post.controller.go should be removed")
+	}
+
+	// 幂等：再次 remove 不报错
+	if _, err := executeCommand("remove", "-c=post"); err != nil {
+		t.Fatalf("second remove failed: %v", err)
+	}
+}
+
+func TestNewV2WithConfig(t *testing.T) {
+	dir, restore := chdirTemp(t)
+	defer restore()
+
+	cfg := filepath.Join(dir, "comer.json5")
+	content := `{ db_name: "mydb", exe_name: "myexe", swagger: { title: "My API" } }`
+	if err := os.WriteFile(cfg, []byte(content), 0644); err != nil {
+		t.Fatal(err)
+	}
+
+	if _, err := executeCommand("new", "--config="+cfg, "github.com/imoowi/example"); err != nil {
+		t.Fatalf("new with config failed: %v", err)
+	}
+	base := filepath.Join(dir, "github.com", "imoowi", "example")
+
+	settings, err := os.ReadFile(filepath.Join(base, "configs", "settings-local.yml"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(string(settings), "mydb") {
+		t.Fatalf("settings-local.yml missing dbName override: %s", settings)
+	}
+
+	mainGo, err := os.ReadFile(filepath.Join(base, "main.go"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(string(mainGo), "My API") {
+		t.Fatalf("main.go missing swagger title override: %s", mainGo)
 	}
 }

@@ -9,12 +9,15 @@ import (
 {{- if .HasTime}}
 	"time"
 {{- end}}
+{{- if .HasJSON}}
+	"encoding/json"
+{{- end}}
 )
 
 type {{.ModelName}}Base struct {
 {{- if .Fields}}
 {{- range .Fields}}
-	{{.Name}} {{.GoType}} `{{.Tag}}`
+	{{.Name}} {{.GoType}} `{{.Tag}}{{if .BindTag}} binding:"{{.BindTag}}"{{end}}`
 {{- end}}
 {{- else}}
 	Name  string     `json:"name" form:"name" gorm:"column:name;type:varchar(30);not null;comment:名" `

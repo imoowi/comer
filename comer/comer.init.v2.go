@@ -121,6 +121,14 @@ func (c *Comer) initV2(cmd *cobra.Command, args []string) error {
 			c.path + `/test/login.go`: tplUri + `templates/v2/test/login.go.tmpl`,
 		},
 	}
-	c.tplData = buildFrameworkTplData(moduleName, projectName)
+	configPath, err := cmd.Flags().GetString(`config`)
+	if err != nil {
+		return err
+	}
+	cfg, err := loadFrameworkConfig(configPath)
+	if err != nil {
+		return err
+	}
+	c.tplData = buildFrameworkTplData(moduleName, projectName, cfg)
 	return nil
 }

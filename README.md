@@ -55,6 +55,23 @@ dir [ github.com/imoowi/comer-example/apps ] created
 
 ```
 
+Optionally pass a JSON5 config to override the database name, executable name, and swagger metadata (v2 layout):
+
+可选地传入 JSON5 配置来覆盖数据库名、可执行名与 swagger 元信息（仅 v2 布局）：
+
+```json5
+// comer.json5
+{
+  db_name: "my_db",
+  exe_name: "myexe",
+  swagger: { title: "My API", version: "2.0", description: "My desc" }
+}
+```
+
+```sh
+comer new github.com/imoowi/comer-example --config=comer.json5
+```
+
 ### 2. Add a Controller / 添加控制器
 
 Add a controller:
@@ -108,20 +125,32 @@ Define custom fields for the model (v2 layout only). Without `-f`, the generated
 comer add -c=post -f=title:string:100 -f=content:text -f=status:int -f=created_at:datetime
 ```
 
-Field format: `name:type[:size][:comment]`. Supported types:
+Field format: `name:type[:size][:comment][:validate]`. Supported types:
 
-字段格式：`name:type[:size][:comment]`。支持的类型：
+字段格式：`name:type[:size][:comment][:validate]`。支持的类型：
 
 | type 类型 | Go 类型 | GORM 类型 |
 |---|---|---|
 | string | string | varchar(size)（默认 30 / default 30） |
-| text | string | text |
+| text | string | text / tinytext / mediumtext / longtext |
 | int | int | int |
 | int64 / bigint | int64 | bigint |
-| float64 / decimal / float | float64 | decimal(10,2) |
+| uint | uint | int unsigned |
+| uint8 | uint8 | tinyint unsigned |
+| uint16 | uint16 | smallint unsigned |
+| uint32 | uint32 | int unsigned |
+| uint64 | uint64 | bigint unsigned |
+| float64 / decimal / float | float64 | decimal(p,s)（默认 10,2 / default 10,2） |
+| float32 | float32 | float |
 | bool | bool | tinyint(1) |
-| datetime | time.Time | datetime |
+| datetime / time | time.Time | datetime |
 | date | time.Time | date |
+| json | json.RawMessage | json |
+| slice / array | []string | json |
+
+For `decimal`, precision/scale accepts a comma (`10,4`) or a dot (`10.4`).
+
+`decimal` 的精度/小数位可用逗号（`10,4`）或点号（`10.4`）。
 
 Or put fields in a file (one per line, `#` for comments) and pass it with `--fieldConfig`:
 
@@ -137,6 +166,31 @@ status:int
 ```sh
 comer add -c=post --fieldConfig=post.fields
 ```
+
+Optional `:validate` appends a `binding` tag (e.g. `title:string:100:标题:required,min=2`), mapped to the project's custom validators. Use `--searchColumn` to override the pagination search column (default: first string/text field, else `name`).
+
+可选的 `:validate` 段会追加 `binding` 标签（如 `title:string:100:标题:required,min=2`），映射到项目的自定义校验规则。用 `--searchColumn` 覆盖分页搜索字段（默认取第一个 string/text 字段，缺省 `name`）。
+
+Note: the `binding` tag only takes effect on the **Add** path (which binds into the model struct); the **Update** path binds into a `map[string]any`, so update validation is not enforced.
+
+注意：`binding` 标签只在**新增**路径生效（绑定到模型结构体）；**更新**路径绑定到 `map[string]any`，不触发校验。
+
+```sh
+comer add -c=post -f=title:string:100:标题:required,min=2 --searchColumn=title
+```
+
+### 2.2 Remove a Controller / 删除控制器
+
+Remove the files that `comer add` generated for a controller (v2 layout only). Pass the same `-c/-s/-m` flags you used with `add`; use `--dry-run` to preview without deleting.
+
+删除 `comer add` 为某控制器生成的文件（仅 v2 布局）。传入与 `add` 相同的 `-c/-s/-m`；加 `--dry-run` 可预览而不实际删除。
+
+```sh
+comer remove -c=post            # delete / 删除
+comer remove -c=post --dry-run  # preview / 预览
+```
+
+> `remove` only understands the built-in v2 layout and cannot reverse `add-with-tpl` (custom templates). / `remove` 仅识别内置 v2 布局，无法逆转 `add-with-tpl`（自定义模板）。
 
 ### 3. Add via Custom Templates / 通过自定义模板添加
 
@@ -229,6 +283,11 @@ $ tree .comer-templates/
 
 0 directories, 7 files
 ```
+
+`add-with-tpl` supports `--dry-run` (preview without writing) and the same field flags as `add` (`-f/--field`, `--fieldConfig`, `--searchColumn`), so custom templates can use `{{.Fields}}`, `{{.SearchColumn}}`, `{{.HasTime}}` and `{{.HasJSON}}`.
+
+`add-with-tpl` 支持 `--dry-run`（预览而不落盘），并支持与 `add` 相同的字段 flag（`-f/--field`、`--fieldConfig`、`--searchColumn`），自定义模板可用 `{{.Fields}}`、`{{.SearchColumn}}`、`{{.HasTime}}`、`{{.HasJSON}}`。
+
 - 3.4 Run the command `comer add-with-tpl`. / 运行命令: "comer add-with-tpl"
 ```sh
 $ comer add-with-tpl
@@ -387,6 +446,22 @@ Access the API docs at:
 [http://localhost:8000/swagger/index.html](http://localhost:8000/swagger/index.html)
 ![](assets/comer-swagger.png)
 ![](assets/comer-swagger2.png)
+
+## Runtime Library / 运行时库
+
+Generated projects import `github.com/imoowi/comer` as their runtime library (`interfaces/`, `components/`, `utils/`, `validators/`). Key capabilities:
+
+- `interfaces/impl.Repo[T]` / `Service[T]` — generic CRUD plus `Transaction`, `BatchAdd`, `BatchDelete`, `UnscopedOne`, `Restore`.
+- `interfaces/impl.Filter.BuildPageListFilter` — clamps `page`/`pageSize` (page ≥ 1, pageSize 1–1000).
+- `components.MemCacheT[T]` — typed in-memory cache with `SetOneTTL`/`SetArrayTTL` and `Flush`.
+- `components.GenCaptcha(driverType)` — `digit|string|math|chinese|audio`; `SetCaptchaStore` + `RedisCaptchaStore` for Redis-backed captcha.
+
+生成工程会把 `github.com/imoowi/comer` 作为运行时库引用（`interfaces/`、`components/`、`utils/`、`validators/`）。主要能力：
+
+- `interfaces/impl.Repo[T]` / `Service[T]` — 通用 CRUD，另含 `Transaction`、`BatchAdd`、`BatchDelete`、`UnscopedOne`、`Restore`。
+- `interfaces/impl.Filter.BuildPageListFilter` — 钳制 `page`/`pageSize`（page ≥ 1，pageSize 1–1000）。
+- `components.MemCacheT[T]` — 类型化内存缓存，含 `SetOneTTL`/`SetArrayTTL` 与 `Flush`。
+- `components.GenCaptcha(driverType)` — `digit|string|math|chinese|audio`；`SetCaptchaStore` 与 `RedisCaptchaStore` 支持 Redis 验证码存储。
 
 ## Directory Structure / 目录结构
 

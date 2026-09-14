@@ -35,5 +35,14 @@ func (f *Filter) SetSearchKey(searchKey string) {
 
 // 分页查询过滤器构建方法
 func (f *Filter) BuildPageListFilter(c *gin.Context, db *gorm.DB) *gorm.DB {
+	if f.GetPage() < 1 {
+		f.SetPage(1)
+	}
+	if f.GetPageSize() < 1 {
+		f.SetPageSize(20)
+	}
+	if f.GetPageSize() > 1000 {
+		f.SetPageSize(1000)
+	}
 	return db
 }

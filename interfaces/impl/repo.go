@@ -122,6 +122,48 @@ func (r *Repo[T]) Delete(c *gin.Context, id uint) (deleted bool, err error) {
 	return
 }
 
+// Transaction 在事务中执行 fn。
+func (r *Repo[T]) Transaction(fn func(tx *gorm.DB) error) error {
+	return r.DB.Transaction(fn)
+}
+
+// BatchAdd 批量新增。
+func (r *Repo[T]) BatchAdd(c *gin.Context, models []T) error {
+	if len(models) == 0 {
+		return errors.New(`pls input models`)
+	}
+	return r.DB.CreateInBatches(&models, len(models)).Error
+}
+
+// BatchDelete 批量软删除（需模型带 DeletedAt）。
+func (r *Repo[T]) BatchDelete(c *gin.Context, ids []uint) error {
+	if len(ids) == 0 {
+		return errors.New(`pls input ids`)
+	}
+	return r.DB.Model(new(T)).Where(`id IN ?`, ids).Delete(new(T)).Error
+}
+
+// UnscopedOne 查询一条记录（包含软删除）。
+func (r *Repo[T]) UnscopedOne(c *gin.Context, id uint) (res T, err error) {
+	if err = validateID(id); err != nil {
+		return
+	}
+	err = r.DB.Unscoped().Model(new(T)).Where(`id=?`, id).First(&res).Error
+	return
+}
+
+// Restore 恢复软删除的记录。
+func (r *Repo[T]) Restore(c *gin.Context, id uint) (restored bool, err error) {
+	if err = validateID(id); err != nil {
+		return
+	}
+	err = r.DB.Unscoped().Model(new(T)).Where(`id=?`, id).Update(`deleted_at`, nil).Error
+	if err == nil {
+		restored = true
+	}
+	return
+}
+
 // validateID 校验 id 是否合法（大于 0）
 func validateID(id uint) error {
 	if id <= 0 {

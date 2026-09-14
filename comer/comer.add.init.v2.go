@@ -37,7 +37,6 @@ func (c *Comer) initAppV2(cmd *cobra.Command, args []string) error {
 		modelName = serviceName
 	}
 
-	tplUri := ``
 	c.App = &App{
 		dirs: []string{
 			`./internal`,
@@ -48,15 +47,7 @@ func (c *Comer) initAppV2(cmd *cobra.Command, args []string) error {
 			`./internal` + `/router`,
 			`./internal` + `/services`,
 		},
-		files: map[string]string{
-			`./internal` + `/router/` + format.Camel2Snake(controllerName) + `.router.go`:          tplUri + `templates/v2/internal/apps/router.tmpl`,
-			`./internal` + `/controllers/` + format.Camel2Snake(controllerName) + `.controller.go`: tplUri + `templates/v2/internal/apps/controller.tmpl`,
-			`./internal` + `/migrates/` + format.Camel2Snake(modelName) + `.migrate.go`:            tplUri + `templates/v2/internal/apps/migrate.tmpl`,
-			`./internal` + `/models/` + format.Camel2Snake(modelName) + `.model.go`:                tplUri + `templates/v2/internal/apps/model.tmpl`,
-			`./internal` + `/models/` + format.Camel2Snake(modelName) + `.filter.go`:               tplUri + `templates/v2/internal/apps/filter.tmpl`,
-			`./internal` + `/repos/` + format.Camel2Snake(modelName) + `.repo.go`:                  tplUri + `templates/v2/internal/apps/repo.tmpl`,
-			`./internal` + `/services/` + format.Camel2Snake(serviceName) + `.service.go`:          tplUri + `templates/v2/internal/apps/service.tmpl`,
-		},
+		files: appFilePathsV2(controllerName, serviceName, modelName),
 	}
 	c.tplAppData = buildAppTplData(moduleName, controllerName, controllerName, serviceName, modelName, swaggerTags)
 
@@ -64,8 +55,29 @@ func (c *Comer) initAppV2(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return err
 	}
+	searchColumn, err := cmd.Flags().GetString(`searchColumn`)
+	if err != nil {
+		return err
+	}
+	if searchColumn == `` {
+		searchColumn = firstStringColumn(fields)
+	}
 	c.tplAppData[`Fields`] = fields
-	c.tplAppData[`SearchColumn`] = firstStringColumn(fields)
+	c.tplAppData[`SearchColumn`] = searchColumn
 	c.tplAppData[`HasTime`] = hasTimeField(fields)
+	c.tplAppData[`HasJSON`] = hasJSONField(fields)
 	return nil
+}
+
+// appFilePathsV2 返回 v2 布局下 add 会生成的 7 个文件路径及其模板路径。
+func appFilePathsV2(controllerName, serviceName, modelName string) map[string]string {
+	return map[string]string{
+		`./internal` + `/router/` + format.Camel2Snake(controllerName) + `.router.go`:          `templates/v2/internal/apps/router.tmpl`,
+		`./internal` + `/controllers/` + format.Camel2Snake(controllerName) + `.controller.go`: `templates/v2/internal/apps/controller.tmpl`,
+		`./internal` + `/migrates/` + format.Camel2Snake(modelName) + `.migrate.go`:            `templates/v2/internal/apps/migrate.tmpl`,
+		`./internal` + `/models/` + format.Camel2Snake(modelName) + `.model.go`:                `templates/v2/internal/apps/model.tmpl`,
+		`./internal` + `/models/` + format.Camel2Snake(modelName) + `.filter.go`:               `templates/v2/internal/apps/filter.tmpl`,
+		`./internal` + `/repos/` + format.Camel2Snake(modelName) + `.repo.go`:                  `templates/v2/internal/apps/repo.tmpl`,
+		`./internal` + `/services/` + format.Camel2Snake(serviceName) + `.service.go`:          `templates/v2/internal/apps/service.tmpl`,
+	}
 }
